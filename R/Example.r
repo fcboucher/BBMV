@@ -1,4 +1,4 @@
-rm(list=ls()) # for tests only
+#rm(list=ls()) # for tests only
 
 #Below is an example of the use of BBM+V with simulated data:
 library(ape)
