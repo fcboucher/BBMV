@@ -6,6 +6,7 @@ library(ape)
 source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/Cleaned functions for release/Simulate BBM+V.R', chdir = TRUE) # change the path to this script
 source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/Cleaned functions for release/BBM+V_functions_MLoptim.R', chdir = TRUE) # change the path to this script
 source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/Cleaned functions for release/plot.landscape.BBMV.R', chdir = TRUE)
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/charac_time.R', chdir = TRUE)
 
 # Simulate data: tree + continuous trait
 library(geiger) # geiger is needed for simulating the tree
@@ -53,3 +54,11 @@ plot.landscape.BBMV(model=BBM_x,Npts=100)
 
 # Plot landscapes estimated by all 4 versions of BBM+V fitted...
 plot.multiple.landscapes.BBMV(models=list(BBM,BBM_x, BBM_x2x, BBM_full),Npts=100,ylim=c(0,0.06))
+
+# measures times to reach stationarity
+charac_time(Npts=20,BBM)
+charac_time(Npts=20, BBM_x)
+charac_time(Npts=20, BBM_x2x)
+charac_time(Npts=20, BBM_full)
+# compare them with tree depth: how far are we from equilibrium?
+max(branching.times(tree))
