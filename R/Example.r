@@ -1,12 +1,10 @@
-rm(list=ls()) # for tests only
-
 #Below is an example of the use of BBM+V with simulated data:
 library(ape)
 
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/Cleaned functions for release/Simulate BBM+V.R', chdir = TRUE) # change the path to this script
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/Cleaned functions for release/BBM+V_functions_MLoptim.R', chdir = TRUE) # change the path to this script
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/Cleaned functions for release/plot.landscape.BBMV.R', chdir = TRUE)
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/charac_time.R', chdir = TRUE)
+source('~/PATH TO THIS FILE/Simulate BBM+V.R', chdir = TRUE) # change the path to this script
+source('~/PATH TO THIS FILE/BBM+V_functions_MLoptim.R', chdir = TRUE) # change the path to this script
+source('~/PATH TO THIS FILE/plot.landscape.BBMV.R', chdir = TRUE) # change the path to this script
+source('~/PATH TO THIS FILE/charac_time.R', chdir = TRUE) # change the path to this script
 
 # Simulate data: tree + continuous trait
 library(geiger) # geiger is needed for simulating the tree
