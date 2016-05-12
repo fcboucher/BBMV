@@ -13,7 +13,6 @@ tree$edge.length=100*tree$edge.length/max(branching.times(tree)) # rescale the t
 TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=1,bounds=c(-5, 5)) # TRAIT simulated on the tree, with a linear trend towards small values (potential increases with high values): for that you need to source the function 'Sim_BBMV.R'
 hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: it should be rather right skewed...
 
-
 # Now try to fit different models:
 
 # Fit the model to the data simulated: we use only 10 points for discretizing the trait interval to make it faster, but more points should be used on empirical datasets

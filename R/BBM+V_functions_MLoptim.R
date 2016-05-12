@@ -58,15 +58,22 @@ VectorPos_bounds=function(x,V,bounds){
 	return(X*(Npts-1)/(bounds[2]-bounds[1]))
 }
 
-# Convolution of the matrix x with the propagator for a time t
-ConvProp_bounds=function(X,t,dCoeff,dMat,bounds){
-	vDiag=dMat$diag ; P=dMat$passage ; tP=solve(P) #; tP=t(P)
-	Npts=dim(dMat$diag)[1]
-	tau=((bounds[2]-bounds[1])/(Npts-1))^2
-	expD=matrix(0,Npts,Npts)
-	for (i in 1:Npts){expD[i,i]=exp(exp(dCoeff)*(t/tau)*diag(vDiag)[i])}
-	a=P%*%expD%*%tP%*%X
-	return(apply(a,1,function(x) max(x,0)))
+# Prepare the matrix diagonal
+prep_mat_exp=function(dCoeff,dMat,bounds){
+  vDiag=dMat$diag ; P=dMat$passage ; tP=solve(P) #; tP=t(P)
+  Npts=dim(dMat$diag)[1]
+  tau=((bounds[2]-bounds[1])/(Npts-1))^2
+  diag_expD=exp(dCoeff)/tau*diag(vDiag) # faster than the for loop
+  return(list(P=P,tP=tP,diag_expD=diag_expD))
+}
+
+# Convolution product over one branch
+ConvProp_bounds=function(X,t,prep_mat){
+  Npts=length(X)
+  expD=matrix(0,Npts,Npts)
+  diag(expD)=exp(t*prep_mat$diag_expD)
+  a=prep_mat$P%*%expD%*%prep_mat$tP%*%X
+  return(apply(a,1,function(x) max(x,0))) # prevent rounding errors for small numbers
 }
 
 # format tree and trait --> the tree is ordered from tips to root, with edge.length binded to the topology
@@ -96,10 +103,12 @@ if ((bounds[1]>min(trait))|(bounds[2]<max(trait))) {return(-Inf)} # bounds have 
 Npts_tot=length(V)		
 tree_formatted=FormatTree_bounds(tree,trait,V,bounds)		
 dMat=DiffMat_backwards(V)
+pMat=prep_mat_exp(dCoeff,dMat,bounds) # edited
 tree_formatted2= tree_formatted
 logFactor=0
+
 for (i in 1:dim(tree_formatted2$tab)[1]){
-	tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=dCoeff,dMat=dMat,bounds)
+	tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat=pMat)
 	norm=sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
 	tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/norm
 	logFactor=logFactor+log(norm)
@@ -109,14 +118,15 @@ return(log(max(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]))+logFactor)
 	}
 }
 
-# calculate log-likelihood over the whole tree, to be minimized
+# calculate log-likelihood over the whole tree, to be maximized
 LogLik_bounds=function(tree_formatted,dCoeff,dMat,bounds){
 #tree_formatted obtained through FormatTree ; dCoeff=log(sigsq/2)
 Npts=dim(dMat$diag)[1]
 tree_formatted2= tree_formatted
+pMat=prep_mat_exp(dCoeff,dMat,bounds) # edited
 logFactor=0
 for (i in 1:dim(tree_formatted2$tab)[1]){
-	tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=dCoeff,dMat=dMat,bounds)
+	tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat = pMat)
 	norm=sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
 	tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/norm
 	logFactor=logFactor+log(norm)
@@ -141,8 +151,9 @@ Optim_bBM_bounds_fixed_potential=function(tree,trait,V,bounds=NULL){
     # dCoeff is log(sigma)
     # now retrieve the ML value of x0, using the ML of dCoeff
     tree_formatted2= tree_formatted
+    pMat=prep_mat_exp(dCoeff=opt$par,dMat,bounds) # edited
     for (i in 1:dim(tree_formatted2$tab)[1]){
-        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=opt$par,dMat=dMat,bounds)
+        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat = pMat) #edited
         tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
     }   
     x0=bounds[1]+(bounds[2]-bounds[1])*(which(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]==max(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]))-1)/(Npts-1)
@@ -200,8 +211,9 @@ Optim_bBM_x4x2x=function(tree,trait,Npts=100,bounds=NULL,method='L-BFGS-B'){
     SEQ=seq(from=0,to=1,length.out=Npts)
 		V=opt$par[2]*SEQ^4+opt$par[3]*SEQ^2+opt$par[4]*SEQ
 		dMat=DiffMat_backwards(V)
+		pMat=prep_mat_exp(dCoeff=opt$par[1],dMat,bounds) # edited
     for (i in 1:dim(tree_formatted2$tab)[1]){
-        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=opt$par[1],dMat=dMat,bounds)
+        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat = pMat) #edited
         tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
     }   
     x0=bounds[1]+(bounds[2]-bounds[1])*(which(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]==max(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]))-1)/(Npts-1)
@@ -228,8 +240,9 @@ Optim_bBM_x4x2x_flex_pts_start=function(tree,trait,Npts=50,method='Nelder-Mead',
 		bounds=c(opt$par[5],opt$par[6])
 		tree_formatted=FormatTree_bounds(tree,trait,V,bounds)
 		tree_formatted2= tree_formatted
+		pMat=prep_mat_exp(dCoeff=opt$par[1],dMat,bounds) # edited
     for (i in 1:dim(tree_formatted2$tab)[1]){
-        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=opt$par[1],dMat=dMat,bounds)
+        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat = pMat)
         tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
     }   
     x0=bounds[1]+(bounds[2]-bounds[1])*(which(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]==max(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]))-1)/(Npts-1)
@@ -304,8 +317,9 @@ Optim_bBM_bounds_fixed_potential=function(tree,trait,V,bounds=NULL){
     # dCoeff is log(sigma)
     # now retrieve the ML value of x0, using the ML of dCoeff
     tree_formatted2= tree_formatted
+    pMat=prep_mat_exp(dCoeff=opt$par,dMat,bounds)
     for (i in 1:dim(tree_formatted2$tab)[1]){
-        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=opt$par,dMat=dMat,bounds)
+        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat = pMat) # edited
         tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
     }   
     x0=bounds[1]+(bounds[2]-bounds[1])*(which(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]==max(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]))-1)/(Npts-1)
@@ -354,8 +368,9 @@ Optim_bBM_0_flex_pts_start=function(tree,trait,Npts=50,method='Nelder-Mead',star
 		bounds=c(opt$par[2],opt$par[3])
 		tree_formatted=FormatTree_bounds(tree,trait,V,bounds)
 		tree_formatted2= tree_formatted
+		pMat=prep_mat_exp(dCoeff=opt$par[1],dMat,bounds) # edited
     for (i in 1:dim(tree_formatted2$tab)[1]){
-        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=opt$par[1],dMat=dMat,bounds)
+        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat = pMat) # edited
         tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
     }   
     x0=bounds[1]+(bounds[2]-bounds[1])*(which(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]==max(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]))-1)/(Npts-1)
@@ -429,8 +444,9 @@ Optim_bBM_linear=function(tree,trait,Npts=100,bounds=NULL,method='L-BFGS-B'){
     SEQ=seq(from=0,to=1,length.out=Npts)
 		V=opt$par[2]*SEQ
 		dMat=DiffMat_backwards(V)
+		pMat=prep_mat_exp(dCoeff=opt$par[1],dMat,bounds) # edited
     for (i in 1:dim(tree_formatted2$tab)[1]){
-        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=opt$par[1],dMat=dMat,bounds)
+        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat = pMat) #edited
         tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
     }   
     x0=bounds[1]+(bounds[2]-bounds[1])*(which(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]==max(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]))-1)/(Npts-1)
@@ -481,8 +497,9 @@ Optim_bBM_x_flex_pts_start=function(tree,trait,Npts=50,method='Nelder-Mead',star
 		bounds=c(opt$par[3],opt$par[4])
 		tree_formatted=FormatTree_bounds(tree,trait,V,bounds)
 		tree_formatted2= tree_formatted
+		pMat=prep_mat_exp(dCoeff=opt$par[1],dMat,bounds) # edited
     for (i in 1:dim(tree_formatted2$tab)[1]){
-        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=opt$par[1],dMat=dMat,bounds)
+        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat = pMat) #edited
         tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
     }   
     x0=bounds[1]+(bounds[2]-bounds[1])*(which(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]==max(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]))-1)/(Npts-1)
@@ -554,8 +571,9 @@ Optim_bBM_quadratic=function(tree,trait,Npts=100,bounds=NULL,method='L-BFGS-B'){
     SEQ=seq(from=0,to=1,length.out=Npts)
 		V=opt$par[2]*SEQ^2+opt$par[3]*SEQ
 		dMat=DiffMat_backwards(V)
+		pMat=prep_mat_exp(dCoeff=opt$par[1],dMat,bounds) # edited
     for (i in 1:dim(tree_formatted2$tab)[1]){
-        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=opt$par[1],dMat=dMat,bounds)
+        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat = pMat) # edited
         tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
     }   
     x0=bounds[1]+(bounds[2]-bounds[1])*(which(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]==max(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]))-1)/(Npts-1)
@@ -606,8 +624,9 @@ Optim_bBM_x2x_flex_pts_start=function(tree,trait,Npts=50,method='Nelder-Mead',st
 		bounds=c(opt$par[4],opt$par[5])
 		tree_formatted=FormatTree_bounds(tree,trait,V,bounds)
 		tree_formatted2= tree_formatted
+		pMat=prep_mat_exp(dCoeff=opt$par[1],dMat,bounds) # edited
     for (i in 1:dim(tree_formatted2$tab)[1]){
-        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],dCoeff=opt$par[1],dMat=dMat,bounds)
+        tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]*ConvProp_bounds(X=tree_formatted2$Pos[[tree_formatted2$tab[i,2]]],t=tree_formatted2$tab[i,3],prep_mat = pMat) # edited
         tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]= tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]/sum(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]])
     }   
     x0=bounds[1]+(bounds[2]-bounds[1])*(which(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]==max(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]]))-1)/(Npts-1)

@@ -30,9 +30,8 @@ plot.multiple.landscapes.BBMV=function(models,landscape=T,Npts=50,ylim=c(0,0.2),
 	for (i in 1:length(models)){if (class(models[[i]])=='try-error'){trm=c(trm,i)}}
 	if (length(trm)>0){models=models[-trm]} 
 	model=models[[1]]	
-		# determine number of parameters of the model
+	# determine number of parameters of the model and retrieve coefficients
 	npar=length(model[[1]]) # 3: flat ; 4: linear ; 5: quadratic ; 6: x4
-	# retrieve coefficients for the potential
 	if (npar==3){a=b=c=0}
 	if (npar==4){a=b=0 ; c=model[[1]]$c}
 	if (npar==5){a=0 ; b=model[[1]]$b ; c=model[[1]]$c}
