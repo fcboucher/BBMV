@@ -1,0 +1,30 @@
+library(Matrix)
+N = 10000#
+sp = sparseMatrix(1:N, 1:N, x = 1)#
+m = diag(1, N, N)
+sp
+dim(sp)
+sp[1:10]
+sp[1,10]
+sp[1:10,1:10]
+?sparseMatrix
+Npts=length(V)
+Npts=10
+V=seq(1:10)
+Npts=length(V)
+M=sparseMatrix(1:Npts,1:Npts,0)
+M=sparseMatrix(1:Npts,1:Npts,x=0)
+M
+for (i in 2:(Npts-1)){#
+    	M[i-1,i]=exp((V[i]-V[i-1])/2)#
+    	M[i+1,i]=exp((V[i]-V[i+1])/2)#
+    	M[i,i]=-(M[i-1,i]+M[i+1,i])#
+    	    }#
+    M[2,1]=exp((V[1]-V[2])/2)#
+    M[1,1]=-M[2,1]#
+    M[Npts-1,Npts]=exp((V[Npts]-V[Npts-1])/2)#
+    M[Npts,Npts]=-M[Npts-1,Npts]
+M
+eig=eigen(M)
+eig
+?eigen

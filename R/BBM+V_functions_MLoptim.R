@@ -24,7 +24,7 @@ DiffMat_forward=function (V){
 }  
 
 # Create and diagonalize the transition matrix that has been discretized
-# returns: the transition matrix going backwards in time, for inference
+# returns: the transition matrix going backwards in time, used for inference
 DiffMat_backwards=function (V){
 	# V is a vector representing the potential, with 'Npts' numeric values
 	Npts=length(V)
