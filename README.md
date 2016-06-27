@@ -6,8 +6,8 @@ Functions of the BBMV package only depend on the {ape} package in R and likeliho
 
 Functions were written by [Florian Boucher](https://sites.google.com/site/floriaboucher/) based on equations from [Vincent Démery](https://www.pct.espci.fr/~vdemery/).
 
-The 'R' folder contains functions to simulate traits evolving under BBM+V, plot adaptive landscapes, and to fit the model to empirical data using either maximum-likelihood or MCMC estimation. 
-The script 'Example_ML_MCMC.R' shows basic examples of use of the functions to simulate and infer BBM+V. 
+The 'R' folder contains functions to simulate traits evolving under BBM+V, plot adaptive landscapes, and fit the model to empirical data using either maximum-likelihood or MCMC estimation. 
+The script 'Example_ML_MCMC.R' shows basic examples of use of the functions to simulate and infer under BBM+V. 
 
 There are currently no help pages for these functions but function names should be rather self-explanatory and R scripts are heavily commented: they should give you all the information needed on parameters, outputs, etc.
 
