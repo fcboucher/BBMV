@@ -10,11 +10,11 @@ source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/plot.la
 source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/Simulate BBM+V.R', chdir = TRUE)
 
 # Simulate data: tree + continuous trait
-library(geiger) # geiger is needed for simulating the tree
-tree=sim.bdtree(stop='taxa',n=20) # tree with few tips for fast tests
+library(geiger) # we will use geiger for simulating the tree
+tree=sim.bdtree(stop='taxa',n=20) # tree with few tips for quick tests
 tree$edge.length=100*tree$edge.length/max(branching.times(tree)) # rescale the tree to a total depth of 100
 TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=10,bounds=c(-5, 5)) # TRAIT simulated on the tree, with a linear trend towards small values (potential increases with high values): for that you need to source the function 'Sim_BBMV.R'
-hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: it should be rather right skewed...
+hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: it should be rather left skewed...
 
 ###############################################
 ######## Maximum Likelihood estimation ########
