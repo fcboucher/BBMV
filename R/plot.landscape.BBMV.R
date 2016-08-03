@@ -2,7 +2,7 @@
 # It takes a model fitted by BBMV as its main argument
 # if landscape=TRUE (default), then the adaptive landscape is plotted
 # if landscape=FALSE, then the potential is plotted instead
-# Npts determines the number of points used to plot the Adaptive landscape or potential
+# Npts determines the number of points used to plot the adaptive landscape or potential
 plot.landscape.BBMV=function(model,landscape=T,Npts=50,main='Adaptive landscape'){
 	# determine number of parameters of the model
 	npar=length(model[[1]]) # 3: flat ; 4: linear ; 5: quadratic ; 6: x4
