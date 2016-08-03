@@ -3,11 +3,11 @@ rm(list=ls())
 library(ape)
 
 # change the path to the following R scripts:
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/BBM+V_functions_MLoptim.R', chdir = TRUE)
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/charac_time.R', chdir = TRUE)
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/MCMC functions BBM+V.R', chdir = TRUE)
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/plot.landscape.BBMV.R', chdir = TRUE)
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/Simulate BBM+V.R', chdir = TRUE)
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/BBMV_dev/R/BBM+V_functions_MLoptim.R', chdir = TRUE)
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/BBMV_dev/R/charac_time.R', chdir = TRUE)
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/BBMV_dev/R/MCMC functions BBM+V.R', chdir = TRUE)
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/BBMV_dev/R/plot.landscape.BBMV.R', chdir = TRUE)
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/BBMV_dev/R/Simulate BBM+V.R', chdir = TRUE)
 
 # Simulate data: tree + continuous trait
 library(geiger) # we will use geiger for simulating the tree
