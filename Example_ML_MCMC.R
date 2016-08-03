@@ -53,7 +53,7 @@ BBM_full$aicc
 BM$opt$aicc
 OU$opt$aicc
 
-# Now plot adaptive landscape estimated by best model
+# Now plot the adaptive landscape estimated by the best model
 plot.landscape.BBMV(model=BBM_x,Npts=100)
 
 # Plot landscapes estimated by all 4 versions of BBM+V fitted...
@@ -73,8 +73,8 @@ max(branching.times(tree))
 ###############################################
 
 # Estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler
-# You need to specify the file to which the chain is save ('save_to' parameter)
-# Here we will do only a few generations so that computation time is not too long
+# You need to specify the file to which the chain is saved ('save_to' parameter)
+# Here we will do only a few generations so that computation time is not too long but for analysing real datasets you should monitor MCMC convergence (see below)
 
 # Parameters of the MCMC functions are the following:
 # tree and TRAIT: the phylogenetic tree and data vector
