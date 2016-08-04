@@ -662,3 +662,23 @@ Optim_bBM_x2x_flex_pts_multiple_starts=function(tree,trait,Npts=50,method='Nelde
 	}
 	return(temp)
 }
+
+# A general function that fits all mossible models (just calls the others, but this should be easier for the user)
+fit_BBMV=function(tree,trait,Npts=50,method='Nelder-Mead',verbose=T,V_shape){
+  if ((V_shape%in%c('flat','linear','quadratic','full')==F)){
+    stop("Wrong specification of V_shape: should be one of 'flat','linear','quadratic','full'")
+  }
+  if (V_shape=='flat'){
+    return(Optim_bBM_0_flex_pts_multiple_starts(tree,trait,Npts=50,method=method,verbose=verbose))
+  }
+  if (V_shape=='linear'){
+    return(Optim_bBM_x_flex_pts_multiple_starts(tree,trait,Npts=50,method=method,verbose=verbose))
+  }
+  if (V_shape=='quadratic'){
+    return(Optim_bBM_x2x_flex_pts_multiple_starts(tree,trait,Npts=50,method=method,verbose=verbose))
+  }
+  if (V_shape=='full'){
+    return(Optim_bBM_x4x2x_flex_pts_multiple_starts(tree,trait,Npts=50,method=method,verbose=verbose))
+  }
+}
+  
