@@ -22,22 +22,25 @@ hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: i
 
 # Now try to fit different models:
 
-# Fit the model to the data simulated: we use only 10 points for discretizing the trait interval to make it faster, but more points should be used on empirical datasets
+# Fit the model to the data simulated using maximum-likelihood: fit_BBMV is the main function that does it.
+# Multiple starting points are used in the optimization to ensure convergence
+# The V_shape parameter determines the shape of potential that you want to fit
+# We use only 20 points for discretizing the trait interval to make it faster, but more points should be used on empirical datasets
 
-# fit the model with a flat potential, i.e. BBM: multiple starting points in the optimization to ensure convergence
-BBM=Optim_bBM_0_flex_pts_multiple_starts(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T) 
+# fit the model with a flat potential, i.e. BBM:
+BBM=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='flat')
 BBM$par # parameters estimated
 
-# fit a model with a linear  potential: multiple starting points in the optimization to ensure convergence
-BBM_x=Optim_bBM_x_flex_pts_multiple_starts(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T) # ML value of bounds estimated along other parameters
+# fit a model with a linear  potential: 
+BBM_x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear')
 BBM_x$par
 
-# fit a model with a quadratic potential: multiple starting points in the optimization to ensure convergence
-BBM_x2x=Optim_bBM_x2x_flex_pts_multiple_starts(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T) # ML value of bounds estimated along other parameters
+# fit a model with a quadratic potential:
+BBM_x2x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='quadratic')
 BBM_x2x$par
 
-# fit the most general model with a.x^4+b.x^2+c.x potential: multiple starting points in the optimization to ensure convergence
-BBM_full= Optim_bBM_x4x2x_flex_pts_multiple_starts(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T) # ML value of bounds estimated along other parameters
+# fit the most general model with a.x^4+b.x^2+c.x potential:
+BBM_full=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='full')
 BBM_full$par
 
 
