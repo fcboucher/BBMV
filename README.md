@@ -1,6 +1,6 @@
 # BBMV
 This repository provides a set of R functions to fit general macroevolutionary models for continuous traits evolving in adaptive landscapes of any shape.
-This new model is based on [bounded Brownian motion](https://github.com/fcboucher/BBM) (BBM), in which a continuous trait undergoes constant-rate diffusion between two reflective bounds. In addition to this random component, the trait evolves in a potential and is thus subject to a force that pulls it towards specific values - this force can be of any shape. You can see an example of the behaviour of the model in the figure 'BBM+V basics Figure.png', which is in the main directory of this Github page. We label this model BBM+V, for BBM + potential.
+This new model is based on [bounded Brownian motion](https://github.com/fcboucher/BBM) (BBM), in which a continuous trait undergoes constant-rate diffusion between two reflective bounds. In addition to this random component, the trait evolves in a potential and is thus subject to a force that pulls it towards specific values - this force can be of any shape. You can see an example of the behaviour of the model [here](https://github.com/fcboucher/BBMV/blob/master/BBM%2BV%20basics%20Figure.png). We label this model BBM+V, for BBM + potential.
 
 Functions of the BBMV package only depend on the {ape} package in R and likelihoods are compatible with those of other models fitted by the 'fitContinuous' function in package {geiger}. The package implements both maximum likelihood and MCMC estimation of model parameters.
 
