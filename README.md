@@ -9,6 +9,6 @@ Functions were written by [Florian Boucher](https://sites.google.com/site/floria
 The 'R' folder contains functions to simulate traits evolving under BBM+V, plot adaptive landscapes, and fit the model to empirical data using either maximum-likelihood or MCMC estimation. 
 The script 'Example_ML_MCMC.R' shows basic examples of use of the functions to simulate and infer under BBM+V. 
 
-There are currently no help pages for these functions but function names should be rather self-explanatory and R scripts are heavily commented: they should give you all the information needed on parameters, outputs, etc.
+Help files for each function  in the package can be found in 'BBMV-manual.pdf'. In addition, function names should be rather self-explanatory and R scripts are heavily commented: they should give you all the information needed on parameters, outputs, etc.
 
 The paper describing the model is still work in progress...
