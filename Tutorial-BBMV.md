@@ -1,5 +1,6 @@
 The purpose of BBM+V is to fit highly flexible models for continuous traits evolving on phylogenies. Under the BBM+V model, a continuous trait evolves between two reflective bounds according to random diffusion (Brownian motion). In addition, the trait is   
-subject to an 'evolutionary potential', which creates a force that pulls the trait towards specific regions of the trait interval. In theory, this force can be of any conceivable shape but for the present implementation we have chose a parametric shape for the potential of the shape $V(x)=ax^4+bx^2+cx$. 
+subject to an 'evolutionary potential', which creates a force that pulls the trait towards specific regions of the trait interval. In theory, this force can be of any conceivable shape but for the present implementation we have chosen a parametric shape for the potential of the shape $V(x)=ax^4+bx^2+cx$. This parametrization is rather flexible since it allows for no force, directional trends, attraction towards a trait value within the interval, attraction towards the two bounds, or attraction towards several distinct trait values within the interval.
+In this tutorial we will see how to estimate the model parameters using maximum-likelihood or MCMC integration.
 
 ```r
 rm(list=ls())
