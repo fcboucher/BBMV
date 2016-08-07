@@ -1,3 +1,5 @@
+# Tutorial for the R package *BBMV*
+
 The purpose of **BBMV** is to fit highly flexible models for continuous traits evolving on phylogenies. Under the BBM+V model, a continuous trait evolves between two reflective bounds according to random diffusion (Brownian motion). In addition, the trait is   subject to an 'evolutionary potential', which creates a force that pulls the trait towards specific regions of the trait interval. In theory, this force can be of any conceivable shape but for the present implementation we have chosen a parametric shape for the potential of the shape:
 ```r
 V(x)=ax^4+bx^2+cx 
@@ -23,10 +25,18 @@ library(geiger)
 tree=sim.bdtree(stop='taxa',n=20)
 tree$edge.length=100*tree$edge.length/max(branching.times(tree))
 ```
-Here we have simulated a tree with only 20 tips. This is rather small but will allow for functions to run quickly. We have rescaled the total tree depth to 100 arbitrary time units for an easier interpretation of model parameters.
+Here we have simulated a tree with only 20 tips. This is rather small but will allow for functions to run quickly. We have rescaled the total tree depth to 100 arbitrary time units for an easier interpretation of model parameters. 
+
+Next we will use the function *Sim_BBMV* to simulate a continuous trait evolving on the tree we just simulated. To do so we need to provide a rate of evolution (*sigma*), bounds on the trait interval, a value for the trait at the root of the tree (*x0*), and an evolutionary potential (*V*). Here we simulate a potential linearly increasing towards *higher* values of the trait. This will create a force towards *smaller* values of the trait, which we can see as the distribution of values at the tips of the tree is strongly left skewed.
 ```r
-TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=10,bounds=c(-5, 5)) # TRAIT simulated on the tree, with a linear trend towards small values (potential increases with high values): for that you need to source the function 'Sim_BBMV.R'
-hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: it should be rather left skewed...
+TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=10,bounds=c(-5, 5))
+hist(TRAIT,breaks=20)
+```
+### Maximum-likelihood estimation
+
+Now 
+
+```r
 
 ###############################################
 ######## Maximum Likelihood estimation ########
