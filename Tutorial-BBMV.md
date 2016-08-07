@@ -90,30 +90,15 @@ charac_time(Npts=20, BBM_full)
 ```
 
 ### Markov Chain Monte Carlo estimation
+We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler. This is done through the *MH_MCMC_V_ax4bx2cx_root_bounds* function. For explanations on each parameter the function takes as input I refer you to the manual of the *BBMV* package, which can be found in the Github directory.
 
-# Estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler
-# You need to specify the file to which the chain is saved ('save_to' parameter)
-# Here we will do only a few generations so that computation time is not too long but for analysing real datasets you should monitor MCMC convergence (see below)
+Here we will run a quick example with only 20,000 generations and default parameters for the priors and proposal functions. In verbose main, we get the state of the chain printed to the screen every at every sampled generation. If you allow plots, you will also see how the trace of the chain.
 
-# Parameters of the MCMC functions are the following:
-# tree and TRAIT: the phylogenetic tree and data vector
-# Nsteps: the number of generations in the MCMC chain
-# record_every: the interval used for sampling the MCMC chain
-# plot_every: the interval at which the chain is plotted (if plot=TRUE).
-# Npts_int: the number of point on the grid between min(trait) and max(trait)
-# pars_init: the initial parameters for starting the algorithm, c(log(sig2/2),a,b,c,x0,Bmin,Bmax). Be careful since x0 is actually the point on the grid (between 1 and Npts_int), not the actual root value
-# prob_update: the relative frequencies of update of the different parameters of the model
-# verbose: if TRUE, will print some generations of the chain to the screen
-# plot: if TRUE, the chain is plotted from time to time
-# save_to: file to which the chain is saved (can be useful in case the chain crashes)
-# save_every: sets how often the chain is saved
-# type_priors: the type of priors used, can be either normal (preferred) or uniform for log(sig2/2), a, b and c, ; and can only be discrete uniform for bounds and x0
-# shape_priors: list that gives the shape for each prior. (mean,sd) for normal priors and (min,max) for continuous uniform priors. The shape is not specified for the root prior, since it is fixed to be discrete uniform on the grid. Values for the priors on the bounds (discrete uniform) give the maximum number of points that can be added on the trait grid outside of the observed trait interval
-# proposal_type: the type of proposal function, only uniform is available
-# proposal_sensitivity: the width of the uniform proposal. The entire value for x0, Bmin, and Bmax give how many steps at a time can be travelled on the trait grid (better to keep it to 1)
-
+```r
 MCMC= MH_MCMC_V_ax4bx2cx_root_bounds(tree,trait=TRAIT,Nsteps=20000,record_every=100,plot_every=500,Npts_int=20,pars_init=c(-8,0,0,0,5,min(TRAIT),max(TRAIT)),prob_update=c(0.05,0.3,0.3,0.15,0.15,0.05,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/testMCMC1.Rdata',save_every=1000,type_priors=c(rep('Normal',4),rep('Uniform',3)),shape_priors=list(c(0,2),c(0,2),c(0,2),c(0,2),NA,30,30),proposal_type='Uniform',proposal_sensitivity=c(1,0.5,0.5,0.5,1,1,1),prior.only=F)
+```
 
+```r
 
 # Explore MCMC outputs
 library(coda)
