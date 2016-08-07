@@ -43,21 +43,20 @@ We'll start with a flat potential, i.e. there is no force acting on the trait an
 BBM=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='flat')
 BBM$par
 ```
-
+The *$par* element of the model fit gives the ML values of the parameters. Here we have the evolutionary rate (sigsq), the value of the trait at the root and the positions of the bounds of the trait interval.
+Now we can fit increasingly complex models starting with a linear potential, adding a quadratic term, and finally fitting the full model with a *x^4* term:
 ```r
-# fit a model with a linear  potential: 
 BBM_x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear')
 BBM_x$par
 
-# fit a model with a quadratic potential:
 BBM_x2x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='quadratic')
 BBM_x2x$par
 
-# fit the most general model with a.x^4+b.x^2+c.x potential:
 BBM_full=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='full')
 BBM_full$par
+```
 
-
+```r
 # Fit other classic models of evolution implemented in package {geiger}
 BM=fitContinuous(phy=tree,dat=TRAIT,model='BM') # Brownian motion with no bounds
 OU=fitContinuous(phy=tree,dat=TRAIT,model='OU') # Ornstein-Uhlenbeck process with a single optimum
