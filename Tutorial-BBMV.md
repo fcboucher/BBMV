@@ -19,6 +19,8 @@ source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/MCMC functions BBM+V.R', chdir = 
 source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/plot.landscape.BBMV.R', chdir = TRUE)
 source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Simulate BBM+V.R', chdir = TRUE)
 ```
+
+### Simulation function
 For this tutorial we will simulate data and then infer parameters of the BBM+V model on this simulated dataset. We need the R package *geiger* to simulate phylogenetic trees.
 ```r
 library(geiger)
@@ -33,8 +35,7 @@ TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=10,bounds=c(-5,
 hist(TRAIT,breaks=20)
 ```
 ### Maximum-likelihood estimation
-
-Now 
+The function to perform maximum-likelihood (ML) estimation of model parameters is *fit_BBMV*. It takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: the BBM+V process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 20 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously.
 
 ```r
 
