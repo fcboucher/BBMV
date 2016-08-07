@@ -20,7 +20,7 @@ source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/plot.landscape.BBMV.R', chdir = T
 source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Simulate BBM+V.R', chdir = TRUE)
 ```
 
-### Simulation function
+## Simulation function
 For this tutorial we will simulate data and then infer parameters of the BBM+V model on this simulated dataset. We need the R package *geiger* to simulate phylogenetic trees.
 ```r
 library(geiger)
@@ -34,7 +34,7 @@ Next we will use the function *Sim_BBMV* to simulate a continuous trait evolving
 TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=10,bounds=c(-5, 5))
 hist(TRAIT,breaks=20)
 ```
-### Maximum-likelihood estimation
+## Maximum-likelihood estimation
 The function to perform maximum-likelihood (ML) estimation of model parameters is *fit_BBMV*. It takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: the BBM+V process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 20 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes.
 
 We'll start with a flat potential, i.e. there is no force acting on the trait and the trait only evolves according to bounded Brownian Motion (BBM):
@@ -89,7 +89,7 @@ charac_time(Npts=20, BBM_x2x)
 charac_time(Npts=20, BBM_full)
 ```
 
-### Markov Chain Monte Carlo estimation
+## Markov Chain Monte Carlo estimation
 We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler. This is done through the *MH_MCMC_V_ax4bx2cx_root_bounds* function. For explanations on each parameter the function takes as input I refer you to the manual of the *BBMV* package, which can be found in the Github directory.
 
 Here we will run a quick example with only 20,000 generations and default parameters for the priors and proposal functions. In verbose main, we get the state of the chain printed to the screen every at every sampled generation. If you allow plots, you will also see how the trace of the chain.
@@ -97,14 +97,11 @@ Here we will run a quick example with only 20,000 generations and default parame
 ```r
 MCMC= MH_MCMC_V_ax4bx2cx_root_bounds(tree,trait=TRAIT,Nsteps=20000,record_every=100,plot_every=500,Npts_int=20,pars_init=c(-8,0,0,0,5,min(TRAIT),max(TRAIT)),prob_update=c(0.05,0.3,0.3,0.15,0.15,0.05,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/testMCMC1.Rdata',save_every=1000,type_priors=c(rep('Normal',4),rep('Uniform',3)),shape_priors=list(c(0,2),c(0,2),c(0,2),c(0,2),NA,30,30),proposal_type='Uniform',proposal_sensitivity=c(1,0.5,0.5,0.5,1,1,1),prior.only=F)
 ```
-
+Now we can measure the effective sample size of the chain using the package *coda*. This value should be above 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of the model parameters. We remove the 50 first samples as burnin just for fun, but we should probably be running the chain for much longer and discard way more samples.
 ```r
-
-# Explore MCMC outputs
 library(coda)
-apply(MCMC[-c(1:50),2:11],2,effectiveSize) # Effective Sample Size for sampling of parameters, ideally we should aim for something >100. Here we have removed the 50 first samples as burnin.
+apply(MCMC[-c(1:50),2:11],2,effectiveSize)
 
-# plot posterior distributions of parameters
 par(mfrow=c(2,5))
 hist(log(MCMC[-c(1:50),2]/2),breaks=100,main='log(sigsq/2)',ylab=NULL)
 hist(MCMC[-c(1:50),3],breaks=100,main='a (x^4 term)',ylab=NULL)
@@ -116,14 +113,13 @@ hist(MCMC[-c(1:50),8],breaks=100,main='bmax',ylab=NULL)
 hist(MCMC[-c(1:50),9],breaks=100,main='lnprior',ylab=NULL)
 hist(MCMC[-c(1:50),10],breaks=100,main='lnlik',ylab=NULL)
 hist(MCMC[-c(1:50),11],breaks=100,main='quasi-lnpost',ylab=NULL)
-
-# Now we will run a chain with the potential forced to be linear (i.e. what we simulated)
-# We do this by fixing the intial values of a and b to 0 and setting their probabilities of update to zero: they will never be updated
+```
+Finally, we can also estimate simpler version of the model using MCMC. Here we will run a chain with the potential forced to be linear (i.e. what we simulated). We do this by fixing the intial values of a and b to 0 and setting their probabilities of update to zero: they will never be updated.
+```r
 MCMC_trend= MH_MCMC_V_ax4bx2cx_root_bounds(tree,trait=TRAIT,Nsteps=20000,record_every=100,plot_every=500,Npts_int=20,pars_init=c(-8,0,0,0,5,min(TRAIT),max(TRAIT)),prob_update=c(0.05,0.,0.,0.15,0.15,0.05,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/testMCMC1.Rdata',save_every=1000,type_priors=c(rep('Normal',4),rep('Uniform',3)),shape_priors=list(c(0,2),c(0,2),c(0,2),c(0,2),NA,30,30),proposal_type='Uniform',proposal_sensitivity=c(1,0.5,0.5,0.5,1,1,1),prior.only=F)
 
 # sample size and plots
 apply(MCMC_trend[-c(1:50),c(2,5:11)],2,effectiveSize)
-
 par(mfrow=c(2,4))
 hist(log(MCMC_trend[-c(1:50),2]/2),breaks=100,main='log(sigsq/2)',ylab=NULL)
 hist(MCMC[-c(1:50),5],breaks=100,main='c (x term)',ylab=NULL)
@@ -134,3 +130,4 @@ hist(MCMC[-c(1:50),9],breaks=100,main='lnprior',ylab=NULL)
 hist(MCMC_trend[-c(1:50),10],breaks=100,main='lnlik',ylab=NULL)
 hist(MCMC_trend[-c(1:50),11],breaks=100,main='quasi-lnpost',ylab=NULL)
 ```
+
