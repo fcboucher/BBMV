@@ -61,6 +61,7 @@ BM=fitContinuous(phy=tree,dat=TRAIT,model='BM') # Brownian motion with no bounds
 OU=fitContinuous(phy=tree,dat=TRAIT,model='OU') # Ornstein-Uhlenbeck process with a single optimum
 ```
 Yes, calculations in *geiger* are much faster than in *BBMV*. This is (mostly) because both BM and OU produce trait distribution that are multivariate normal, which simplifies calculations a lot. Unfortunately, this is not the case for the *BBM+V* model (trait distributions can anyway not be normal since the trait interval is bounded)...
+
 Now we will compare the fit of all of these models by looking at their AICs corrected for small sample sizes:
 ```r
 BBM$aicc
@@ -71,28 +72,24 @@ BM$opt$aicc
 OU$opt$aicc
 ```
 *BBM_x* should be the model with the lowest AICc since this is the model we used for simulating the data. However, since we have a rather small dataset (20 tips) and since *BBM+V* is highly stochastic it might not always be the case. If you're not convinced, try running an example with 100 tips instead of 20.
-The *BBMV* package has a function for plotting the adaptive landscape estimated by the model. 
 
+The *BBMV* package has a function for plotting what we call the 'adaptive landscape' estimated by the model. The adaptive landscape is defined as the stationary distribution of the *BBM+V*, which is directly related to the evolutionary potential as follows: AL(x)=-exp(V'(x)). Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes.
 ```r
-
-# Now plot the adaptive landscape estimated by the best model
 plot.landscape.BBMV(model=BBM_x,Npts=100)
-
-# Plot landscapes estimated by all 4 versions of BBM+V fitted...
+```
+As for adaptive landscapes in quantitative genetics, we see peaks towards which trait values are attracted and valleys from which traits are repulsed. The plot shows you the adaptive landscape over the whole trait interval, from the lower to the upper bound. We can also plot the adaptive landscapes inferred by the four different versions of *BBMV* we have fitted (notice the flat landscape imposed in the first model):
+```r
 plot.multiple.landscapes.BBMV(models=list(BBM,BBM_x, BBM_x2x, BBM_full),Npts=100,ylim=c(0,0.06))
-
-# measures times to reach stationarity
+```
+An important measure in the *BBM+V* process is the time it takes for the process to reach stationarity. This is quite similar to the measure of the phylogenetic half-life for an OU process and we label it the *characteristic time*. Comparing this value to the total tree depth (100 in this example) gives us an idea of how far we are from stationarity.
+```r
 charac_time(Npts=20,BBM)
 charac_time(Npts=20, BBM_x)
 charac_time(Npts=20, BBM_x2x)
 charac_time(Npts=20, BBM_full)
-# compare them with tree depth: how far are we from equilibrium?
-max(branching.times(tree))
+```
 
-
-###############################################
-##### Markov Chain Monte Carlo estimation #####
-###############################################
+### Markov Chain Monte Carlo estimation
 
 # Estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler
 # You need to specify the file to which the chain is saved ('save_to' parameter)
