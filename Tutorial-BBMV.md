@@ -4,7 +4,7 @@ The purpose of **BBMV** is to fit highly flexible models for continuous traits e
 
 This parametrization is rather flexible since it allows for no force, directional trends, attraction towards a trait value within the interval, attraction towards the two bounds, or attraction towards several distinct trait values within the interval. In this tutorial we will see how to estimate the model parameters using maximum-likelihood and MCMC integration.
 
-We first need to load the only R package on which **BBMV** depends: *ape*
+We first need to load the only R package on which **BBMV** depends: **ape**
 ```r
 library(ape)
 ```
@@ -18,7 +18,7 @@ source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Simulate BBM+V.R', chdir = TRUE)
 ```
 
 ## Simulation function
-For this tutorial we will simulate data and then infer parameters of the BBM+V model on this simulated dataset. We need the R package *geiger* to simulate phylogenetic trees.
+For this tutorial we will simulate data and then infer parameters of the BBM+V model on this simulated dataset. We need the R package **geiger** to simulate phylogenetic trees.
 ```r
 library(geiger)
 tree=sim.bdtree(stop='taxa',n=20)
@@ -32,9 +32,9 @@ TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=10,bounds=c(-5,
 hist(TRAIT,breaks=20)
 ```
 ## Maximum-likelihood estimation
-The function to perform maximum-likelihood (ML) estimation of model parameters is *fit_BBMV*. It takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: the BBM+V process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 20 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes.
+The function to perform maximum-likelihood (ML) estimation of model parameters is *fit_BBMV*. It takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: the *BBM+V* process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 20 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes.
 
-We'll start with a flat potential, i.e. there is no force acting on the trait and the trait only evolves according to bounded Brownian Motion (BBM):
+We'll start with a flat potential, i.e. there is no force acting on the trait and the trait only evolves according to bounded Brownian Motion (*BBM*):
 
 ```r
 BBM=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='flat')
@@ -52,12 +52,12 @@ BBM_x2x$par
 BBM_full=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='full')
 BBM_full$par
 ```
-We can also compare our *BBMV* models with classic models of evolution like Brownian Motion (without bounds) and the Ornstein-Uhlenbeck process since likelihoods are comparable with the ones calculated in the *geiger* package:
+We can also compare our models with classic models of evolution like Brownian Motion (without bounds) and the Ornstein-Uhlenbeck process since likelihoods are comparable with the ones calculated in the **geiger** package:
 ```r
 BM=fitContinuous(phy=tree,dat=TRAIT,model='BM') # Brownian motion with no bounds
 OU=fitContinuous(phy=tree,dat=TRAIT,model='OU') # Ornstein-Uhlenbeck process with a single optimum
 ```
-Yes, calculations in *geiger* are much faster than in *BBMV*. This is (mostly) because both BM and OU produce trait distribution that are multivariate normal, which simplifies calculations a lot. Unfortunately, this is not the case for the *BBM+V* model (trait distributions can anyway not be normal since the trait interval is bounded).
+Yes, calculations in **geiger** are much faster than in **BBMV**. This is (mostly) because both BM and OU produce trait distribution that are multivariate normal, which simplifies calculations a lot. Unfortunately, this is not the case for the *BBM+V* model (trait distributions can anyway not be normal since the trait interval is bounded).
 
 Now we will compare the fit of all of these models by looking at their AICs corrected for small sample sizes:
 ```r
@@ -70,7 +70,7 @@ OU$opt$aicc
 ```
 *BBM_x* should be the model with the lowest AICc since this is the model we used for simulating the data. However, since we have a rather small dataset (20 tips) and since *BBM+V* is highly stochastic it might not always be the case. If you're not convinced, try running an example with 100 tips instead of 20.
 
-The *BBMV* package has a function for plotting what we call the 'adaptive landscape' estimated by the model. The adaptive landscape is defined as the stationary distribution of the *BBM+V* process, which is directly related to the evolutionary potential as follows: AL(x)=-exp(V'(x)). Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes:
+The **BBMV** package has a function for plotting what we call the 'adaptive landscape' estimated by the model. The adaptive landscape is defined as the stationary distribution of the *BBM+V* process, which is directly related to the evolutionary potential as follows: AL(x)=-exp(V'(x)). Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes:
 ```r
 plot.landscape.BBMV(model=BBM_x,Npts=100)
 ```
@@ -87,7 +87,7 @@ charac_time(Npts=20, BBM_full)
 ```
 
 ## Markov Chain Monte Carlo estimation
-We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler. This is done through the *MH_MCMC_V_ax4bx2cx_root_bounds* function. For explanations on each parameter the function takes as input I refer you to the manual of the *BBMV* package, which can be found in the Github directory.
+We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler. This is done through the *MH_MCMC_V_ax4bx2cx_root_bounds* function. For explanations on each parameter the function takes as input I refer you to the manual of the **BBMV** package, which can be found in the Github directory.
 
 Here we will run a quick example with only 20,000 generations and default parameters for the priors and proposal functions. In verbose main, we get the state of the chain printed to the screen every at every sampled generation. If you allow plots, you will also see the trace of the chain:
 
