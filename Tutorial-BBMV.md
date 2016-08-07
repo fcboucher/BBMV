@@ -35,25 +35,16 @@ TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=10,bounds=c(-5,
 hist(TRAIT,breaks=20)
 ```
 ### Maximum-likelihood estimation
-The function to perform maximum-likelihood (ML) estimation of model parameters is *fit_BBMV*. It takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: the BBM+V process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 20 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously.
+The function to perform maximum-likelihood (ML) estimation of model parameters is *fit_BBMV*. It takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: the BBM+V process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 20 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes.
+
+We'll start with a flat potential, i.e. there is no force acting on the trait and the trait only evolves according to bounded Brownian Motion (BBM):
 
 ```r
-
-###############################################
-######## Maximum Likelihood estimation ########
-###############################################
-
-# Now try to fit different models:
-
-# Fit the model to the data simulated using maximum-likelihood: fit_BBMV is the main function that does it.
-# Multiple starting points are used in the optimization to ensure convergence
-# The V_shape parameter determines the shape of potential that you want to fit
-# We use only 20 points for discretizing the trait interval to make it faster, but more points should be used on empirical datasets
-
-# fit the model with a flat potential, i.e. BBM:
 BBM=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='flat')
-BBM$par # parameters estimated
+BBM$par
+```
 
+```r
 # fit a model with a linear  potential: 
 BBM_x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear')
 BBM_x$par
