@@ -55,19 +55,25 @@ BBM_x2x$par
 BBM_full=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='full')
 BBM_full$par
 ```
-
+We can also compare our *BBMV* models with classic models of evolution like Brownian Motion (without bounds) and the Ornstein-Uhlenbeck process since likelihoods are comparable with the ones calculated in the *geiger* package.
 ```r
-# Fit other classic models of evolution implemented in package {geiger}
 BM=fitContinuous(phy=tree,dat=TRAIT,model='BM') # Brownian motion with no bounds
 OU=fitContinuous(phy=tree,dat=TRAIT,model='OU') # Ornstein-Uhlenbeck process with a single optimum
-
-# AIC comparison of all the models fitted
+```
+Yes, calculations in *geiger* are much faster than in *BBMV*. This is (mostly) because both BM and OU produce trait distribution that are multivariate normal, which simplifies calculations a lot. Unfortunately, this is not the case for the *BBM+V* model (trait distributions can anyway not be normal since the trait interval is bounded)...
+Now we will compare the fit of all of these models by looking at their AICs corrected for small sample sizes:
+```r
 BBM$aicc
-BBM_x$aicc # best model... normally (this is the one we simulated)
+BBM_x$aicc
 BBM_x2x$aicc
 BBM_full$aicc
 BM$opt$aicc
 OU$opt$aicc
+```
+*BBM_x* should be the model with the lowest AICc since this is the model we used for simulating the data. However, since we have a rather small dataset (20 tips) and since *BBM+V* is highly stochastic it might not always be the case. If you're not convinced, try running an example with 100 tips instead of 20.
+The *BBMV* package has a function for plotting the adaptive landscape estimated by the model. 
+
+```r
 
 # Now plot the adaptive landscape estimated by the best model
 plot.landscape.BBMV(model=BBM_x,Npts=100)
