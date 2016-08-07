@@ -1,27 +1,30 @@
-The purpose of BBM+V is to fit highly flexible models for continuous traits evolving on phylogenies. Under the BBM+V model, a continuous trait evolves between two reflective bounds according to random diffusion (Brownian motion). In addition, the trait is   subject to an 'evolutionary potential', which creates a force that pulls the trait towards specific regions of the trait interval. In theory, this force can be of any conceivable shape but for the present implementation we have chosen a parametric shape for the potential of the shape:
+The purpose of **BBMV** is to fit highly flexible models for continuous traits evolving on phylogenies. Under the BBM+V model, a continuous trait evolves between two reflective bounds according to random diffusion (Brownian motion). In addition, the trait is   subject to an 'evolutionary potential', which creates a force that pulls the trait towards specific regions of the trait interval. In theory, this force can be of any conceivable shape but for the present implementation we have chosen a parametric shape for the potential of the shape:
 ```r
 V(x)=ax^4+bx^2+cx 
 ```
 
 This parametrization is rather flexible since it allows for no force, directional trends, attraction towards a trait value within the interval, attraction towards the two bounds, or attraction towards several distinct trait values within the interval. In this tutorial we will see how to estimate the model parameters using maximum-likelihood and MCMC integration.
 
-We first need to load the only R package on which BBMV depends: *ape*
+We first need to load the only R package on which **BBMV** depends: *ape*
 ```r
-rm(list=ls())
-#Below is an example of the use of BBM+V with simulated data:
 library(ape)
-
-# change the path to the following R scripts:
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/BBMV_dev/R/BBM+V_functions_MLoptim.R', chdir = TRUE)
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/BBMV_dev/R/charac_time.R', chdir = TRUE)
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/BBMV_dev/R/MCMC functions BBM+V.R', chdir = TRUE)
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/BBMV_dev/R/plot.landscape.BBMV.R', chdir = TRUE)
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/BBMV_dev/R/Simulate BBM+V.R', chdir = TRUE)
-
-# Simulate data: tree + continuous trait
-library(geiger) # we will use geiger for simulating the tree
-tree=sim.bdtree(stop='taxa',n=20) # tree with few tips for quick tests
-tree$edge.length=100*tree$edge.length/max(branching.times(tree)) # rescale the tree to a total depth of 100
+```
+Then we need to source all functions in the **BBMV** package, which can be done via:
+```r
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/BBM+V_functions_MLoptim.R', chdir = TRUE)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/charac_time.R', chdir = TRUE)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/MCMC functions BBM+V.R', chdir = TRUE)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/plot.landscape.BBMV.R', chdir = TRUE)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Simulate BBM+V.R', chdir = TRUE)
+```
+For this tutorial we will simulate data and then infer parameters of the BBM+V model on this simulated dataset. We need the R package *geiger* to simulate phylogenetic trees.
+```r
+library(geiger)
+tree=sim.bdtree(stop='taxa',n=20)
+tree$edge.length=100*tree$edge.length/max(branching.times(tree))
+```
+Here we have simulated a tree with only 20 tips. This is rather small but will allow for functions to run quickly. We have rescaled the total tree depth to 100 arbitrary time units for an easier interpretation of model parameters.
+```r
 TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=10,bounds=c(-5, 5)) # TRAIT simulated on the tree, with a linear trend towards small values (potential increases with high values): for that you need to source the function 'Sim_BBMV.R'
 hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: it should be rather left skewed...
 
