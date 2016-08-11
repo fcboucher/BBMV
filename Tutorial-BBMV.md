@@ -89,7 +89,7 @@ charac_time(Npts=20, BBM_full)
 ## Markov Chain Monte Carlo estimation
 We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler. This is done through the *MH_MCMC_V_ax4bx2cx_root_bounds* function. For explanations on each parameter the function takes as input I refer you to the [manual of the **BBMV** package](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf), which can be found in the Github directory.
 
-Here we will run a quick example with only 20,000 generations and default parameters for the priors and proposal functions. In verbose main, we get the state of the chain printed to the screen every at every sampled generation. If you allow plots, you will also see the trace of the chain:
+Here we will run a quick example with only 20,000 generations and default parameters for the priors and proposal functions. In verbose mode, we get the state of the chain printed to the screen every at every sampled generation. If you allow plots, you will also see the trace of the chain:
 
 ```r
 MCMC= MH_MCMC_V_ax4bx2cx_root_bounds(tree,trait=TRAIT,Nsteps=20000,record_every=100,plot_every=500,Npts_int=20,pars_init=c(-8,0,0,0,5,min(TRAIT),max(TRAIT)),prob_update=c(0.05,0.3,0.3,0.15,0.15,0.05,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/testMCMC1.Rdata',save_every=1000,type_priors=c(rep('Normal',4),rep('Uniform',3)),shape_priors=list(c(0,2),c(0,2),c(0,2),c(0,2),NA,30,30),proposal_type='Uniform',proposal_sensitivity=c(1,0.5,0.5,0.5,1,1,1),prior.only=F)
@@ -111,7 +111,7 @@ hist(MCMC[-c(1:50),9],breaks=100,main='lnprior',ylab=NULL)
 hist(MCMC[-c(1:50),10],breaks=100,main='lnlik',ylab=NULL)
 hist(MCMC[-c(1:50),11],breaks=100,main='quasi-lnpost',ylab=NULL)
 ```
-Finally, we can also estimate simpler version of the model using MCMC. Here we will run a chain with the potential forced to be linear (i.e. what we simulated). We do this by fixing the intial values of a and b to 0 and setting their probabilities of update to zero:
+Finally, we can also estimate a simpler version of the model using MCMC. Here we will run a chain with the potential forced to be linear (i.e. what we simulated). We do this by fixing the intial values of a and b to 0 and setting their probabilities of update to zero:
 ```r
 MCMC_trend= MH_MCMC_V_ax4bx2cx_root_bounds(tree,trait=TRAIT,Nsteps=20000,record_every=100,plot_every=500,Npts_int=20,pars_init=c(-8,0,0,0,5,min(TRAIT),max(TRAIT)),prob_update=c(0.05,0.,0.,0.15,0.15,0.05,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/testMCMC1.Rdata',save_every=1000,type_priors=c(rep('Normal',4),rep('Uniform',3)),shape_priors=list(c(0,2),c(0,2),c(0,2),c(0,2),NA,30,30),proposal_type='Uniform',proposal_sensitivity=c(1,0.5,0.5,0.5,1,1,1),prior.only=F)
 
