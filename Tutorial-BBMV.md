@@ -1,0 +1,130 @@
+# Tutorial for the R package *BBMV*
+
+The purpose of **BBMV** is to fit highly flexible models for continuous traits evolving on phylogenies. Under the *BBM+V* model, a continuous trait evolves between two reflective bounds according to random diffusion (Brownian motion). In addition, the trait is   subject to an 'evolutionary potential', which creates a force that pulls the trait towards specific regions of the trait interval. In theory, this force can be of any conceivable shape but for the present implementation we have chosen a parametric shape for the potential of the shape: *V(x)=ax^4+bx^2+cx*. 
+
+This parametrization is rather flexible since it allows for no force, directional trends, attraction towards a trait value within the interval, attraction towards the two bounds, or attraction towards several distinct trait values within the interval. In this tutorial we will see how to estimate the model parameters using maximum-likelihood and MCMC integration.
+
+We first need to load the only R package on which **BBMV** depends: **ape**
+```r
+library(ape)
+```
+Then we need to source all functions in the **BBMV** package, which can be done via:
+```r
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/BBM+V_functions_MLoptim.R', chdir = TRUE)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/charac_time.R', chdir = TRUE)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/MCMC functions BBM+V.R', chdir = TRUE)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/plot.landscape.BBMV.R', chdir = TRUE)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Simulate BBM+V.R', chdir = TRUE)
+```
+
+## Simulation function
+For this tutorial we will simulate data and then infer parameters of the BBM+V model on this simulated dataset. We need the R package **geiger** to simulate phylogenetic trees.
+```r
+library(geiger)
+tree=sim.bdtree(stop='taxa',n=20)
+tree$edge.length=100*tree$edge.length/max(branching.times(tree))
+```
+Here we have simulated a tree with only 20 tips. This is rather small but will allow for functions to run quickly. We have rescaled the total tree depth to 100 arbitrary time units for an easier interpretation of model parameters. 
+
+Next we will use the function *Sim_BBMV* to simulate a continuous trait evolving on the tree we just simulated. To do so we need to provide a rate of evolution (*sigma*), bounds on the trait interval, a value for the trait at the root of the tree (*x0*), and an evolutionary potential (*V*). Here we simulate a potential linearly increasing towards *higher* values of the trait. This will create a force towards *smaller* values of the trait, as can be seen from the distribution of values at the tips of the tree which is strongly left skewed:
+```r
+TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=10,bounds=c(-5, 5))
+hist(TRAIT,breaks=20)
+```
+## Maximum-likelihood estimation
+The function to perform maximum-likelihood (ML) estimation of model parameters is *fit_BBMV*. It takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: the *BBM+V* process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 20 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes.
+
+We'll start with a flat potential, i.e. there is no force acting on the trait and the trait only evolves according to bounded Brownian Motion (*BBM*):
+
+```r
+BBM=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='flat')
+BBM$par
+```
+The *$par* element of the model fit gives the ML values of the parameters. Here we have the evolutionary rate (sigsq), the value of the trait at the root and the positions of the bounds of the trait interval.
+Now we can fit increasingly complex models starting with a linear potential, adding a quadratic term, and finally fitting the full model with a *x^4* term:
+```r
+BBM_x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear')
+BBM_x$par
+
+BBM_x2x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='quadratic')
+BBM_x2x$par
+
+BBM_full=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='full')
+BBM_full$par
+```
+We can also compare our models with classic models of evolution like Brownian Motion (without bounds) and the Ornstein-Uhlenbeck process since likelihoods are comparable with the ones calculated in the **geiger** package:
+```r
+BM=fitContinuous(phy=tree,dat=TRAIT,model='BM') # Brownian motion with no bounds
+OU=fitContinuous(phy=tree,dat=TRAIT,model='OU') # Ornstein-Uhlenbeck process with a single optimum
+```
+Yes, calculations in **geiger** are much faster than in **BBMV**. This is (mostly) because both BM and OU produce trait distribution that are multivariate normal, which simplifies calculations a lot. Unfortunately, this is not the case for the *BBM+V* model (trait distributions can anyway not be normal since the trait interval is bounded).
+
+Now we will compare the fit of all of these models by looking at their AICs corrected for small sample sizes:
+```r
+BBM$aicc
+BBM_x$aicc
+BBM_x2x$aicc
+BBM_full$aicc
+BM$opt$aicc
+OU$opt$aicc
+```
+*BBM_x* should be the model with the lowest AICc since this is the model we used for simulating the data. However, since we have a rather small dataset (20 tips) and since *BBM+V* is highly stochastic it might not always be the case. If you're not convinced, try running an example with 100 tips instead of 20.
+
+The **BBMV** package has a function for plotting what we call the 'adaptive landscape' estimated by the model. The adaptive landscape is defined as the stationary distribution of the *BBM+V* process, which is directly related to the evolutionary potential as follows: AL(x)=-exp(V'(x)). Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes:
+```r
+plot.landscape.BBMV(model=BBM_x,Npts=100)
+```
+As for adaptive landscapes in quantitative genetics, we see peaks towards which trait values are attracted and valleys from which traits are repulsed. The plot shows you the adaptive landscape over the whole trait interval, from the lower to the upper bound. We can also plot the adaptive landscapes inferred by the four different versions of *BBMV* we have fitted (notice the flat landscape imposed in the first model):
+```r
+plot.multiple.landscapes.BBMV(models=list(BBM,BBM_x, BBM_x2x, BBM_full),Npts=100,ylim=c(0,0.06))
+```
+An important measure in the *BBM+V* process is the time it takes for the process to reach stationarity. This is quite similar to the measure of the phylogenetic half-life for an OU process and we label it the *characteristic time*. Comparing this value to the total tree depth (100 in this example) gives us an idea of how far we are from stationarity:
+```r
+charac_time(Npts=20,BBM)
+charac_time(Npts=20, BBM_x)
+charac_time(Npts=20, BBM_x2x)
+charac_time(Npts=20, BBM_full)
+```
+
+## Markov Chain Monte Carlo estimation
+We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler. This is done through the *MH_MCMC_V_ax4bx2cx_root_bounds* function. For explanations on each parameter the function takes as input I refer you to the [manual of the **BBMV** package](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf), which can be found in the Github directory.
+
+Here we will run a quick example with only 20,000 generations and default parameters for the priors and proposal functions. In verbose mode, we get the state of the chain printed to the screen every at every sampled generation. If you allow plots, you will also see the trace of the chain:
+
+```r
+MCMC= MH_MCMC_V_ax4bx2cx_root_bounds(tree,trait=TRAIT,Nsteps=20000,record_every=100,plot_every=500,Npts_int=20,pars_init=c(-8,0,0,0,5,min(TRAIT),max(TRAIT)),prob_update=c(0.05,0.3,0.3,0.15,0.15,0.05,0.05),verbose=TRUE,plot=TRUE,save_to='testMCMC.Rdata',save_every=1000,type_priors=c(rep('Normal',4),rep('Uniform',3)),shape_priors=list(c(0,2),c(0,2),c(0,2),c(0,2),NA,30,30),proposal_type='Uniform',proposal_sensitivity=c(1,0.5,0.5,0.5,1,1,1),prior.only=F)
+```
+Now we can measure the effective sample size of the chain using the package *coda*. This value should be above 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of the model parameters. We remove the 50 first samples as burnin just for fun, but we should probably be running the chain for much longer and discard way more samples:
+```r
+library(coda)
+apply(MCMC[-c(1:50),2:11],2,effectiveSize)
+
+par(mfrow=c(2,5))
+hist(log(MCMC[-c(1:50),2]/2),breaks=100,main='log(sigsq/2)',ylab=NULL)
+hist(MCMC[-c(1:50),3],breaks=100,main='a (x^4 term)',ylab=NULL)
+hist(MCMC[-c(1:50),4],breaks=100,main='b (x^2 term)',ylab=NULL)
+hist(MCMC[-c(1:50),5],breaks=100,main='c (x term)',ylab=NULL)
+hist(MCMC[-c(1:50),6],breaks=100,main='root',ylab=NULL)
+hist(MCMC[-c(1:50),7],breaks=100,main='bmin',ylab=NULL)
+hist(MCMC[-c(1:50),8],breaks=100,main='bmax',ylab=NULL)
+hist(MCMC[-c(1:50),9],breaks=100,main='lnprior',ylab=NULL)
+hist(MCMC[-c(1:50),10],breaks=100,main='lnlik',ylab=NULL)
+hist(MCMC[-c(1:50),11],breaks=100,main='quasi-lnpost',ylab=NULL)
+```
+Finally, we can also estimate a simpler version of the model using MCMC. Here we will run a chain with the potential forced to be linear (i.e. what we simulated). We do this by fixing the intial values of a and b to 0 and setting their probabilities of update to zero:
+```r
+MCMC_trend= MH_MCMC_V_ax4bx2cx_root_bounds(tree,trait=TRAIT,Nsteps=20000,record_every=100,plot_every=500,Npts_int=20,pars_init=c(-8,0,0,0,5,min(TRAIT),max(TRAIT)),prob_update=c(0.05,0.,0.,0.15,0.15,0.05,0.05),verbose=TRUE,plot=TRUE,save_to='testMCMC_linear.Rdata',save_every=1000,type_priors=c(rep('Normal',4),rep('Uniform',3)),shape_priors=list(c(0,2),c(0,2),c(0,2),c(0,2),NA,30,30),proposal_type='Uniform',proposal_sensitivity=c(1,0.5,0.5,0.5,1,1,1),prior.only=F)
+
+# sample size and plots
+apply(MCMC_trend[-c(1:50),c(2,5:11)],2,effectiveSize)
+par(mfrow=c(2,4))
+hist(log(MCMC_trend[-c(1:50),2]/2),breaks=100,main='log(sigsq/2)',ylab=NULL)
+hist(MCMC[-c(1:50),5],breaks=100,main='c (x term)',ylab=NULL)
+hist(MCMC_trend[-c(1:50),6],breaks=100,main='root',ylab=NULL)
+hist(MCMC_trend[-c(1:50),7],breaks=100,main='bmin',ylab=NULL)
+hist(MCMC_trend[-c(1:50),8],breaks=100,main='bmax',ylab=NULL)
+hist(MCMC[-c(1:50),9],breaks=100,main='lnprior',ylab=NULL)
+hist(MCMC_trend[-c(1:50),10],breaks=100,main='lnlik',ylab=NULL)
+hist(MCMC_trend[-c(1:50),11],breaks=100,main='quasi-lnpost',ylab=NULL)
+```
+
