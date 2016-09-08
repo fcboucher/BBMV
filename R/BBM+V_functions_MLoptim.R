@@ -272,13 +272,23 @@ Optim_bBM_x4x2x_flex_pts_multiple_starts=function(tree,trait,Npts=50,method='Nel
 	mod=starts[[which(lnls==max(lnls))]] # the starting point which got us to the highest lnl
 	# check for convergence before returning ML estimate
 	if (verbose==T){cat("Starting final fit... ",sep="\n")}
-	temp=Optim_bBM_x4x2x_flex_pts_start(tree, trait,Npts= Npts,method=method,start.point=c(log(mod$par$sigsq/2),mod$par$a,mod$par$b,mod$par$c,mod$par$bounds[1],mod$par$bounds[2]))
+	temp=try(Optim_bBM_x4x2x_flex_pts_start(tree, trait,Npts= Npts,method=method,start.point=c(log(mod$par$sigsq/2),mod$par$a,mod$par$b,mod$par$c,mod$par$bounds[1],mod$par$bounds[2])))
 	rerun=0
+	if (class(temp)=='try-error'){
+	  temp=mod
+	  if (verbose==T){cat("Final optimization step produced an error: reporting the best of the initial optimization steps.")}
+	}
+	else {
 	while((temp$convergence!=0)&(rerun<11)){
 		if (verbose==T){cat("Trying to improve convergence... ",sep="\n")
 			if (rerun==10){cat("...this is the last try!",sep="\n")}}
-		temp=Optim_bBM_x4x2x_flex_pts_start(tree, trait,Npts= Npts,method= method,start.point=c(log(temp$par$sigsq/2),temp$par$a, temp$par$b, temp$par$c, temp$par$bounds[1], temp$par$bounds[2]))
+		temp=try(Optim_bBM_x4x2x_flex_pts_start(tree, trait,Npts= Npts,method= method,start.point=c(log(temp$par$sigsq/2),temp$par$a, temp$par$b, temp$par$c, temp$par$bounds[1], temp$par$bounds[2])))
 		rerun=rerun+1
+		if (class(temp)=='try-error'){
+		  temp=mod ; rerun=20
+		  if (verbose==T){cat("Final optimization step produced an error: reporting the best of the initial optimization steps.")}
+		}
+	}
 	}
 	return(temp)
 }
@@ -397,13 +407,23 @@ Optim_bBM_0_flex_pts_multiple_starts=function(tree,trait,Npts=50,method='Nelder-
 	mod=starts[[which(lnls==max(lnls))]] # the starting point which got us to the highest lnl
 	# check for convergence before returning ML estimate
 	if (verbose==T){cat("Starting final fit... ",sep="\n")}
-	temp= Optim_bBM_0_flex_pts_start(tree, trait,Npts= Npts,method=method,start.point=c(log(mod$par$sigsq/2),mod$par$a,mod$par$b,mod$par$c,mod$par$bounds[1],mod$par$bounds[2]))
+	temp= try(Optim_bBM_0_flex_pts_start(tree, trait,Npts= Npts,method=method,start.point=c(log(mod$par$sigsq/2),mod$par$a,mod$par$b,mod$par$c,mod$par$bounds[1],mod$par$bounds[2])))
 	rerun=0
+	if (class(temp)=='try-error'){
+	  temp=mod
+	  if (verbose==T){cat("Final optimization step produced an error: reporting the best of the initial optimization steps.")}
+	}
+	else {
 	while((temp$convergence!=0)&(rerun<11)){
 		if (verbose==T){cat("Trying to improve convergence... ",sep="\n")
 			if (rerun==10){cat("...this is the last try!",sep="\n")}}
-		temp= Optim_bBM_x_flex_pts_start(tree, trait,Npts= Npts,method= method,start.point=c(log(temp$par$sigsq/2),temp$par$a, temp$par$b, temp$par$c, temp$par$bounds[1], temp$par$bounds[2]))
+		temp= try(Optim_bBM_x_flex_pts_start(tree, trait,Npts= Npts,method= method,start.point=c(log(temp$par$sigsq/2),temp$par$a, temp$par$b, temp$par$c, temp$par$bounds[1], temp$par$bounds[2])))
 		rerun=rerun+1
+		if (class(temp)=='try-error'){
+		  temp=mod ; rerun=20
+		  if (verbose==T){cat("Final optimization step produced an error: reporting the best of the initial optimization steps.")}
+		}
+	}
 	}
 	return(temp)
 }
@@ -526,13 +546,23 @@ Optim_bBM_x_flex_pts_multiple_starts=function(tree,trait,Npts=50,method='Nelder-
 	mod=starts[[which(lnls==max(lnls))]] # the starting point which got us to the highest lnl
 	# check for convergence before returning ML estimate
 	if (verbose==T){cat("Starting final fit... ",sep="\n")}
-	temp= Optim_bBM_x_flex_pts_start(tree, trait,Npts= Npts,method=method,start.point=c(log(mod$par$sigsq/2),mod$par$c,mod$par$bounds[1],mod$par$bounds[2]))
+	temp= try(Optim_bBM_x_flex_pts_start(tree, trait,Npts= Npts,method=method,start.point=c(log(mod$par$sigsq/2),mod$par$c,mod$par$bounds[1],mod$par$bounds[2])))
 	rerun=0
+	if (class(temp)=='try-error'){
+	  temp=mod
+	  if (verbose==T){cat("Final optimization step produced an error: reporting the best of the initial optimization steps.")}
+	}
+	else {
 	while((temp$convergence!=0)&(rerun<11)){
 		if (verbose==T){cat("Trying to improve convergence... ",sep="\n")
 			if (rerun==10){cat("...this is the last try!",sep="\n")}}
-		temp= Optim_bBM_x_flex_pts_start(tree, trait,Npts= Npts,method= method,start.point=c(log(temp$par$sigsq/2),temp$par$c, temp$par$bounds[1], temp$par$bounds[2]))
+		temp= try(Optim_bBM_x_flex_pts_start(tree, trait,Npts= Npts,method= method,start.point=c(log(temp$par$sigsq/2),temp$par$c, temp$par$bounds[1], temp$par$bounds[2])))
 		rerun=rerun+1
+		if (class(temp)=='try-error'){
+		  temp=mod ; rerun=20
+		  if (verbose==T){cat("Final optimization step produced an error: reporting the best of the initial optimization steps.")}
+		}
+	}
 	}
 	return(temp)
 }
@@ -652,17 +682,30 @@ Optim_bBM_x2x_flex_pts_multiple_starts=function(tree,trait,Npts=50,method='Nelde
 	mod=starts[[which(lnls==max(lnls))]] # the starting point which got us to the highest lnl
 	# check for convergence before returning ML estimate
 	if (verbose==T){cat("Starting final fit... ",sep="\n")}
-	temp=Optim_bBM_x2x_flex_pts_start(tree, trait,Npts= Npts,method=method,start.point=c(log(mod$par$sigsq/2),mod$par$b,mod$par$c,mod$par$bounds[1],mod$par$bounds[2]))
+	temp=try(Optim_bBM_x2x_flex_pts_start(tree, trait,Npts= Npts,method=method,start.point=c(log(mod$par$sigsq/2),mod$par$b,mod$par$c,mod$par$bounds[1],mod$par$bounds[2])))
 	rerun=0
+	if (class(temp)=='try-error'){
+	  temp=mod
+	  if (verbose==T){cat("Final optimization step produced an error: reporting the best of the initial optimization steps.")}
+	}
+	else {
 	while((temp$convergence!=0)&(rerun<11)){
 		if (verbose==T){cat("Trying to improve convergence... ",sep="\n")
 			if (rerun==10){cat("...this is the last try!",sep="\n")}}
-		temp=Optim_bBM_x2x_flex_pts_start(tree, trait,Npts= Npts,method= method,start.point=c(log(temp$par$sigsq/2),temp$par$b, temp$par$c, temp$par$bounds[1], temp$par$bounds[2]))
+		temp=try(Optim_bBM_x2x_flex_pts_start(tree, trait,Npts= Npts,method= method,start.point=c(log(temp$par$sigsq/2),temp$par$b, temp$par$c, temp$par$bounds[1], temp$par$bounds[2])))
 		rerun=rerun+1
+		if (class(temp)=='try-error'){
+		  temp=mod ; rerun=20
+		  if (verbose==T){cat("Final optimization step produced an error: reporting the best of the initial optimization steps.")}
+		}
+	}
 	}
 	return(temp)
 }
 
+####################################
+####################################
+####################################
 # A general function that fits all mossible models (just calls the others, but this should be easier for the user)
 fit_BBMV=function(tree,trait,Npts=50,method='Nelder-Mead',verbose=T,V_shape){
   if ((V_shape%in%c('flat','linear','quadratic','full')==F)){
