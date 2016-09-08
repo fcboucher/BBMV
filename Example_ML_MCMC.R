@@ -62,12 +62,12 @@ plot.landscape.BBMV(model=BBM_x,Npts=100)
 # Plot landscapes estimated by all 4 versions of BBM+V fitted...
 plot.multiple.landscapes.BBMV(models=list(BBM,BBM_x, BBM_x2x, BBM_full),Npts=100,ylim=c(0,0.06))
 
-# measures times to reach stationarity
+# measure the time it takes to reach stationarity
 charac_time(Npts=20,BBM)
 charac_time(Npts=20, BBM_x)
 charac_time(Npts=20, BBM_x2x)
 charac_time(Npts=20, BBM_full)
-# compare them with tree depth: how far are we from equilibrium?
+# compare it with tree depth: how far are we from equilibrium?
 max(branching.times(tree))
 
 
