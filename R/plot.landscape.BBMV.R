@@ -6,8 +6,8 @@ plot.landscape.BBMV=function(model,Npts=50,main='Adaptive landscape',ylab='-V',x
 	npar=length(model[[1]]) # 3: flat ; 4: linear ; 5: quadratic ; 6: x4
 	# retrieve coefficients for the potential
 	if (npar==3){a=b=c=0}
-	if (npar==4){a=b=0 ; c=model[[1]]$c}
-	if (npar==5){a=0 ; b=model[[1]]$b ; c=model[[1]]$c}
+	if (npar==4){a=b=0 ; pars=model[[1]][-which(names(model[[1]])%in%c('bounds','sigsq','root_value'))] ; c=pars[[1]]}
+	if (npar==5){a=0 ; pars=model[[1]][-which(names(model[[1]])%in%c('bounds','sigsq','root_value'))] ; b=pars[[1]] ; c=pars[[2]]}
 	if (npar==6){a=model[[1]]$a ; b=model[[1]]$b ; c=model[[1]]$c}
 	# build potential and stationary distribution of the trait
 	SEQ=seq(from=-1.5,to=1.5,length.out=Npts)
@@ -25,8 +25,8 @@ plot.multiple.landscapes.BBMV=function(models,Npts=50,ylim=c(0,0.2),main='Adapti
 	# determine number of parameters of the model and retrieve coefficients
 	npar=length(model[[1]]) # 3: flat ; 4: linear ; 5: quadratic ; 6: x4
 	if (npar==3){a=b=c=0}
-	if (npar==4){a=b=0 ; c=model[[1]]$c}
-	if (npar==5){a=0 ; b=model[[1]]$b ; c=model[[1]]$c}
+	if (npar==4){a=b=0 ; pars=model[[1]][-which(names(model[[1]])%in%c('bounds','sigsq','root_value'))] ; c=pars[[1]]}
+	if (npar==5){a=0 ; pars=model[[1]][-which(names(model[[1]])%in%c('bounds','sigsq','root_value'))] ; b=pars[[1]] ; c=pars[[2]]}
 	if (npar==6){a=model[[1]]$a ; b=model[[1]]$b ; c=model[[1]]$c}
 	# build potential and stationary distribution of the trait
 	SEQ=seq(from=-1.5,to=1.5,length.out=Npts)
@@ -38,8 +38,8 @@ plot(-V~seq(from=bounds[1],to=bounds[2],length.out=Npts),type='l',col=2,lwd=1,ma
 	npar=length(model[[1]]) # 3: flat ; 4: linear ; 5: quadratic ; 6: x4
 	# retrieve coefficients for the potential
 	if (npar==3){a=b=c=0}
-	if (npar==4){a=b=0 ; c=model[[1]]$c}
-	if (npar==5){a=0 ; b=model[[1]]$b ; c=model[[1]]$c}
+	if (npar==4){a=b=0 ; pars=model[[1]][-which(names(model[[1]])%in%c('bounds','sigsq','root_value'))] ; c=pars[[1]]}
+	if (npar==5){a=0 ; pars=model[[1]][-which(names(model[[1]])%in%c('bounds','sigsq','root_value'))] ; b=pars[[1]] ; c=pars[[2]]}
 	if (npar==6){a=model[[1]]$a ; b=model[[1]]$b ; c=model[[1]]$c}
 	# build potential and stationary distribution of the trait
 	SEQ=seq(from=-1.5,to=1.5,length.out=Npts)
