@@ -712,16 +712,16 @@ fit_BBMV=function(tree,trait,Npts=50,method='Nelder-Mead',verbose=T,V_shape){
     stop("Wrong specification of V_shape: should be one of 'flat','linear','quadratic', or 'full'")
   }
   if (V_shape=='flat'){
-    return(Optim_bBM_0_flex_pts_multiple_starts(tree,trait,Npts=50,method=method,verbose=verbose))
+    return(Optim_bBM_0_flex_pts_multiple_starts(tree,trait,Npts,method=method,verbose=verbose))
   }
   if (V_shape=='linear'){
-    return(Optim_bBM_x_flex_pts_multiple_starts(tree,trait,Npts=50,method=method,verbose=verbose))
+    return(Optim_bBM_x_flex_pts_multiple_starts(tree,trait,Npts,method=method,verbose=verbose))
   }
   if (V_shape=='quadratic'){
-    return(Optim_bBM_x2x_flex_pts_multiple_starts(tree,trait,Npts=50,method=method,verbose=verbose))
+    return(Optim_bBM_x2x_flex_pts_multiple_starts(tree,trait,Npts,method=method,verbose=verbose))
   }
   if (V_shape=='full'){
-    return(Optim_bBM_x4x2x_flex_pts_multiple_starts(tree,trait,Npts=50,method=method,verbose=verbose))
+    return(Optim_bBM_x4x2x_flex_pts_multiple_starts(tree,trait,Npts,method=method,verbose=verbose))
   }
 }
   
