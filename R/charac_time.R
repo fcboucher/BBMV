@@ -8,7 +8,9 @@ charac_time=function(Npts,model){ # X=c(Npts,bound,a,b,c,sigma)
 	if (npar==6){a=model$par$a ; b=model$par$b ; c=model$par$c}
 	# build potential and stationary distribution of the trait
 	SEQ=seq(from=-1.5,to=1.5,length.out=Npts)
-	V=a*SEQ^4+b*SEQ^2+c*SEQ #potential
-	Tc=exp(max(V)-min(V))*(model$par$bounds[2]-model$par$bounds[1])^2/model$par$sigsq
+	Vq=a*SEQ^4+b*SEQ^2+c*SEQ
+	Mat=DiffMat_forward(Vq)
+	vp=diag(Mat$diag)
+	Tc=(2*(model$par$bounds[2]-model$par$bounds[1])^2/model$par$sigsq)/(Npts-1)^2/abs(sort(Re(vp),decreasing=T)[2]) # the first one is 0 (or something very close due to numerical approximations)
 	return(Tc)
 }
