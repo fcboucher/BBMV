@@ -8,6 +8,7 @@ source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/charac_
 source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/MCMC functions BBM+V.R', chdir = TRUE)
 source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/plot.landscape.BBMV.R', chdir = TRUE)
 source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/Simulate BBM+V.R', chdir = TRUE)
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/Uncertainty/Uncertainty_BBMV.R', chdir = TRUE)
 
 # Simulate data: tree + continuous trait
 library(geiger) # we will use geiger for simulating the tree
@@ -70,6 +71,14 @@ charac_time(Npts=20, BBM_full)
 # compare it with tree depth: how far are we from equilibrium?
 max(branching.times(tree))
 
+# We can also estimate the uncertainty around maximum-likelihood parameter estimates
+# The function 'Uncertainty_BBMV' will produce graphs of the likelihood of the model as a function of the value of each parameter
+# 'effort_uncertainty' determines how many values of each parameter will be evaluated
+# The function returns confidence interval that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate
+Uncertainty_BBMV(BBM,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
+Uncertainty_BBMV(BBM_x,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100) # does the CI for C contain 0?
+Uncertainty_BBMV(BBM_x2x,tree,trait=TRAIT,Npts=20,effort_uncertainty= 100)
+Uncertainty_BBMV(BBM_full,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
 
 ###############################################
 ##### Markov Chain Monte Carlo estimation #####
