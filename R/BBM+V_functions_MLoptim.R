@@ -407,7 +407,7 @@ Optim_bBM_0_flex_pts_multiple_starts=function(tree,trait,Npts=50,method='Nelder-
 	mod=starts[[which(lnls==max(lnls))]] # the starting point which got us to the highest lnl
 	# check for convergence before returning ML estimate
 	if (verbose==T){cat("Starting final fit... ",sep="\n")}
-	temp= try(Optim_bBM_0_flex_pts_start(tree, trait,Npts= Npts,method=method,start.point=c(log(mod$par$sigsq/2),mod$par$a,mod$par$b,mod$par$c,mod$par$bounds[1],mod$par$bounds[2])))
+	temp= try(Optim_bBM_0_flex_pts_start(tree, trait,Npts= Npts,method=method,start.point=c(log(mod$par$sigsq/2),mod$par$bounds[1],mod$par$bounds[2])))
 	rerun=0
 	if (class(temp)=='try-error'){
 	  temp=mod
@@ -417,7 +417,7 @@ Optim_bBM_0_flex_pts_multiple_starts=function(tree,trait,Npts=50,method='Nelder-
 	while((temp$convergence!=0)&(rerun<11)){
 		if (verbose==T){cat("Trying to improve convergence... ",sep="\n")
 			if (rerun==10){cat("...this is the last try!",sep="\n")}}
-		temp= try(Optim_bBM_x_flex_pts_start(tree, trait,Npts= Npts,method= method,start.point=c(log(temp$par$sigsq/2),temp$par$a, temp$par$b, temp$par$c, temp$par$bounds[1], temp$par$bounds[2])))
+		temp= try(Optim_bBM_0_flex_pts_start(tree, trait,Npts= Npts,method= method,start.point=c(log(temp$par$sigsq/2), temp$par$bounds[1], temp$par$bounds[2])))
 		rerun=rerun+1
 		if (class(temp)=='try-error'){
 		  temp=mod ; rerun=20
