@@ -8,7 +8,7 @@ source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/charac_
 source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/MCMC functions BBM+V.R', chdir = TRUE)
 source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/plot.landscape.BBMV.R', chdir = TRUE)
 source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/Simulate BBM+V.R', chdir = TRUE)
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/Uncertainty/Uncertainty_BBMV.R', chdir = TRUE)
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/Uncertainty_BBMV.R', chdir = TRUE)
 
 # Simulate data: tree + continuous trait
 library(geiger) # we will use geiger for simulating the tree
