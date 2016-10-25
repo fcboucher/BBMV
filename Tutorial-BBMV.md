@@ -15,6 +15,7 @@ source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/charac_time.R', chdir = TRUE)
 source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/MCMC functions BBM+V.R', chdir = TRUE)
 source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/plot.landscape.BBMV.R', chdir = TRUE)
 source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Simulate BBM+V.R', chdir = TRUE)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Uncertainty_BBMV.R', chdir = TRUE)
 ```
 
 ## Simulation function
@@ -84,6 +85,14 @@ charac_time(Npts=20,BBM)
 charac_time(Npts=20, BBM_x)
 charac_time(Npts=20, BBM_x2x)
 charac_time(Npts=20, BBM_full)
+```
+
+We can also estimate the uncertainty around maximum-likelihood parameter estimates. This is done using the function *Uncertainty_BBMV*, which takes has input a model fitted using *fit_BBMV*, the phylogenetic tree, and the trait vector. The parameter 'effort_uncertainty' determines how many values of each parameter will be evaluated. The function produces graphs of the likelihood of the model as a function of the value of each parameter and returns confidence intervals that contain the 95% highest probability density around parameter estimates while, fixing other parameters to their maximum likelihood estimate. One particularly interesting result from this will be to see if the confidence intervals for each parameter of the potential (*a*, *b*, and *c*) contain 0.
+```r
+Uncertainty_BBMV(BBM,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
+Uncertainty_BBMV(BBM_x,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
+Uncertainty_BBMV(BBM_x2x,tree,trait=TRAIT,Npts=20,effort_uncertainty= 100)
+Uncertainty_BBMV(BBM_full,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
 ```
 
 ## Markov Chain Monte Carlo estimation
