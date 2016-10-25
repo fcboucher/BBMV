@@ -1,5 +1,5 @@
 # Calculate the characteristic time it takes for the process to reach its stationary distribution
-charac_time=function(Npts,model){ # X=c(Npts,bound,a,b,c,sigma)
+charac_time=function(Npts,model){
 	npar=length(model$par) # 3: flat ; 4: linear ; 5: quadratic ; 6: x4
 	# retrieve coefficients for the potential
 	if (npar==3){a=b=c=0}
