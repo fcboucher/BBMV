@@ -1,7 +1,7 @@
 # This function plots the adaptive landscape estimated by the BBM+V model.
 # It takes a model fitted by BBMV as its main argument
 # Npts determines the number of points used to plot the adaptive landscape or potential
-plot.landscape.BBMV=function(model,Npts=50,main='Adaptive landscape',ylab='-V',xlab='Trait'){
+plot.landscape.BBMV=function(model,Npts=50,main='Adaptive landscape',ylab='-V',xlab='Trait',xlim=NULL,ylim=NULL){
 	# determine number of parameters of the model
 	npar=length(model[[1]]) # 3: flat ; 4: linear ; 5: quadratic ; 6: x4
 	# retrieve coefficients for the potential
@@ -13,7 +13,9 @@ plot.landscape.BBMV=function(model,Npts=50,main='Adaptive landscape',ylab='-V',x
 	SEQ=seq(from=-1.5,to=1.5,length.out=Npts)
 	V=a*SEQ^4+b*SEQ^2+c*SEQ #potential
 	bounds=model[[1]]$bounds
-plot(-V~seq(from=bounds[1],to=bounds[2],length.out=Npts),type='l',col=2,lwd=3,main=main,xlab=xlab,ylab=ylab)
+	if (is.null(xlim)){xlim=c(bounds[1],bounds[2])}
+	if (is.null(ylim)){ylim=c(min(-V),max(-V))}
+plot(-V~seq(from=bounds[1],to=bounds[2],length.out=Npts),type='l',col=2,lwd=3,main=main,xlab=xlab,ylab=ylab,xlim=xlim,ylim=ylim)
 }
 
 # Same function than above but allows for plotting all adaptive landscapes from a list of models fitted. This is rather experimental... and probably not very useful anyway.
