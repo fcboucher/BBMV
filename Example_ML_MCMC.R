@@ -44,7 +44,6 @@ BBM_x2x$par
 BBM_full=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='full')
 BBM_full$par
 
-
 # Fit other classic models of evolution implemented in package {geiger}
 BM=fitContinuous(phy=tree,dat=TRAIT,model='BM') # Brownian motion with no bounds
 OU=fitContinuous(phy=tree,dat=TRAIT,model='OU') # Ornstein-Uhlenbeck process with a single optimum
