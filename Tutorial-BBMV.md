@@ -71,11 +71,11 @@ OU$opt$aicc
 ```
 *BBM_x* should be the model with the lowest AICc since this is the model we used for simulating the data. However, since we have a rather small dataset (20 tips) and since *BBM+V* is highly stochastic it might not always be the case. If you're not convinced, try running an example with 100 tips instead of 20.
 
-The **BBMV** package has a function for plotting what we call the 'adaptive landscape' estimated by the model. The adaptive landscape is defined as the stationary distribution of the *BBM+V* process, which is directly related to the evolutionary potential as follows: AL(x)=-exp(V'(x)). Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes:
+The **BBMV** package has a function for plotting what we call the 'macroevolutionary landscape' estimated by the model. The macroevolutionary landscape is defined as the stationary distribution of the *BBM+V* process, which is directly related to the evolutionary potential as follows: AL(x)=-exp(V'(x)). Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes:
 ```r
 plot.landscape.BBMV(model=BBM_x,Npts=100)
 ```
-As for adaptive landscapes in quantitative genetics, we see peaks towards which trait values are attracted and valleys from which traits are repulsed. The plot shows you the adaptive landscape over the whole trait interval, from the lower to the upper bound. We can also plot the adaptive landscapes inferred by the four different versions of *BBMV* we have fitted (notice the flat landscape imposed in the first model):
+As for adaptive landscapes in quantitative genetics, we see peaks towards which trait values are attracted and valleys from which traits are repulsed. The plot shows you the macroevolutionary landscape over the whole trait interval, from the lower to the upper bound. We can also plot the macroevolutionary landscapes inferred by the four different versions of *BBMV* we have fitted (notice the flat landscape imposed in the first model):
 ```r
 plot.multiple.landscapes.BBMV(models=list(BBM,BBM_x, BBM_x2x, BBM_full),Npts=100,ylim=c(0,0.06))
 ```
@@ -103,7 +103,7 @@ Here we will run a quick example with only 20,000 generations and default parame
 ```r
 MCMC= MH_MCMC_V_ax4bx2cx_root_bounds(tree,trait=TRAIT,Nsteps=20000,record_every=100,plot_every=500,Npts_int=20,pars_init=c(-8,0,0,0,5,min(TRAIT),max(TRAIT)),prob_update=c(0.05,0.3,0.3,0.15,0.15,0.05,0.05),verbose=TRUE,plot=TRUE,save_to='testMCMC.Rdata',save_every=1000,type_priors=c(rep('Normal',4),rep('Uniform',3)),shape_priors=list(c(0,2),c(0,2),c(0,2),c(0,2),NA,30,30),proposal_type='Uniform',proposal_sensitivity=c(1,0.5,0.5,0.5,1,1,1),prior.only=F)
 ```
-Now we can measure the effective sample size of the chain using the package *coda*. This value should be above 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of the model parameters. We remove the 50 first samples as burnin just for fun, but we should probably be running the chain for much longer and discard way more samples:
+Now we can measure the effective sample size of the chain using the package *coda*. This value should be above, say, 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of the model parameters. We remove the 50 first samples as burnin just for fun, but we should probably be running the chain for much longer and discard way more samples:
 ```r
 library(coda)
 apply(MCMC[-c(1:50),2:11],2,effectiveSize)
