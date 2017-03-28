@@ -71,7 +71,7 @@ OU$opt$aicc
 ```
 *BBM_x* should be the model with the lowest AICc since this is the model we used for simulating the data. However, since we have a rather small dataset (20 tips) and since *BBM+V* is highly stochastic it might not always be the case. If you're not convinced, try running an example with 100 tips instead of 20.
 
-The **BBMV** package has a function for plotting what we call the 'macroevolutionary landscape' estimated by the model. The macroevolutionary landscape is defined as the stationary distribution of the *BBM+V* process, which is directly related to the evolutionary potential as follows: AL(x)=-exp(V'(x)). Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes:
+The **BBMV** package has a function for plotting what we call the 'macroevolutionary landscape' estimated by the model. The macroevolutionary landscape is defined as the stationary distribution of the *BBM+V* process, which is directly related to the evolutionary potential as follows: *landscape(x)=-exp(V'(x))*. Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes:
 ```r
 plot.landscape.BBMV(model=BBM_x,Npts=100)
 ```
