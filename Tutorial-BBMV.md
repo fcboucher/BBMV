@@ -42,7 +42,7 @@ BBM=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='flat')
 BBM$par
 ```
 The *$par* element of the model fit gives the ML values of the parameters. Here we have the evolutionary rate (sigsq), the value of the trait at the root and the positions of the bounds of the trait interval.
-Now we can fit increasingly complex models starting with a linear potential, adding a quadratic term, and finally fitting the full model with a *x^4* term:
+Now we can fit increasingly complex models starting with a linear potential, adding a quadratic term, and finally fitting the full model with a *x<sup>4</sup>* term:
 ```r
 BBM_x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear')
 BBM_x$par
