@@ -93,6 +93,12 @@ charac_time(Npts=20, BBM_x2x)
 charac_time(Npts=20, BBM_full)
 ```
 
+The *$ACE* element of the model fit gives the probability distribution of ancestral trait values. It is a list, with one table for each node, and elements of this list are numbered like nodes in the *phylo* object (the tree we used). Each of these ACE tables has two columns: the first ones gives the position of each point on the trait grid that was used for calculations and the second one the associated probability that the trait has this value. Here we can look at the probability distribution at the root of the tree:
+```r
+plot(BBM_x$ACE[[21]],type='l')
+```
+As mentionned in our [manuscript]
+
 We can also estimate the uncertainty around maximum-likelihood parameter estimates. This is done using the function *Uncertainty_BBMV*, which takes has input a model fitted using *fit_BBMV*, the phylogenetic tree, and the trait vector. The parameter 'effort_uncertainty' determines how many values of each parameter will be evaluated. The function produces graphs of the likelihood of the model as a function of the value of each parameter (the ML estimate is shown with a red line) and returns confidence intervals that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate. One particularly interesting result from this will be to see if the confidence intervals for each parameter of the potential (*a*, *b*, and *c*) contain 0.
 ```r
 Uncertainty_BBMV(BBM,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
