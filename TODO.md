@@ -10,4 +10,6 @@ Check more robust alternatives to 'solve' function for prep_mat_exp or at least 
 
 Update Tutorial and example file following changes
 
+Give the user the possibility to modify starting point for optimization when bounds are fixed in fit_BBMV
+
 Generate helpful message if optimization failed, suggesting to either reduce Npts or change the optimization routine
