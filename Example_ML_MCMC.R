@@ -56,6 +56,9 @@ OU$opt$aicc
 # If we want, we can also fix bounds that we think make sense: this can be sensible in some application (i.e. our trait is a probability)
 BBM_x_fixed=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear',bounds=c(-5,5))
 BBM_x_fixed$aicc
+# If you suspect that the optimization might have gone wrong, you can also try changing its starting point
+BBM_x_init=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear',bounds=c(-5,5),init.optim = c(log(BBM_x$par$sigsq/2),0))
+BBM_x_init$aicc
 
 # Now plot the adaptive landscape estimated by the best model
 plot.landscape.BBMV(model=BBM_x,Npts=100)
