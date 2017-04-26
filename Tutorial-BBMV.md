@@ -97,9 +97,9 @@ The *$ACE* element of the model fit gives the probability distribution of ancest
 ```r
 plot(BBM_x$ACE[[21]],type='l')
 ```
-As mentionned in our [manuscript]
+As shown in our [manuscript](https://github.com/fcboucher/BBMV/blob/master/Boucher_et_al_main_text.pdf), these ancestral character estimations will often be uninformative, especially the process has reached stationarity. However, this might be useful in some cases.  
 
-We can also estimate the uncertainty around maximum-likelihood parameter estimates. This is done using the function *Uncertainty_BBMV*, which takes has input a model fitted using *fit_BBMV*, the phylogenetic tree, and the trait vector. The parameter 'effort_uncertainty' determines how many values of each parameter will be evaluated. The function produces graphs of the likelihood of the model as a function of the value of each parameter (the ML estimate is shown with a red line) and returns confidence intervals that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate. One particularly interesting result from this will be to see if the confidence intervals for each parameter of the potential (*a*, *b*, and *c*) contain 0.
+Finally, we can estimate the uncertainty around maximum-likelihood parameter estimates. This is done using the function *Uncertainty_BBMV*, which takes has input a model fitted using *fit_BBMV*, the phylogenetic tree, and the trait vector. The parameter 'effort_uncertainty' determines how many values of each parameter will be evaluated. The function produces graphs of the likelihood of the model as a function of the value of each parameter (the ML estimate is shown with a red line) and returns confidence intervals that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate. One particularly interesting result from this will be to see if the confidence intervals for each parameter of the potential (*a*, *b*, and *c*) contain 0.
 ```r
 Uncertainty_BBMV(BBM,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
 Uncertainty_BBMV(BBM_x,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
