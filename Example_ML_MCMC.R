@@ -61,10 +61,10 @@ BBM_x_init=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='l
 BBM_x_init$aicc
 
 # Now plot the adaptive landscape estimated by the best model
-plot.landscape.BBMV(model=BBM_x,Npts=100)
+get.landscape.BBMV(model=BBM_x,Npts=100)
 
 # Plot landscapes estimated by all 4 versions of BBM+V fitted...
-plot.multiple.landscapes.BBMV(models=list(BBM,BBM_x, BBM_x2x, BBM_full),Npts=100,ylim=c(-2,4))
+get.multiple.landscapes.BBMV(models=list(BBM,BBM_x, BBM_x2x, BBM_full),Npts=100,ylim=c(-2,4))
 
 # measure the time it takes to reach stationarity
 charac_time(Npts=20,BBM)
