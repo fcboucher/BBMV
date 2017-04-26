@@ -77,13 +77,13 @@ BBM_x_fixed=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='
 BBM_x_fixed$aicc
 ```
 
-The **BBMV** package has a function for plotting what we call the 'macroevolutionary landscape' estimated by the model. The macroevolutionary landscape is defined as the stationary distribution of the *BBM+V* process, which is directly related to the evolutionary potential as follows: *landscape(x)=-exp(V'(x))*. Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes:
+The **BBMV** package has a function for plotting what we call the 'macroevolutionary landscape' estimated by the model. The macroevolutionary landscape is simply the opposite of the evolutionary potential *landscape(x)=-V(x)*. Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes:
 ```r
-plot.landscape.BBMV(model=BBM_x,Npts=100)
+get.landscape.BBMV(model=BBM_x,Npts=100)
 ```
 As for adaptive landscapes in quantitative genetics, we see peaks towards which trait values are attracted and valleys from which traits are repulsed. The plot shows you the macroevolutionary landscape over the whole trait interval, from the lower to the upper bound. We can also plot the macroevolutionary landscapes inferred by the four different versions of *BBMV* we have fitted (notice the flat landscape imposed in the first model):
 ```r
-plot.multiple.landscapes.BBMV(models=list(BBM,BBM_x, BBM_x2x, BBM_full),Npts=100,ylim=c(0,0.06))
+get.multiple.landscapes.BBMV(models=list(BBM,BBM_x, BBM_x2x, BBM_full),Npts=100,ylim=c(0,0.06))
 ```
 An important measure in the *BBM+V* process is the time it takes for the process to reach stationarity. This is quite similar to the measure of the phylogenetic half-life for an OU process and we label it the *characteristic time*. Comparing this value to the total tree depth (100 in this example) gives us an idea of how far we are from stationarity:
 ```r
