@@ -74,6 +74,12 @@ charac_time(Npts=20, BBM_full)
 # compare it with tree depth: how far are we from equilibrium?
 max(branching.times(tree))
 
+# We can have a look at the probability distribution of ancestral trait values 
+# Here at the root of the tree
+plot(BBM_x$ACE[[21]],type='l')
+# Here at one tip (this is not estimated, but used as input)
+plot(BBM_x$ACE[[1]],type='l')
+
 # We can also estimate the uncertainty around maximum-likelihood parameter estimates
 # The function 'Uncertainty_BBMV' will produce graphs of the likelihood of the model as a function of the value of each parameter
 # 'effort_uncertainty' determines how many values of each parameter will be evaluated
