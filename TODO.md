@@ -9,3 +9,5 @@ Include the possibility to fix the bounds
 Check more robust alternatives to 'solve' function for prep_mat_exp
 
 Update Tutorial and example file following changes
+
+Generate helpful message if optimization failed, suggesting to either reduce Npts or change the optimization routine
