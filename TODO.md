@@ -6,7 +6,7 @@ Include functions for exporting Ancestral Character Estimation
 
 Include the possibility to fix the bounds
 
-Check more robust alternatives to 'solve' function for prep_mat_exp
+Check more robust alternatives to 'solve' function for prep_mat_exp or at least set tol = 1e-20 in call to solve
 
 Update Tutorial and example file following changes
 
