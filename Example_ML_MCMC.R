@@ -31,15 +31,12 @@ hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: i
 # fit the model with a flat potential, i.e. BBM:
 BBM=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='flat')
 BBM$par # parameters estimated
-
 # fit a model with a linear  potential: 
 BBM_x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear')
 BBM_x$par
-
 # fit a model with a quadratic potential:
 BBM_x2x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='quadratic')
 BBM_x2x$par
-
 # fit the most general model with a.x^4+b.x^2+c.x potential:
 BBM_full=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='full')
 BBM_full$par
