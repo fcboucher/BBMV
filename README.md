@@ -13,3 +13,5 @@ The [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) s
 Help files for each function  in the package can be found in the [manual](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf). In addition, function names should be rather self-explanatory and R scripts are heavily commented: they should give you all the information needed on parameters, outputs, etc.
 
 The paper describing the model is currently under review, but you can find the submitted version [here](https://github.com/fcboucher/BBMV/blob/master/Boucher_et_al_main_text.pdf). 
+
+The **BBMV** package is now available on [CRAN](https://CRAN.R-project.org/package=BBMV).
