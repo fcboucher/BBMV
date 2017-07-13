@@ -89,18 +89,30 @@ fit0=find.mle_FPK(model=ll_FPK0)
 get.landscape.BBMV(fit=fit0) # this one is forced to be flat
 lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 ```
-The *$par* element of the model fit gives the ML values of the parameters. Here we have the evolutionary rate (sigsq), the value of the trait at the root and the positions of the bounds of the trait interval.
-Now we can fit increasingly complex models starting with a linear potential, adding a quadratic term, and finally fitting the full model with a *x<sup>4</sup>* term:
+
+Now let's compare the goodness of fit of these three models using AIC:
 ```r
-BBM_x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear')
-BBM_x$par
-
-BBM_x2x=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='quadratic')
-BBM_x2x$par
-
-BBM_full=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='full')
-BBM_full$par
+fit4$aic 
+fit2$aic
+fit0$aic
 ```
+*fit4* should be the best model by far since no other form of the FPK model can accomodate two peaks.
+
+We can measure the time it takes to reach stationarity in the FPK model using the function *charac_time*:
+```r
+charac_time(fit=fit4)
+charac_time(fit=fit2)
+charac_time(fit=fit0)
+```
+
+And we should compare it with tree depth to see how far are we from stationarity: 
+```r
+max(branching.times(tree))
+```
+In this case we've reached stationarity since a while!
+
+
+
 We can also compare our models with classic models of evolution like Brownian Motion (without bounds) and the Ornstein-Uhlenbeck process since likelihoods are comparable with the ones calculated in the **geiger** package:
 ```r
 BM=fitContinuous(phy=tree,dat=TRAIT,model='BM') # Brownian motion with no bounds
