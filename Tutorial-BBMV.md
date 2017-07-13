@@ -55,6 +55,9 @@ hist(TRAIT,breaks=20)
 ```
 
 ## Maximum-likelihood estimation
+
+# FPK model
+
 Maximum-likelihood (ML) estimation of the parameters of the *FPK* model is done in two steps: (i) creating the likelihood function and (ii) finding its maximum.
 
 The likelihood function is created using the function *lnL_FPK*, which takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: our implementation of the *FPK* process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 25 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes by fixing unnecessary parameters to 0.
@@ -132,6 +135,8 @@ OU$opt$lnL ; fit2$lnL #
 BM=fitContinuous(phy=tree,dat=TRAIT,model="BM")
 BM$opt$lnL; fit0$lnL 
 ```
+
+# BBM+V model
 
 In the **BBMV** package we can also fit a special case of the FPK model in which there are actual (reflective) bounds on the trait interval: the *BBM+V* model. Here we will use a simulated dataset on which there is a trend towards one of the bounds of the trait interval:
 ```r
@@ -249,7 +254,7 @@ fit4b=find.mle_FPK(model=ll_FPK4,init.optim = c(0,0,1,-5))
 fit4b=find.mle_FPK(model=ll_FPK4,safe=TRUE)
 ```
 
-In cases where you see an error which looks like *error in solve.default ... reciprocal condition number =*, you can try decreasing the tolerance used when calling the *solve* function, which we use for inverting the diffusion matrix. This can be done by manually editing the *prep_mat_exp* function in the *utils_BBMV.r* script
+In cases where you see an error which looks like *error in solve.default ... reciprocal condition number =*, you can try decreasing the tolerance used when calling the *solve* function, which we use for inverting the diffusion matrix. This can be done by manually editing the *prep_mat_exp* function in the *utils_BBMV.r* script.
 
 
-Also, when you are comparing models with different shapes of the evolutionary potential, remember to check that complex models should always have a higher likelihood than simpler models (which are nested within the complex ones). Optimization of the model is difficult, and this kind of situations unfortunately happen...
+Finally, when you are comparing models with different shapes of the evolutionary potential, remember to check that complex models should always have a higher likelihood than simpler models (which are nested within the complex ones). Optimization of the model is difficult, and this kind of situations unfortunately happen...
