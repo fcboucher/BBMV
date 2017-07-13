@@ -31,7 +31,7 @@ tree$edge.length=100*tree$edge.length/max(branching.times(tree))
 ```
 Here we have simulated a tree with only 50 tips. This is rather small but will allow for functions to run quickly. We have rescaled the total tree depth to 100 arbitrary time units for an easier interpretation of model parameters. 
 
-Next we will use the function *Sim_BBMV* to simulate a continuous trait evolving on the tree we just simulated. To do so we need to provide a rate of evolution (*sigma*), bounds on the trait interval (which might not influence the whole process because they are located far away), a value for the trait at the root of the tree (*x0*), and an evolutionary potential (*V*). Here we will simulate a macroevolutionary landscape with two peaks of equal heights, defined over the interval [-1.5,1.5]. We first create an evolutionary potential with two wells:
+Next we will simulate a macroevolutionary landscape with two peaks of equal heights, defined over the interval [-1.5,1.5]. We first create an evolutionary potential with two wells:
 ```r
 x=seq(from=-1.5,to=1.5,length.out=100)
 bounds=c(min(x),max(x))
@@ -47,9 +47,13 @@ par(mfrow=c(1,1))
 plot(V6_norm)
 ```
 
-TRAIT= Sim_BBMV(tree,x0=0.5,V=V6,sigma=1,bounds=bounds) # TRAIT simulated on the tree, evolving on the macroevolutionary landscape defined above: for that you need to source the function 'Sim_BBMV.R'
+Now we will use the function *Sim_BBMV* to simulate a continuous trait evolving on the tree we just simulated. To do so we need to provide a rate of evolution (*sigma*), bounds on the trait interval (which might not influence the whole process because they are located far away), a value for the trait at the root of the tree (*x0*), and the evolutionary potential that we just simulated (*V6*): 
+
+```r
+TRAIT= Sim_BBMV(tree,x0=0.5,V=V6,sigma=1,bounds=bounds)
 hist(TRAIT,breaks=20)
 ```
+
 ## Maximum-likelihood estimation
 The function to perform maximum-likelihood (ML) estimation of model parameters is *fit_BBMV*. It takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: our implementation of the *BBM+V* process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 20 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes.
 
