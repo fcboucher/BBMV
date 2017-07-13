@@ -236,14 +236,20 @@ hist(MCMC_OU[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 ```
 
 
-### Troubleshooting ML estimation
-Numerical errors can occur when trying to fit the *BBM+V* model to empirical data. Here are a few suggestions that can help solving some issues:
-- changing the optimization method used in the *fit_BBMV* function (e.g. from *Nelder-Mead* to *L-BFGS-B*)
+## Troubleshooting ML estimation
+Numerical errors can occur when trying to fit the *FPK* model to empirical data. Here are a few suggestions that can help solving some issues:
+- changing the optimization method used in the *find.mle_FPK* function (e.g. from *Nelder-Mead* to *L-BFGS-B*)
 - changing *Npts* to an odd number, or reducing it
-- in cases where you see an error which looks like *error in solve.default ... reciprocal condition number =*, you can try decreasing the tolerance used when calling the *solve* function. This can be done by manually editing the *prep_mat_exp* function in the *BBM+V_functions_MLoptim.R* script
-- if you encounter errors when using *fit_BBMV* with fixed bounds, then you can try changing the intial parameters used to start the optimization. This can be done as follows:
+- changing the initial parameters used to start the optimization. This can be done as follows:
 ```r
-BBM_x_init=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear',bounds=c(-5,5),init.optim = c(log(BBM_x$par$sigsq/2),0))
+fit4b=find.mle_FPK(model=ll_FPK4,init.optim = c(0,0,1,-5))
+```
+- using three different sets of initial parameters used to start the optimization, which can be done by setting the *safe* argument to TRUE:
+```r
+fit4b=find.mle_FPK(model=ll_FPK4,safe=TRUE)
 ```
 
-Also, when you are comparing models with different shapes of the evolutionary potential, remember to check that complex models should always have a higher likelihood than simpler models (which are nested). Optimization of the model is difficult, and this kind of situations unfortunately happen...
+In cases where you see an error which looks like *error in solve.default ... reciprocal condition number =*, you can try decreasing the tolerance used when calling the *solve* function, which we use for inverting the diffusion matrix. This can be done by manually editing the *prep_mat_exp* function in the *utils_BBMV.r* script
+
+
+Also, when you are comparing models with different shapes of the evolutionary potential, remember to check that complex models should always have a higher likelihood than simpler models (which are nested within the complex ones). Optimization of the model is difficult, and this kind of situations unfortunately happen...
