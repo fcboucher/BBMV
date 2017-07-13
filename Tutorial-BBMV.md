@@ -109,7 +109,33 @@ And we should compare it with tree depth to see how far are we from stationarity
 ```r
 max(branching.times(tree))
 ```
-In this case we've reached stationarity since a while!
+
+In this case we've reached stationarity since a while. Next, we will have a look at the probability distribution at the root of the tree. Be careful with the y-scale of the plot: this might actually be quite flat!
+```r
+plot(fit4$root,type='l') # 
+```
+
+We can also estimate the uncertainty around maximum-likelihood parameter estimates using the function *Uncertainty_BBMV*, which produces graphs of the likelihood of the model as a function of the value of each parameter. In this function, the parameter *effort_uncertainty* determines how many values of each parameter will be evaluated. The function returns confidence interval that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate. We first look at the MLEs of parameters estimated, which are contained in the *$par* argument of a fitted FPK model:
+```r
+fit4$par
+```
+And from that we can chosse the *scope* of the uncertainty search for each parameter so that they include your MLEs:
+```r
+Uncertainty_BBMV(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,10),scope_b=c(-5,5),scope_c=c(-2,2))
+```
+
+Finally, we can fit the OU and BM models using the package **geiger** to see if likelihoods match with those calculated using BBMV. They should be quite close but remember that the FPK model uses an approximation of the likelihood, hence the implementation in **geiger** is more accurate:
+```r
+OU=fitContinuous(phy=tree,dat=TRAIT,model="OU")
+OU$opt$lnL ; fit2$lnL # 
+BM=fitContinuous(phy=tree,dat=TRAIT,model="BM")
+BM$opt$lnL; fit0$lnL 
+```
+
+
+#############
+EDIT FROM HERE
+
 
 
 
