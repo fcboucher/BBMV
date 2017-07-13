@@ -14,22 +14,22 @@ library(ape)
 ```
 Then we need to source all functions in the **BBMV** package, which can be done via:
 ```r
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/BBM+V_functions_MLoptim.R', chdir = TRUE)
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/charac_time.R', chdir = TRUE)
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/MCMC functions BBM+V.R', chdir = TRUE)
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/plot.landscape.BBMV.R', chdir = TRUE)
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Simulate BBM+V.R', chdir = TRUE)
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Uncertainty_BBMV.R', chdir = TRUE)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/get.landscape.BBMV_no_bounds.r',chdir=F)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/ML_functions.r',chdir=F)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/utils_BBMV.r',chdir=F)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Simulate\ BBM+V.r',chdir = F)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/charac_time.r',chdir=F)
+source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Uncertainty_BBMV.r',chdir=F)
 ```
 
 ## Simulation function
 For this tutorial we will simulate data and then infer parameters of the BBM+V model on this simulated dataset. We need the R package **geiger** to simulate phylogenetic trees.
 ```r
 library(geiger)
-tree=sim.bdtree(stop='taxa',n=20)
+tree=sim.bdtree(stop='taxa',n=50)
 tree$edge.length=100*tree$edge.length/max(branching.times(tree))
 ```
-Here we have simulated a tree with only 20 tips. This is rather small but will allow for functions to run quickly. We have rescaled the total tree depth to 100 arbitrary time units for an easier interpretation of model parameters. 
+Here we have simulated a tree with only 50 tips. This is rather small but will allow for functions to run quickly. We have rescaled the total tree depth to 100 arbitrary time units for an easier interpretation of model parameters. 
 
 Next we will use the function *Sim_BBMV* to simulate a continuous trait evolving on the tree we just simulated. To do so we need to provide a rate of evolution (*sigma*), bounds on the trait interval, a value for the trait at the root of the tree (*x0*), and an evolutionary potential (*V*). Here we simulate a potential linearly increasing towards *higher* values of the trait. This will create a force towards *smaller* values of the trait, as can be seen from the distribution of values at the tips of the tree which is strongly left skewed:
 ```r
