@@ -123,6 +123,7 @@ And from that we can choose the *scope* of the uncertainty search for each param
 ```r
 Uncertainty_BBMV(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,10),scope_b=c(-5,5),scope_c=c(-2,2))
 ```
+One particularly interesting result from this will be to see if the confidence intervals for each parameter of the potential (*a*, *b*, and *c*) contain 0.
 
 Finally, we can fit the OU and BM models using the package **geiger** to see if likelihoods match with those calculated using BBMV. They should be quite close but remember that the FPK model uses an approximation of the likelihood, hence the implementation in **geiger** is more accurate:
 ```r
@@ -132,66 +133,53 @@ BM=fitContinuous(phy=tree,dat=TRAIT,model="BM")
 BM$opt$lnL; fit0$lnL 
 ```
 
-
-#############
-EDIT FROM HERE
-
-
-
-
-We can also compare our models with classic models of evolution like Brownian Motion (without bounds) and the Ornstein-Uhlenbeck process since likelihoods are comparable with the ones calculated in the **geiger** package:
+In the **BBMV** package we can also fit a special case of the FPK model in which there are actual (reflective) bounds on the trait interval: the *BBM+V* model. Here we will use a simulated dataset on which there is a trend towards one of the bounds of the trait interval:
 ```r
-BM=fitContinuous(phy=tree,dat=TRAIT,model='BM') # Brownian motion with no bounds
-OU=fitContinuous(phy=tree,dat=TRAIT,model='OU') # Ornstein-Uhlenbeck process with a single optimum
-```
-Yes, calculations in **geiger** are much faster than in **BBMV**. This is (mostly) because both BM and OU produce trait distribution that are multivariate normal, which simplifies calculations a lot. Unfortunately, this is not the case for the *BBM+V* model (trait distributions can anyway not be normal since the trait interval is bounded).
-
-Now we will compare the fit of all of these models by looking at their AICs corrected for small sample sizes:
-```r
-BBM$aicc
-BBM_x$aicc
-BBM_x2x$aicc
-BBM_full$aicc
-BM$opt$aicc
-OU$opt$aicc
-```
-*BBM_x* should be the model with the lowest AICc since this is the model we used for simulating the data. However, since we have a rather small dataset (20 tips) and since *BBM+V* is highly stochastic it might not always be the case. If you're not convinced, try running an example with 100 tips instead of 20.
-
-If we want, we can also fix bounds that we think make sense: this can be sensible in some applications, for example if our trait is a probability or is naturally bounded. This can be done by specifying bounds when calling the *fit_BBMV* function: 
-```r
-BBM_x_fixed=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear',bounds=c(-5,5))
-BBM_x_fixed$aicc
+par(mfrow=c(1,1))
+Vb=3*x
+Vb_norm=exp(-Vb)/sum(exp(-Vb)*step_size)
+plot(Vb_norm)
+TRAITb= Sim_BBMV(tree,x0=0,V=Vb,sigma=2,bounds=bounds)
+hist(TRAITb,breaks=20)
 ```
 
-The **BBMV** package has a function for plotting what we call the 'macroevolutionary landscape' estimated by the model. The macroevolutionary landscape is simply the opposite of the evolutionary potential *landscape(x)=-V(x)*. Here, we again need to specify the number of points used to discretize the trait interval but this is just for plotting purposes:
+Then we create four different likelihood functions using a variant of the *lnL_FPK* function, called *lnL_BBMV*. The four scenarios correspond to either 3, 2, 1 or 0 polynomial terms in the evolutionary potential, *V*: 
 ```r
-get.landscape.BBMV(model=BBM_x,Npts=100)
-```
-As for adaptive landscapes in quantitative genetics, we see peaks towards which trait values are attracted and valleys from which traits are repulsed. The plot shows you the macroevolutionary landscape over the whole trait interval, from the lower to the upper bound. We can also plot the macroevolutionary landscapes inferred by the four different versions of *BBMV* we have fitted (notice the flat landscape imposed in the first model):
-```r
-get.multiple.landscapes.BBMV(models=list(BBM,BBM_x, BBM_x2x, BBM_full),Npts=100,ylim=c(0,0.06))
-```
-An important measure in the *BBM+V* process is the time it takes for the process to reach stationarity. This is quite similar to the measure of the phylogenetic half-life for an OU process and we label it the *characteristic time*. Comparing this value to the total tree depth (100 in this example) gives us an idea of how far we are from stationarity:
-```r
-charac_time(Npts=20,BBM)
-charac_time(Npts=20, BBM_x)
-charac_time(Npts=20, BBM_x2x)
-charac_time(Npts=20, BBM_full)
+ll_BBMV4=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=NULL,b=NULL,c=NULL)
+ll_BBMV2=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=NULL,c=NULL)
+ll_BBMV1=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=0,c=NULL)
+ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=0,c=0) # this is the BBM model
 ```
 
-The *$ACE* element of the model fit gives the probability distribution of ancestral trait values. It is a list, with one table for each node, and elements of this list are numbered like nodes in the *phylo* object (the tree we used). Each of these ACE tables has two columns: the first ones gives the position of each point on the trait grid that was used for calculations and the second one the associated probability that the trait has this value. Here we can look at the probability distribution at the root of the tree:
+Next we fit these four models and plot the macroevolutionary landscapes:
 ```r
-plot(BBM_x$ACE[[21]],type='l')
-```
-As shown in our [manuscript](https://github.com/fcboucher/BBMV/blob/master/Boucher_et_al_main_text.pdf), these ancestral character estimations will often be uninformative, especially when the process has reached stationarity. However, this might be useful in some cases.  
+fit4b=find.mle_FPK(model=ll_BBMV4)
+get.landscape.BBMV(fit=fit4b)
+lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
 
-Finally, we can estimate the uncertainty around maximum-likelihood parameter estimates. This is done using the function *Uncertainty_BBMV*, which takes has input a model fitted using *fit_BBMV*, the phylogenetic tree, and the trait vector. The parameter 'effort_uncertainty' determines how many values of each parameter will be evaluated. The function produces graphs of the likelihood of the model as a function of the value of each parameter (the ML estimate is shown with a red line) and returns confidence intervals that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate. One particularly interesting result from this will be to see if the confidence intervals for each parameter of the potential (*a*, *b*, and *c*) contain 0.
-```r
-Uncertainty_BBMV(BBM,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
-Uncertainty_BBMV(BBM_x,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
-Uncertainty_BBMV(BBM_x2x,tree,trait=TRAIT,Npts=20,effort_uncertainty= 100)
-Uncertainty_BBMV(BBM_full,tree,trait= TRAIT,Npts=20,effort_uncertainty= 100)
+fit2b=find.mle_FPK(model=ll_BBMV2)
+get.landscape.BBMV(fit=fit2b)
+lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
+
+fit1b=find.mle_FPK(model=ll_BBMV1)
+get.landscape.BBMV(fit=fit1b)
+lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
+
+fit0b=find.mle_FPK(model=ll_BBMV0)
+get.landscape.BBMV(fit=fit0b)
+lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
 ```
+We can also compare the AIC of these four models:
+```r
+fit4b$aic
+fit2b$aic
+fit1b$aic 
+fit0b$aic
+```
+*fit1b* this should have the lowest AIC since it is the model we simulated... at least if we would have had a large enough tree. More complex models (fit4b and fit2b) will also do good job since they can accommodate this trend, but they have more parameters.
+
+# EDIT FROM HERE
+
 
 ## Markov Chain Monte Carlo estimation
 We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler. This is done through the *MH_MCMC_V_ax4bx2cx_root_bounds* function. For explanations on each parameter the function takes as input please have a look at the [manual of the **BBMV** package](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf).
