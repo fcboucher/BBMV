@@ -115,7 +115,7 @@ max(branching.times(tree))
 
 In this case we've reached stationarity since a while. Next, we will have a look at the probability distribution at the root of the tree. Be careful with the y-scale of the plot: this might actually be quite flat!
 ```r
-plot(fit4$root,type='l') # 
+plot(fit4$root,type='l') 
 ```
 
 We can also estimate the uncertainty around maximum-likelihood parameter estimates using the function *Uncertainty_BBMV*, which produces graphs of the likelihood of the model as a function of the value of each parameter. In this function, the parameter *effort_uncertainty* determines how many values of each parameter will be evaluated. The function returns confidence interval that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate. We first look at the MLEs of parameters estimated, which are contained in the *$par* argument of a fitted FPK model:
