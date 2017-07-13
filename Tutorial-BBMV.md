@@ -119,7 +119,7 @@ We can also estimate the uncertainty around maximum-likelihood parameter estimat
 ```r
 fit4$par
 ```
-And from that we can chosse the *scope* of the uncertainty search for each parameter so that they include your MLEs:
+And from that we can choose the *scope* of the uncertainty search for each parameter so that they include your MLEs:
 ```r
 Uncertainty_BBMV(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,10),scope_b=c(-5,5),scope_c=c(-2,2))
 ```
