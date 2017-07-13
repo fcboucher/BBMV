@@ -164,15 +164,23 @@ MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=c(-1.5,1.5),Nsteps=10000,record_every=1
 
 # Estimate effective sample sizes in our MCMC run using the R package 'coda':
 library(coda)
-apply(MCMC[-c(1:50),2:11],2,effectiveSize)
-
-par(mfrow=c(3,3))
-hist(log(MCMC[-c(1:50),2]/2),breaks=100,main='log(sigsq/2)',ylab=NULL)
-hist(MCMC[-c(1:50),6],breaks=100,main='root',ylab=NULL)
+apply(MCMC[-c(1:50),2:9],2,effectiveSize)
+par(mfrow=c(2,3))
+hist(log(MCMC[-c(1:50),2]/2),breaks=20,main='log(sigsq/2)',ylab=NULL)
+hist(MCMC[-c(1:50),6],breaks=20,main='root',ylab=NULL)
 plot(1,1)
-hist(MCMC[-c(1:50),3],breaks=100,main='a (x^4 term)',ylab=NULL)
-hist(MCMC[-c(1:50),4],breaks=100,main='b (x^2 term)',ylab=NULL)
-hist(MCMC[-c(1:50),5],breaks=100,main='c (x term)',ylab=NULL)
-hist(MCMC[-c(1:50),9],breaks=100,main='lnprior',ylab=NULL)
-hist(MCMC[-c(1:50),10],breaks=100,main='lnlik',ylab=NULL)
-hist(MCMC[-c(1:50),11],breaks=100,main='quasi-lnpost',ylab=NULL)
+hist(MCMC[-c(1:50),3],breaks=20,main='a (x^4 term)',ylab=NULL)
+hist(MCMC[-c(1:50),4],breaks=20,main='b (x^2 term)',ylab=NULL)
+hist(MCMC[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
+
+# Finally, we can force the potential to be quadratic (i.e. fit an OU model). This is done by fixing the intial values of a to 0 and setting its probability of update to zero 
+MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=c(-1.5,1.5),Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+
+apply(MCMC_OU[-c(1:50),2:9],2,effectiveSize)
+par(mfrow=c(2,3))
+hist(log(MCMC_OU[-c(1:50),2]/2),breaks=20,main='log(sigsq/2)',ylab=NULL)
+hist(MCMC_OU[-c(1:50),6],breaks=20,main='root',ylab=NULL)
+plot(1,1)
+hist(MCMC_OU[-c(1:50),3],breaks=20,main='a (x^4 term)',ylab=NULL)
+hist(MCMC_OU[-c(1:50),4],breaks=20,main='b (x^2 term)',ylab=NULL)
+hist(MCMC_OU[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)

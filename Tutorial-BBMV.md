@@ -208,39 +208,31 @@ source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/MCMC_function_BBMV.r',chdir=F)
 MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=c(-1.5,1.5),Nsteps=200000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 ```
 
-#########
-EDIT FROM HERE
-
-Now we can measure the effective sample size of the chain using the package *coda*. This value should be above, say, 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of the model parameters. We remove the 50 first samples as burnin just for the example, but we should probably be running the chain for much longer and discard way more samples:
+Now we can measure the effective sample size of the chain using the package *coda*. This value should be above, say, 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of model parameters. We remove the 50 first samples as burnin just for the example, but we should probably be running the chain for much longer and discard way more samples:
 ```r
 library(coda)
-apply(MCMC[-c(1:50),2:11],2,effectiveSize)
-
-par(mfrow=c(2,4))
-hist(log(MCMC[-c(1:50),2]/2),breaks=100,main='log(sigsq/2)',ylab=NULL)
-hist(MCMC[-c(1:50),3],breaks=100,main='a (x^4 term)',ylab=NULL)
-hist(MCMC[-c(1:50),4],breaks=100,main='b (x^2 term)',ylab=NULL)
-hist(MCMC[-c(1:50),5],breaks=100,main='c (x term)',ylab=NULL)
-hist(MCMC[-c(1:50),6],breaks=100,main='root',ylab=NULL)
-hist(MCMC[-c(1:50),9],breaks=100,main='lnprior',ylab=NULL)
-hist(MCMC[-c(1:50),10],breaks=100,main='lnlik',ylab=NULL)
-hist(MCMC[-c(1:50),11],breaks=100,main='quasi-lnpost',ylab=NULL)
+apply(MCMC[-c(1:50),2:9],2,effectiveSize)
+par(mfrow=c(2,3))
+hist(log(MCMC[-c(1:50),2]/2),breaks=20,main='log(sigsq/2)',ylab=NULL)
+hist(MCMC[-c(1:50),6],breaks=20,main='root',ylab=NULL)
+plot(1,1)
+hist(MCMC[-c(1:50),3],breaks=20,main='a (x^4 term)',ylab=NULL)
+hist(MCMC[-c(1:50),4],breaks=20,main='b (x^2 term)',ylab=NULL)
+hist(MCMC[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 ```
-Finally, we can also estimate a simpler version of the model using MCMC. Here we will run a chain with the potential forced to be linear (i.e. what we simulated). We do this by fixing the intial values of a and b to 0 and setting their probabilities of update to zero:
-```r
-MCMC_trend= MH_MCMC_V_ax4bx2cx_root_bounds(tree,trait=TRAIT,Nsteps=10000,record_every=100,plot_every=500,Npts_int=20,pars_init=c(-8,0,0,0,5,min(TRAIT),max(TRAIT)),prob_update=c(0.05,0.,0.,0.15,0.15,0.05,0.05),verbose=TRUE,plot=TRUE,save_to='testMCMC_linear.Rdata',save_every=1000,type_priors=c(rep('Normal',4),rep('Uniform',3)),shape_priors=list(c(0,2),c(0,2),c(0,2),c(0,2),NA,30,30),proposal_type='Uniform',proposal_sensitivity=c(1,0.5,0.5,0.5,1,1,1),prior.only=F)
 
-# sample size and plots
-apply(MCMC_trend[-c(1:50),c(2,5:11)],2,effectiveSize)
-par(mfrow=c(2,4))
-hist(log(MCMC_trend[-c(1:50),2]/2),breaks=100,main='log(sigsq/2)',ylab=NULL)
-hist(MCMC[-c(1:50),5],breaks=100,main='c (x term)',ylab=NULL)
-hist(MCMC_trend[-c(1:50),6],breaks=100,main='root',ylab=NULL)
-hist(MCMC_trend[-c(1:50),7],breaks=100,main='bmin',ylab=NULL)
-hist(MCMC_trend[-c(1:50),8],breaks=100,main='bmax',ylab=NULL)
-hist(MCMC[-c(1:50),9],breaks=100,main='lnprior',ylab=NULL)
-hist(MCMC_trend[-c(1:50),10],breaks=100,main='lnlik',ylab=NULL)
-hist(MCMC_trend[-c(1:50),11],breaks=100,main='quasi-lnpost',ylab=NULL)
+Finally, we can also estimate a simpler version of the model using MCMC. Here we will run a chain with the potential forced to be quadratic (i.e. an OU model). We do this by fixing the intial values of a to 0 and setting its probability of update to zero:
+```r
+MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=c(-1.5,1.5),Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+
+apply(MCMC_OU[-c(1:50),2:9],2,effectiveSize)
+par(mfrow=c(2,3))
+hist(log(MCMC_OU[-c(1:50),2]/2),breaks=20,main='log(sigsq/2)',ylab=NULL)
+hist(MCMC_OU[-c(1:50),6],breaks=20,main='root',ylab=NULL)
+plot(1,1)
+hist(MCMC_OU[-c(1:50),3],breaks=20,main='a (x^4 term)',ylab=NULL)
+hist(MCMC_OU[-c(1:50),4],breaks=20,main='b (x^2 term)',ylab=NULL)
+hist(MCMC_OU[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 ```
 
 
