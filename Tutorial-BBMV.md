@@ -56,7 +56,7 @@ hist(TRAIT,breaks=20)
 
 ## Maximum-likelihood estimation
 
-# FPK model
+### FPK model
 
 Maximum-likelihood (ML) estimation of the parameters of the *FPK* model is done in two steps: (i) creating the likelihood function and (ii) finding its maximum.
 
