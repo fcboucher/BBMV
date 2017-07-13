@@ -55,14 +55,26 @@ hist(TRAIT,breaks=20)
 ```
 
 ## Maximum-likelihood estimation
-The function to perform maximum-likelihood (ML) estimation of model parameters is *fit_BBMV*. It takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: our implementation of the *BBM+V* process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 20 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes.
+Maximum-likelihood (ML) estimation of the parameters of the *FPK* model is done in two steps: (i) creating the likelihood function and (ii) finding its maximum.
 
-We'll start with a flat potential, i.e. there is no force acting on the trait and the trait only evolves according to bounded Brownian Motion (*BBM*):
+The likelihood function is created using the function *lnL_FPK*, which takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: our implementation of the *FPK* process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 25 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes by fixing unnecessary parameters to 0.
+
+We'll start with the most general shape of the potential, which can accomodate up to two peaks in the macroevolutionary landscape: 
 
 ```r
-BBM=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='flat')
-BBM$par
+ll_FPK4=lnL_FPK(tree,TRAIT,Npts=25,a=NULL,b=NULL,c=NULL) # the full model
 ```
+Then we can actually fit simpler versions of the FPK model. Here is the Ornstein-Uhlenbeck model, with *V(x)=b.x^2+c.x*:
+```r
+ll_FPK2=lnL_FPK(tree,TRAIT,Npts=25,a=0,b=NULL,c=NULL)
+```
+
+And here is Brownian motion, with *V(x)=0*:
+```r
+ll_FPK0=lnL_FPK(tree,TRAIT,Npts=25,a=0,b=0,c=0)
+```
+
+
 The *$par* element of the model fit gives the ML values of the parameters. Here we have the evolutionary rate (sigsq), the value of the trait at the root and the positions of the bounds of the trait interval.
 Now we can fit increasingly complex models starting with a linear potential, adding a quadratic term, and finally fitting the full model with a *x<sup>4</sup>* term:
 ```r
