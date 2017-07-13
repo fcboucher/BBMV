@@ -178,17 +178,34 @@ fit0b$aic
 ```
 *fit1b* this should have the lowest AIC since it is the model we simulated... at least if we would have had a large enough tree. More complex models (fit4b and fit2b) will also do good job since they can accommodate this trend, but they have more parameters.
 
-# EDIT FROM HERE
+
 
 
 ## Markov Chain Monte Carlo estimation
-We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler. This is done through the *MH_MCMC_V_ax4bx2cx_root_bounds* function. For explanations on each parameter the function takes as input please have a look at the [manual of the **BBMV** package](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf).
+We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler using the function *MH_MCMC_FPK*. Here we will do only a few generations so that computation time is not too long but for analysing real datasets you should monitor convergence of the MCMC chain (see below).
 
-Here we will run a quick example with only 20,000 generations and default parameters for the priors and proposal functions. In verbose mode, we get the state of the chain printed to the screen every at every sampled generation. If you allow plots, you will also see the trace of the chain:
+Parameters of the MCMC functions are the following:
+- tree and TRAIT: the phylogenetic tree and data vector
+- Nsteps: the number of generations in the MCMC chain
+- record_every: the interval used for sampling the MCMC chain
+- plot_every: the interval at which the chain is plotted (if plot=TRUE).
+- Npts: the number of point on the grid
+- pars_init: the initial parameters for starting the algorithm, c(log(sig2/2),a,b,c,x0). Be careful since x0 is actually the point on the grid (between 1 and Npts), not the actual root value
+- prob_update: the relative frequencies of update of the different parameters of the model
+- verbose: if TRUE, will print some generations of the chain to the screen
+- plot: if TRUE, the chain is plotted from time to time
+- save_to: file to which the chain is saved (can be useful in case the chain crashes)
+- save_every: sets how often the chain is saved
+- type_priors: the type of priors used, can be either normal (preferred) or uniform for log(sig2/2), a, b and c, ; and can only be discrete uniform for x0
+- shape_priors: list that gives the shape for each prior. (mean,sd) for normal priors and (min,max) for continuous uniform priors. The shape is not specified for the root prior, since it is fixed to be discrete uniform on the grid.
+- proposal_type: the type of proposal function, only uniform is available
+- proposal_sensitivity: the width of the uniform proposal. The entire value for x0 gives how many steps at a time can be travelled on the trait grid (better to keep it to 1)
 
-```r
-MCMC= MH_MCMC_V_ax4bx2cx_root_bounds(tree,trait=TRAIT,Nsteps=20000,record_every=100,plot_every=500,Npts_int=20,pars_init=c(-8,0,0,0,5,min(TRAIT),max(TRAIT)),prob_update=c(0.05,0.3,0.3,0.15,0.15,0.05,0.05),verbose=TRUE,plot=TRUE,save_to='testMCMC.Rdata',save_every=1000,type_priors=c(rep('Normal',4),rep('Uniform',3)),shape_priors=list(c(0,2),c(0,2),c(0,2),c(0,2),NA,30,30),proposal_type='Uniform',proposal_sensitivity=c(1,0.5,0.5,0.5,1,1,1),prior.only=F)
-```
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_FPK_May2017/MCMC_function_BBMV.r',chdir=F)
+MH_MCMC_FPK(tree,trait=TRAIT,bounds=c(-1.5,1.5),Nsteps=200000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+
+
+
 Now we can measure the effective sample size of the chain using the package *coda*. This value should be above, say, 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of the model parameters. We remove the 50 first samples as burnin just for fun, but we should probably be running the chain for much longer and discard way more samples:
 ```r
 library(coda)
