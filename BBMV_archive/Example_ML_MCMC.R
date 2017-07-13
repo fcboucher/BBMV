@@ -14,7 +14,17 @@ source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/Uncerta
 library(geiger) # we will use geiger for simulating the tree
 tree=sim.bdtree(stop='taxa',n=20) # tree with few tips for quick tests
 tree$edge.length=100*tree$edge.length/max(branching.times(tree)) # rescale the tree to a total depth of 100
-TRAIT= Sim_BBMV(tree,x0=0,V=seq(from=0,to=5,length.out=50),sigma=10,bounds=c(-5, 5)) # TRAIT simulated on the tree, with a linear trend towards small values (potential increases with high values): for that you need to source the function 'Sim_BBMV.R'
+#x=seq(from=-1.5,to=1.5,length.out=100)
+#V6=5*(x^4-.2*(x^2)+0.2*x) # trend
+#V6=20*(x^4-0.5*(x^2)+0.*x) # two equal peaks
+#V6=20*(0*x^4+0.2*(x^2)+0.*x) # single peak= OU model
+#V6=5*(x^4-1.*(x^2)+0.2*x) # 2 peaks different heights
+#V6=x # trend reaching bounds
+#V6=-x^2
+V6=seq(from=0,to=5,length.out=50)
+V6_norm=exp(-V6)/sum(exp(-V6))
+plot(V6_norm)
+TRAIT= Sim_BBMV(tree,x0=0,V=V6,sigma=10,bounds=c(-5, 5)) # TRAIT simulated on the tree, with a linear trend towards small values (potential increases with high values): for that you need to source the function 'Sim_BBMV.R'
 hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: it should be rather left skewed...
 
 ###############################################
@@ -59,6 +69,10 @@ BBM_x_fixed$aicc
 # If you suspect that the optimization might have gone wrong, you can also try changing its starting point
 BBM_x_init=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='linear',bounds=c(-5,5),init.optim = c(log(BBM_x$par$sigsq/2),0))
 BBM_x_init$aicc
+# same thing for the quadratic model
+BBM_x2x_fixed=fit_BBMV(tree,TRAIT,Npts=20,method='Nelder-Mead',verbose=T,V_shape='quadratic',bounds=c(-5,5))
+BBM_x2x_fixed$aicc
+
 
 # Now plot the adaptive landscape estimated by the best model
 get.landscape.BBMV(model=BBM_x,Npts=100)
