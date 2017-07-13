@@ -136,7 +136,7 @@ BM=fitContinuous(phy=tree,dat=TRAIT,model="BM")
 BM$opt$lnL; fit0$lnL 
 ```
 
-# BBM+V model
+### BBM+V model
 
 In the **BBMV** package we can also fit a special case of the FPK model in which there are actual (reflective) bounds on the trait interval: the *BBM+V* model. Here we will use a simulated dataset on which there is a trend towards one of the bounds of the trait interval:
 ```r
