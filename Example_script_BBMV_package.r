@@ -160,4 +160,19 @@ fit0b$aic
 # proposal_sensitivity: the width of the uniform proposal. The entire value for x0 gives how many steps at a time can be travelled on the trait grid (better to keep it to 1)
 
 source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_FPK_May2017/MCMC_function_BBMV.r',chdir=F)
-MH_MCMC_FPK(tree,trait=TRAIT,bounds=c(-1.5,1.5),Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=c(-1.5,1.5),Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+
+# Estimate effective sample sizes in our MCMC run using the R package 'coda':
+library(coda)
+apply(MCMC[-c(1:50),2:11],2,effectiveSize)
+
+par(mfrow=c(3,3))
+hist(log(MCMC[-c(1:50),2]/2),breaks=100,main='log(sigsq/2)',ylab=NULL)
+hist(MCMC[-c(1:50),6],breaks=100,main='root',ylab=NULL)
+plot(1,1)
+hist(MCMC[-c(1:50),3],breaks=100,main='a (x^4 term)',ylab=NULL)
+hist(MCMC[-c(1:50),4],breaks=100,main='b (x^2 term)',ylab=NULL)
+hist(MCMC[-c(1:50),5],breaks=100,main='c (x term)',ylab=NULL)
+hist(MCMC[-c(1:50),9],breaks=100,main='lnprior',ylab=NULL)
+hist(MCMC[-c(1:50),10],breaks=100,main='lnlik',ylab=NULL)
+hist(MCMC[-c(1:50),11],breaks=100,main='quasi-lnpost',ylab=NULL)
