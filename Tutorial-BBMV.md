@@ -74,7 +74,21 @@ And here is Brownian motion, with *V(x)=0*:
 ll_FPK0=lnL_FPK(tree,TRAIT,Npts=25,a=0,b=0,c=0)
 ```
 
+Once these likelihood functions are created, we need to use the *find.mle_FPK* function to estimate their maxima. This function takes one single argument: a likelihood function created by *lnL_FPK*. Once each model is fit, we can plot the macroevolutionary landscape estimated using the function *get.landscape.BBMV* and compare it with the macroevolutionary landscape that we simulated:
 
+```r
+fit4=find.mle_FPK(model=ll_FPK4)
+get.landscape.BBMV(fit=fit4)
+lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
+
+fit2=find.mle_FPK(model=ll_FPK2)
+get.landscape.BBMV(fit=fit2) # this shape of the landscape cannot have 2 peaks
+lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
+
+fit0=find.mle_FPK(model=ll_FPK0) 
+get.landscape.BBMV(fit=fit0) # this one is forced to be flat
+lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
+```
 The *$par* element of the model fit gives the ML values of the parameters. Here we have the evolutionary rate (sigsq), the value of the trait at the root and the positions of the bounds of the trait interval.
 Now we can fit increasingly complex models starting with a linear potential, adding a quadratic term, and finally fitting the full model with a *x<sup>4</sup>* term:
 ```r
