@@ -77,7 +77,7 @@ And here is Brownian motion, with *V(x)=0*:
 ll_FPK0=lnL_FPK(tree,TRAIT,Npts=25,a=0,b=0,c=0)
 ```
 
-Once these likelihood functions are created, we need to use the *find.mle_FPK* function to estimate their maxima. This function takes one single argument: a likelihood function created by *lnL_FPK*. Once each model is fit, we can plot the macroevolutionary landscape estimated using the function *get.landscape.BBMV* and compare it with the macroevolutionary landscape that we simulated:
+Once these likelihood functions are created, we need to use the *find.mle_FPK* function to estimate their maxima. This function takes one single argument: a likelihood function created by *lnL_FPK*. Once each model is fitted, we can plot the macroevolutionary landscape estimated using the function *get.landscape.BBMV* and compare it with the macroevolutionary landscape that we simulated:
 
 ```r
 fit4=find.mle_FPK(model=ll_FPK4)
