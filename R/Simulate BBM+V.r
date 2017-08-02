@@ -47,7 +47,7 @@ trans_from_fixed=function(x,bounds){
 # Function to simulate trait along given tree under the FPK model
 FPK_sim_traitgram=function(tree,x0,a,b,c,bounds,sigsq,time_step,res.x=200,ylim.plot=NULL,return.trait=FALSE){
   # reorder the tree
-  tree=reorder.phylo(tree,order="cladewise") # nicer for colors in the rainbow palette
+  tree=reorder.phylo(tree,order="cladewise") # this ordering is nicer for colors in the rainbow palette
   # initiate the plot window
   if (is.null(ylim.plot)){ylim.plot=bounds}
   COL=rainbow(dim(tree$edge)[1])
@@ -66,7 +66,7 @@ FPK_sim_traitgram=function(tree,x0,a,b,c,bounds,sigsq,time_step,res.x=200,ylim.p
   # Now simulate along each edge of the tree
   for (i in 1:dim(tree$edge)[1]){
     n.slices=round(tree$edge.length[i]/time_step)
-    temp_step=tree$edge.length[i]/n.slices
+    temp_step=tree$edge.length[i]/n.slices # time step size is slightly modified so that we have an entire number of steps on each branch
     temp_x=rep(NA,(n.slices+1))
     temp_x[1]=init[which(names(init)==tree$edge[i,1])] # the initial trait value on this branch
     for (s in 2:length(temp_x)){ # propagate the FPK process one time step at a time
