@@ -77,7 +77,7 @@ FPK_sim_traitgram=function(tree,x0,a,b,c,bounds,sigsq,time_step,res.x=200,ylim.p
     points(trans_from_fixed(temp_x,bounds)~seq(from=bt[which(names(bt)==tree$edge[i,1])],to=bt[which(names(bt)==tree$edge[i,2])],length.out=length(temp_x)),type='l',col=COL[i])
   }
   if(return.trait==T){
-    trait=init[1:length(tree$tip.label)] ; names(trait)=tree$tip.label
+    trait=trans_from_fixed(init[1:length(tree$tip.label)],bounds) ; names(trait)=tree$tip.label
     return(trait)
   }
 }
