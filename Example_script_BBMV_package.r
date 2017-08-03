@@ -4,12 +4,12 @@ rm(list=ls())
 library(ape)
 
 # You first need to source all the functions of the package that we will need
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_FPK_May2017/get.landscape.BBMV_no_bounds.r',chdir=F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_FPK_May2017/ML_functions.r',chdir=F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_FPK_May2017/utils_BBMV.r',chdir=F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_FPK_May2017/Simulate\ BBM+V.r',chdir = F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_FPK_May2017/charac_time.r',chdir=F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_FPK_May2017/Uncertainty_BBMV.r',chdir=F)
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/get.landscape.BBMV_no_bounds.r',chdir=F)
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/ML_functions.r',chdir=F)
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/utils_BBMV.r',chdir=F)
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/Simulate\ BBM+V.r',chdir = F)
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/charac_time.r',chdir=F)
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/Uncertainty_BBMV.r',chdir=F)
 
 # Simulate data: tree + continuous trait
 library(geiger) # we will use geiger for simulating the tree
@@ -27,7 +27,7 @@ V6_norm=exp(-V6)/sum(exp(-V6)*step_size) # the step size on the grid
 par(mfrow=c(1,1))
 plot(V6_norm) # two peaks of equal height
 
-TRAIT= Sim_BBMV(tree,x0=0.5,V=V6,sigma=1,bounds=bounds) # TRAIT simulated on the tree, evolving on the macroevolutionary landscape defined above: for that you need to source the function 'Sim_BBMV.R'
+TRAIT= Sim_BBMV(tree,x0=0.5,V=V6,sigma=0.5,bounds=bounds) # TRAIT simulated on the tree, evolving on the macroevolutionary landscape defined above: for that you need to source the function 'Sim_BBMV.R'
 hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: it should reflect the landscape simulated... more or less
 
 #####################################
