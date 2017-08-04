@@ -1,7 +1,7 @@
 # This function plots the adaptive landscape estimated by the FPK and BBM+V models.
 # It takes a model fitted by the function 'find.mle_FPK' as its main argument
 # Npts determines the number of points used to plot the adaptive landscape or potential
-get.landscape.BBMV=function(fit,Npts=100,main='Macroevolutionary landscape',ylab='N.exp(-V)',xlab='Trait',xlim=NULL,ylim=NULL){
+get.landscape.FPK=function(fit,Npts=100,main='Macroevolutionary landscape',ylab='N.exp(-V)',xlab='Trait',xlim=NULL,ylim=NULL){
 	# retrieve coefficients for the potential
 	if ('a'%in%names(fit$par)){a=fit$par$a}
   else {a=fit$par_fixed$a}
