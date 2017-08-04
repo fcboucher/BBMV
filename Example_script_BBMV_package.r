@@ -113,19 +113,19 @@ ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=0,c=0) # this is the B
 
 # fit the four models and plot the macroevolutionary landscapes
 fit4b=find.mle_FPK(model=ll_BBMV4)
-get.landscape.BBMV(fit=fit4b)
+get.landscape.FPK(fit=fit4b)
 lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
 
 fit2b=find.mle_FPK(model=ll_BBMV2)
-get.landscape.BBMV(fit=fit2b)
+get.landscape.FPK(fit=fit2b)
 lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
 
 fit1b=find.mle_FPK(model=ll_BBMV1)
-get.landscape.BBMV(fit=fit1b)
+get.landscape.FPK(fit=fit1b)
 lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
 
 fit0b=find.mle_FPK(model=ll_BBMV0)
-get.landscape.BBMV(fit=fit0b)
+get.landscape.FPK(fit=fit0b)
 lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
 
 # compare the fits using AIC
