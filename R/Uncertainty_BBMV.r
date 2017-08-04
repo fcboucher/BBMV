@@ -1,4 +1,4 @@
-Uncertainty_BBMV=function(fit,tree,trait,Npts=50,effort_uncertainty= 100,scope_a=c(-10,10),scope_b=c(-10,10),scope_c=c(-10,10)){
+Uncertainty_FPK=function(fit,tree,trait,Npts=50,effort_uncertainty= 100,scope_a=c(-10,10),scope_b=c(-10,10),scope_c=c(-10,10)){
   # retrieve coefficients for the potential
   if ('a'%in%names(fit$par)){a=fit$par$a}
   else {a=fit$par_fixed$a}
