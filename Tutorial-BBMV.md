@@ -81,15 +81,15 @@ Once these likelihood functions are created, we need to use the *find.mle_FPK* f
 
 ```r
 fit4=find.mle_FPK(model=ll_FPK4)
-get.landscape.BBMV(fit=fit4)
+get.landscape.FPK(fit=fit4)
 lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 
 fit2=find.mle_FPK(model=ll_FPK2)
-get.landscape.BBMV(fit=fit2) # this shape of the landscape cannot have 2 peaks
+get.landscape.FPK(fit=fit2) # this shape of the landscape cannot have 2 peaks
 lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 
 fit0=find.mle_FPK(model=ll_FPK0) 
-get.landscape.BBMV(fit=fit0) # this one is forced to be flat
+get.landscape.FPK(fit=fit0) # this one is forced to be flat
 lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 ```
 
@@ -159,19 +159,19 @@ ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=0,c=0) # this is the B
 Next we fit these four models and plot the macroevolutionary landscapes:
 ```r
 fit4b=find.mle_FPK(model=ll_BBMV4)
-get.landscape.BBMV(fit=fit4b)
+get.landscape.FPK(fit=fit4b)
 lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
 
 fit2b=find.mle_FPK(model=ll_BBMV2)
-get.landscape.BBMV(fit=fit2b)
+get.landscape.FPK(fit=fit2b)
 lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
 
 fit1b=find.mle_FPK(model=ll_BBMV1)
-get.landscape.BBMV(fit=fit1b)
+get.landscape.FPK(fit=fit1b)
 lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
 
 fit0b=find.mle_FPK(model=ll_BBMV0)
-get.landscape.BBMV(fit=fit0b)
+get.landscape.FPK(fit=fit0b)
 lines(Vb_norm~seq(from=min(bounds),to=max(bounds),length.out=length(Vb_norm)))
 ```
 We can also compare the AIC of these four models:
