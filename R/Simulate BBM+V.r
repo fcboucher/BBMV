@@ -1,4 +1,4 @@
-# This function simulates a trait evolving on a phylogeny under the BBM+V model (i.e. BM between two reflective bound plus a force acting on the trait)
+# This function simulates a trait evolving on a phylogeny under the FPK model 
 # It requires the functions 'DiffMat_forward', 'ConvProp_bounds' and 'VectorPos_bounds', all from the BBMV package
 # Arguments are:
 # tree: a phylogenetic tree in 'phylo' format (ape)
@@ -9,7 +9,7 @@
 # The function does not simulate step by step, but uses matrix exponential to directly simulate over entire branches of the tree. It is thus very fast.
 # The value returned is a vector of trait values, with names matching those of the tips of the tree
 
-Sim_BBMV=function(tree,x0=0,V=rep(0,100),sigma,bounds){
+Sim_FPK=function(tree,x0=0,V=rep(0,100),sigma,bounds){
 	dCoeff=log((sigma)^2/2) # the coefficient of diffusion of the model
 	dMat= DiffMat_forward(V) # the transition matrix describing the probablity of evolving between two sites in the trait grid in an infinitesimal time step.
 	Npts=length(V)
