@@ -47,10 +47,10 @@ par(mfrow=c(1,1))
 plot(V6_norm)
 ```
 
-Now we will use the function *Sim_BBMV* to simulate a continuous trait evolving on the tree we just simulated. To do so we need to provide a rate of evolution (*sigma*), bounds on the trait interval (which might not influence the whole process because they are located far away), a value for the trait at the root of the tree (*x0*), and the evolutionary potential that we just simulated (*V6*): 
+Now we will use the function *Sim_FPK* to simulate a continuous trait evolving on the tree we just simulated. To do so we need to provide a rate of evolution (*sigma*), bounds on the trait interval (which might not influence the whole process because they are located far away), a value for the trait at the root of the tree (*x0*), and the evolutionary potential that we just simulated (*V6*): 
 
 ```r
-TRAIT= Sim_BBMV(tree,x0=0.5,V=V6,sigma=1,bounds=bounds)
+TRAIT= Sim_FPK(tree,x0=0.5,V=V6,sigma=1,bounds=bounds)
 hist(TRAIT,breaks=20)
 ```
 
@@ -118,13 +118,13 @@ In this case we've reached stationarity since a while. Next, we will have a look
 plot(fit4$root,type='l') 
 ```
 
-We can also estimate the uncertainty around maximum-likelihood parameter estimates using the function *Uncertainty_BBMV*, which produces graphs of the likelihood of the model as a function of the value of each parameter. In this function, the parameter *effort_uncertainty* determines how many values of each parameter will be evaluated. The function returns confidence interval that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate. We first look at the MLEs of parameters estimated, which are contained in the *$par* argument of a fitted FPK model:
+We can also estimate the uncertainty around maximum-likelihood parameter estimates using the function *Uncertainty_FPK*, which produces graphs of the likelihood of the model as a function of the value of each parameter. In this function, the parameter *effort_uncertainty* determines how many values of each parameter will be evaluated. The function returns confidence interval that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate. We first look at the MLEs of parameters estimated, which are contained in the *$par* argument of a fitted FPK model:
 ```r
 fit4$par
 ```
 And from that we can choose the *scope* of the uncertainty search for each parameter so that they include your MLEs:
 ```r
-Uncertainty_BBMV(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,10),scope_b=c(-5,5),scope_c=c(-2,2))
+Uncertainty_FPK(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,10),scope_b=c(-5,5),scope_c=c(-2,2))
 ```
 One particularly interesting result from this will be to see if the confidence intervals for each parameter of the potential (*a*, *b*, and *c*) contain 0.
 
@@ -144,7 +144,7 @@ par(mfrow=c(1,1))
 Vb=3*x
 Vb_norm=exp(-Vb)/sum(exp(-Vb)*step_size)
 plot(Vb_norm)
-TRAITb= Sim_BBMV(tree,x0=0,V=Vb,sigma=2,bounds=bounds)
+TRAITb= Sim_FPK(tree,x0=0,V=Vb,sigma=2,bounds=bounds)
 hist(TRAITb,breaks=20)
 ```
 
