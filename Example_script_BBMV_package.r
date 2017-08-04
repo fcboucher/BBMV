@@ -27,7 +27,7 @@ V6_norm=exp(-V6)/sum(exp(-V6)*step_size) # the step size on the grid
 par(mfrow=c(1,1))
 plot(V6_norm) # two peaks of equal height
 
-TRAIT= Sim_BBMV(tree,x0=0.5,V=V6,sigma=0.5,bounds=bounds) # TRAIT simulated on the tree, evolving on the macroevolutionary landscape defined above: for that you need to source the function 'Sim_BBMV.R'
+TRAIT= Sim_FPK(tree,x0=0.5,V=V6,sigma=0.5,bounds=bounds) # TRAIT simulated on the tree, evolving on the macroevolutionary landscape defined above: for that you need to source the function 'Sim_BBMV.R'
 hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: it should reflect the landscape simulated... more or less
 
 #####################################
@@ -83,7 +83,7 @@ plot(fit4$root,type='l') # be careful with the y-scale of the plot: this might a
 # The function returns confidence interval that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate
 fit4$par # the MLEs of parameters
 # You can give the scope of the uncertainty search for each parameter so that they include your MLEs
-Uncertainty_BBMV(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,10),scope_b=c(-5,5),scope_c=c(-2,2))
+Uncertainty_FPK(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,10),scope_b=c(-5,5),scope_c=c(-2,2))
 
 # We can fit the OU and BM models using the package geiger to see if likelihoods match with those calculated using BBMV
 OU=fitContinuous(phy=tree,dat=TRAIT,model="OU")
