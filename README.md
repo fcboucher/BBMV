@@ -10,8 +10,9 @@ Functions were written by [Florian Boucher](https://sites.google.com/site/floria
 The [R folder](https://github.com/fcboucher/BBMV/tree/master/R) contains functions to simulate traits evolving under the *FPK* (or *BBM+V*) model, plot macroevolutionary landscapes, and fit the model to empirical data using either maximum-likelihood or MCMC estimation. 
 The [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) shows basic examples of use of the functions to simulate and infer under *FPK*. In case you need it there is also a full [R script of the tutorial](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r). 
 
-Help files have not been written yet, but function names should be rather self-explanatory and R scripts are heavily commented: they should give you all the information needed on parameters, outputs, etc.
-
 The paper describing the model is currently in revision, but you can find the submitted version [here](https://github.com/fcboucher/BBMV/blob/master/FPK_Main_text.pdf). 
 
-A former version of the **BBMV** package can be found on [CRAN](https://CRAN.R-project.org/package=BBMV) and the package should be updated there soon.
+Help files for all functions can be found in this [pdf](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf) and there is also a troubleshooting section at the end of the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md).
+
+A former version of the **BBMV** package can be found on [CRAN](https://CRAN.R-project.org/package=BBMV) and the package should be updated there soon. 
+
