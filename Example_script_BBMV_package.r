@@ -51,15 +51,15 @@ ll_FPK0=lnL_FPK(tree,TRAIT,Npts=25,a=0,b=0,c=0) # we fix all coefficients to 0:t
 
 # 2) fit these models and plot the landscapes
 fit4=find.mle_FPK(model=ll_FPK4)
-get.landscape.BBMV(fit=fit4)
+get.landscape.FPK(fit=fit4)
 lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 
 fit2=find.mle_FPK(model=ll_FPK2)
-get.landscape.BBMV(fit=fit2) # this shape of the landscape cannot have 2 peaks
+get.landscape.FPK(fit=fit2) # this shape of the landscape cannot have 2 peaks
 lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 
 fit0=find.mle_FPK(model=ll_FPK0) 
-get.landscape.BBMV(fit=fit0) # this one is forced to be flat
+get.landscape.FPK(fit=fit0) # this one is forced to be flat
 lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 
 # Compare model fits using AIC
