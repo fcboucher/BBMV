@@ -134,12 +134,16 @@ Uncertainty_FPK(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_
 ```
 One particularly interesting result from this will be to see if the confidence intervals for each parameter of the potential (*a*, *b*, and *c*) contain 0.
 
-Finally, we can fit the OU and BM models using the package **geiger** to see if likelihoods match with those calculated using BBMV. They should be quite close but remember that the FPK model uses an approximation of the likelihood, hence the implementation in **geiger** is more accurate:
+Finally, we can fit the OU model using the package **geiger** to see if its likelihood matches the one calculated using BBMV. They should be quite close but remember that the FPK model uses an approximation of the likelihood, hence the implementation in **geiger** is more accurate:
 ```r
 OU=fitContinuous(phy=tree,dat=TRAIT,model="OU")
 OU$opt$lnL ; fit2$lnL 
+```
+
+Finally, we can also look at the AIC of the BM model, fitted using **geiger**:
+```r
 BM=fitContinuous(phy=tree,dat=TRAIT,model="BM")
-BM$opt$lnL; fit0$lnL 
+BM$opt$aic
 ```
 
 ### BBM+V model
