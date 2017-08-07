@@ -5,6 +5,7 @@ library(ape)
 
 # You first need to source all the functions of the package that we will need
 source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/get.landscape.BBMV_no_bounds.r',chdir=F)
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/ACE_FPK.r',chdir=F)
 source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/ML_functions.r',chdir=F)
 source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/utils_BBMV.r',chdir=F)
 source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/Simulate\ BBM+V.r',chdir = F)
@@ -71,8 +72,9 @@ fit0$aic
 charac_time(fit=fit4)
 charac_time(fit=fit2)
 charac_time(fit=fit0)
-# compare it with tree depth: how far are we from equilibrium? --> We've reached it!
+# compare it with tree depth and typical branch length: how far are we from equilibrium? --> We've reached it!
 max(branching.times(tree))
+summary(tree$edge.length)
 
 # We can have a look at the probability distribution at the root of the tree
 plot(fit4$root,type='l') # be careful with the y-scale of the plot: this might actually be quite flat!
