@@ -140,7 +140,7 @@ OU=fitContinuous(phy=tree,dat=TRAIT,model="OU")
 OU$opt$lnL ; fit2$lnL 
 ```
 
-Finally, we can also look at the AIC of the BM model, fitted using **geiger**:
+We can also look at the AIC of the BM model, fitted using **geiger**:
 ```r
 BM=fitContinuous(phy=tree,dat=TRAIT,model="BM")
 BM$opt$aic
