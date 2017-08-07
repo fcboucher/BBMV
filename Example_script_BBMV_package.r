@@ -97,6 +97,7 @@ BM$opt$lnL
 ACE_nodes=ACE_FPK(fit4,specific.point=NULL)
 plot(ACE_nodes[[90]],type='l') # plot the probability density of the trait at node '90'
 
+# We can also ask for an ACE at any point in the tree. Here we ask for an ACE in the middle of the first branch (as ordered in the 'phylo' object), this is down by specifying (i) the parent node, (ii) the child node, and (iii) the time from the begining of the branch in the 'specific.point' argument:
 ACE_1st_branch=ACE_FPK(fit4,specific.point=c(fit4$tree$edge[1,1],fit4$tree$edge[1,2],fit4$tree$edge.length[1]/2))
 plot(ACE_1st_branch,type='l')
 
