@@ -93,6 +93,13 @@ OU$opt$lnL ; fit2$lnL # they should be quite close: remember that the FPK model 
 BM=fitContinuous(phy=tree,dat=TRAIT,model="BM")
 BM$opt$lnL
 
+# Ancestral character estimations for internal nodes of the tree can be obtained as follows:
+ACE_nodes=ACE_FPK(fit4,specific.point=NULL)
+plot(ACE_nodes[[90]],type='l') # plot the probability density of the trait at node '90'
+
+ACE_1st_branch=ACE_FPK(fit4,specific.point=c(fit4$tree$edge[1,1],fit4$tree$edge[1,2],fit4$tree$edge.length[1]/2))
+plot(ACE_1st_branch,type='l')
+
 #####################################
 ############ BBMV model #############
 #####################################
