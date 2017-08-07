@@ -113,6 +113,12 @@ And we should compare it with tree depth to see how far are we from stationarity
 max(branching.times(tree))
 ```
 
+It actually appears that the process reaches stationarity on most branches of the tree since the characteristic time is smaller than the median branch length:
+```r
+summary(tree$edge.length)
+```
+
+
 In this case we've reached stationarity since a while. Next, we will have a look at the probability distribution at the root of the tree. Be careful with the y-scale of the plot: this might actually be quite flat!
 ```r
 plot(fit4$root,type='l') 
