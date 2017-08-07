@@ -156,7 +156,7 @@ The function *ACE_FPK* returns a list with one element per internal node in the 
 ```r
 ACE_1st_branch=ACE_FPK(fit4,specific.point=c(fit4$tree$edge[1,1],fit4$tree$edge[1,2],fit4$tree$edge.length[1]/2))
 plot(ACE_1st_branch,type='l')
-
+```
 
 ### BBM+V model
 
