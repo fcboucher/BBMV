@@ -13,6 +13,6 @@ charac_time=function(Npts=100,fit){
 	Vq=a*SEQ^4+b*SEQ^2+c*SEQ
 	Mat=DiffMat_forward(Vq)
 	vp=diag(Mat$diag)
-	Tc=(2*(bounds[2]-bounds[1])^2/fit$par$sigsq)/(Npts-1)^2/abs(sort(Re(vp),decreasing=T)[2]) # the first one is 0 (or something very close due to numerical approximations)
+	Tc=(2*(bounds[2]-bounds[1])^2/fit$par$sigsq)/(Npts-1)^2/abs(sort(Re(vp),decreasing=T)[2]) # the first eigenvalue is 0 (or something very close due to numerical approximations)
 	return(Tc)
 }
