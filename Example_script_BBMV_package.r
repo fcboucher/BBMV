@@ -91,7 +91,7 @@ Uncertainty_FPK(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_
 OU=fitContinuous(phy=tree,dat=TRAIT,model="OU")
 OU$opt$lnL ; fit2$lnL # they should be quite close: remember that the FPK model uses an approximation of the likelihood
 BM=fitContinuous(phy=tree,dat=TRAIT,model="BM")
-BM$opt$lnL; fit0$lnL # they should be quite close: remember that the FPK model uses an approximation of the likelihood
+BM$opt$lnL
 
 #####################################
 ############ BBMV model #############
