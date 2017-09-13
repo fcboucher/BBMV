@@ -1,3 +1,5 @@
+Generate error message when trait and tree data do not match!!!
+
 Generate error message when stat. distrib. does not converge to 0 at the bounds in FPK --> check 99% HPD and suggest to use lnL_BBMV instead with bounds further apart.
 
 Develop/check functions for incorporating standard error in trait data?
