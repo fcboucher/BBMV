@@ -1,11 +1,11 @@
-To do, really
+*To do, really*
 
 Develop function for joint inference of model on multiple independent trees.
 
 Generate error message when trait and tree data do not match!!!
 
 
-Less pressure...
+*Less pressure...*
 
 Generate error message when stat. distrib. does not converge to 0 at the bounds in FPK --> check 99% HPD and suggest to use lnL_BBMV instead with bounds further apart.
 
