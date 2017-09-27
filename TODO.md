@@ -1,5 +1,9 @@
 **To do, really**
 
+In *lnL_BBMV* and *lnL_FPK* add check of match btw tip names and trait names
+
+In *fin.mle_FPK* change the default starting point for optim: very small values of dCoeff work much better (init.optim=c(0,rep(0,model$ncoeff)))
+
 Develop function for joint inference of model on multiple independent trees.
 
 Generate error message when trait and tree data do not match!!!
