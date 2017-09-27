@@ -112,7 +112,7 @@ Vb=3*x # this is the evolutionary potential: it has a linear trend
 Vb_norm=exp(-Vb)/sum(exp(-Vb)*step_size) # the step size on the grid
 plot(Vb_norm) # a peak on the left bound
 
-TRAITb= Sim_BBMV(tree,x0=0,V=Vb,sigma=2,bounds=bounds)
+TRAITb= Sim_FPK(tree,x0=0,V=Vb,sigma=2,bounds=bounds)
 hist(TRAITb,breaks=20) # the distribution of the trait at the tips of the tree: it should reflect the landscape simulated... more or less
 
 # Create four different likelihood functions
