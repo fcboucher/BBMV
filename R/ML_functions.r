@@ -7,6 +7,7 @@
 # FPK: the model with no bounds (i.e. bounds far away)
 lnL_FPK=function(tree,trait,a=NULL,b=NULL,c=NULL,Npts){
   bounds=c(min(trait)-(max(trait)-min(trait))/2,max(trait)+(max(trait)-min(trait))/2)
+  if (sum(tree$tip.label%in%names(trait))<max(length(trait),length(tree$tip.label))){stop('Tip names in tree do not match names of the trait vector')}
   SEQ=seq(from=-1.5,to=1.5,length.out=Npts)
   tree_formatted= FormatTree_bounds(tree,trait,V=rep(0,Npts),bounds=bounds)
   ncoeff=(is.null(a)==T)+(is.null(b)==T)+(is.null(c)==T)
@@ -28,6 +29,8 @@ lnL_FPK=function(tree,trait,a=NULL,b=NULL,c=NULL,Npts){
 #################################################
 # BBMV: the model with bounds defined by the user
 lnL_BBMV=function(tree,trait,bounds,a=NULL,b=NULL,c=NULL,Npts){
+  if (sum(tree$tip.label%in%names(trait))<max(length(trait),length(tree$tip.label))){stop('Tip names in tree do not match names of the trait vector')}
+  if ((min(trait)<bounds[1])|(max(trait)>bounds[2])){stop('Some values in the trait vector exceed the bounds.')}
   SEQ=seq(from=-1.5,to=1.5,length.out=Npts)
   tree_formatted= FormatTree_bounds(tree,trait,V=rep(0,Npts),bounds=bounds)
   ncoeff=(is.null(a)==T)+(is.null(b)==T)+(is.null(c)==T)
@@ -51,7 +54,7 @@ lnL_BBMV=function(tree,trait,bounds,a=NULL,b=NULL,c=NULL,Npts){
 find.mle_FPK=function(model,method='Nelder-Mead',init.optim=NULL,safe=F){
   # safe=T for safer optimization starting from 3 different starting points
   if (safe==F){ # only one optimization
-    if(is.null(init.optim)==T){init.optim=c(0,rep(0,model$ncoeff))}
+    if(is.null(init.optim)==T){init.optim=c(-10,rep(0,model$ncoeff))}
     else{}
     opt=optim(par=init.optim,fn=model$fun,method=method,control=list(maxit=50000))
   }
