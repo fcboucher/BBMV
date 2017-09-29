@@ -47,15 +47,32 @@ DiffMat_backwards=function (V){
 # write to which point of the grid a given position belongs to, 'continuous' version
 VectorPos_bounds=function(x,V,bounds){
   Npts=length(V)
-  X=rep(0,Npts)
-  if (x==bounds[2]){X[Npts]=1}
+  if (length(x)==1){ # only one value per tip
+    X=rep(0,Npts)  
+    if (x==bounds[2]){X[Npts]=1}
+    else {
+      nx=(Npts-1)*(x-bounds[1])/(bounds[2]-bounds[1])
+      ix=floor(nx)
+      ux=nx-ix
+      X[ix+2]=ux
+      X[ix+1]=1-ux
+    }	
+  }
   else {
-    nx=(Npts-1)*(x-bounds[1])/(bounds[2]-bounds[1])
-    ix=floor(nx)
-    ux=nx-ix
-    X[ix+2]=ux
-    X[ix+1]=1-ux
-  }	
+    # here we treat the case in which we do not have a single value but a vector of values measured
+    MAT=matrix(0,length(x),Npts)
+    for (i in 1:length(x)){ # problem with the recursive form here
+      if (x[i]==bounds[2]){MAT[i,Npts]=1}
+      else {
+        nx=(Npts-1)*(x[i]-bounds[1])/(bounds[2]-bounds[1])
+        ix=floor(nx)
+        ux=nx-ix
+        MAT[i,ix+2]=ux
+        MAT[i,ix+1]=1-ux
+      }	
+    }
+    X=apply(MAT,2,mean) # and average them
+  }
   return(X*(Npts-1)/(bounds[2]-bounds[1]))
 }
 
@@ -80,6 +97,7 @@ ConvProp_bounds=function(X,t,prep_mat){
 # format tree and trait --> the tree is ordered from tips to root, with edge.length binded to the topology
 # A list is also initiated, filled with the position (probabilistic) of each tip and 1 for internal nodes.
 FormatTree_bounds=function(tree,trait,V,bounds){
+  require(ape)	
   tree=reorder.phylo(tree,'postorder')
   ntips=length(tree$tip.label)
   tab=cbind(tree$edge,tree$edge.length) ; colnames(tab)=c('parent','children','brlen')
@@ -89,7 +107,8 @@ FormatTree_bounds=function(tree,trait,V,bounds){
       Pos[[i]]=1
     }
     else {
-      Pos[[i]]= VectorPos_bounds(trait[tree$tip.label[i]],V,bounds=bounds)
+      if (class(trait)=='numeric'){Pos[[i]]= VectorPos_bounds(trait[tree$tip.label[i]],V=V,bounds=bounds)} # only one value per tip
+      else {Pos[[i]]= VectorPos_bounds(trait[[tree$tip.label[i]]],V=V,bounds=bounds)} # multiple values per tip (i.e. uncertainty)
     }
   }
   return(list(tab=tab,Pos=Pos))
