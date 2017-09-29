@@ -1,6 +1,8 @@
 **To do, really**
 
-Develop function for joint inference of model on multiple independent trees.
+Further test and then upload functions for joint inference of model on multiple independent trees.
+
+Develop uncertainty function for the parameters of the multiclade fit
 
 **Less pressure...**
 
