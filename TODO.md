@@ -6,7 +6,7 @@ Develop uncertainty function for the parameters of the multiclade fit
 
 Develop MCMC algorithm for the multiclade fit
 
-Develop/check functions for incorporating standard error in trait data?
+Develop/check functions for incorporating standard error in trait data --> do it directly by modifying the 'VectorPos_bounds' function?
 
 
 **Less pressure...**
