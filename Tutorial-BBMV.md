@@ -267,9 +267,9 @@ hist(MCMC_OU[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 Numerical errors can occur when trying to fit the *FPK* model to empirical data. Here are a few suggestions that can help solving some issues:
 - changing the optimization method used in the *find.mle_FPK* function (e.g. from *Nelder-Mead* to *L-BFGS-B*)
 - changing *Npts* to an odd number, or reducing it
-- changing the initial parameters used to start the optimization. This can be done as follows:
+- changing the initial parameters used to start the optimization, especially reducing the value of the first parameter (the diffusion coefficient, log(sigsq/2)). This can be done as follows:
 ```r
-fit4b=find.mle_FPK(model=ll_FPK4,init.optim = c(0,0,1,-5))
+fit4b=find.mle_FPK(model=ll_FPK4,init.optim = c(-12,0,1,-5))
 ```
 - using three different sets of initial parameters used to start the optimization, which can be done by setting the *safe* argument to TRUE:
 ```r
