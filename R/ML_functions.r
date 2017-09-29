@@ -54,7 +54,7 @@ find.mle_FPK=function(model,method='Nelder-Mead',init.optim=NULL,safe=F){
     opt=optim(par=init.optim,fn=model$fun,method=method,control=list(maxit=50000))
   }
   else {
-    init=c(-5,0,2) #diffusion Coefficient
+    init=c(-10,-1,0) #diffusion Coefficient
     starts=list()
     for (i in 1:3){
       starts[[i]]=optim(par=c(init[i],rep(0,model$ncoeff)),fn=model$fun,method=method,control=list(maxit=50000))
