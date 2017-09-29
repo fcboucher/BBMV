@@ -1,8 +1,3 @@
-# need to add ACE, root value, AIC, etc... to find.mle function!!!!
-# count the root value as a parameter!
-# warning message for when bounds are badly specified
-# warning message for when x^4 or x^2 (when alone) are negative
-
 ######################################################
 # FPK: the model with no bounds (i.e. bounds far away)
 lnL_FPK=function(tree,trait,a=NULL,b=NULL,c=NULL,Npts){
