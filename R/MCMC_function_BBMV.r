@@ -131,7 +131,12 @@ for (i in 1:Nsteps){
 par(mfrow=c(3,3))
 plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),2],type='l',main='sigsq',log='y',ylab='',xlab='')
 plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),6],type='l',main='root',ylab='',xlab='')
-abline(h=min(trait)+(max(trait)-min(trait))/2,col=2)
+if (is.numeric(trait)){
+  abline(h=min(trait)+(max(trait)-min(trait))/2,col=2)
+}
+if (class(trait)=='list') {
+  abline(h=min(unlist(trait))+(max(unlist(trait))-min(unlist(trait)))/2,col=2)
+}
 plot(1,1,ylab='',xlab='')
 plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),3],type='l',main='a (x^4 term)',ylab='',xlab='')
 abline(h=0,col=2)
