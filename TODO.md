@@ -1,5 +1,7 @@
 **To do, really**
 
+Update Tutorial to show usage of functions with measurement error
+
 Further test functions for joint inference of model on multiple independent trees with measurement error incorporated in it, then push to Github.
 
 Develop uncertainty function for the parameters of the multiclade fit
