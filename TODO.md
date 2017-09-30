@@ -1,7 +1,5 @@
 **To do, really**
 
-Further check functions for incorporating standard error in trait data and push them to Github
-
 Further test functions for joint inference of model on multiple independent trees and incorporate measurement error in it, then push to Github.
 
 Develop uncertainty function for the parameters of the multiclade fit
