@@ -155,7 +155,7 @@ for (i in 1:length(TRAIT)){
   TRAIT2[[i]]=rnorm(n=runif(n=1,min=2,max=10),mean=TRAIT[i],sd=runif(n=1,min=0,max=0.2))
 }
 names(TRAIT2)=names(TRAIT)
-TRAIT2[c(1:4)] # different tips have different number of measures and different levels of error
+TRAIT2[c(1:4)] # trait measurements for the first for tips: different tips have different number of measures and different levels of error
 
 # Then we can use the same functions as before to fit the model to this dataset. Here we only demonstrate the inclusion of measurement error when fitting the FPK model, but the same works for the BBMV model.
 ll_FPK4_with_ME=lnL_FPK(tree,TRAIT2,Npts=25,a=NULL,b=NULL,c=NULL) # the full model
