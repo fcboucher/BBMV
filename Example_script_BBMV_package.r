@@ -223,3 +223,5 @@ hist(MCMC_OU[-c(1:50),3],breaks=20,main='a (x^4 term)',ylab=NULL)
 hist(MCMC_OU[-c(1:50),4],breaks=20,main='b (x^2 term)',ylab=NULL)
 hist(MCMC_OU[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 
+# The MCMC function can also be run with measurement error
+MCMC_SE=MH_MCMC_FPK(tree,trait=TRAIT2,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
