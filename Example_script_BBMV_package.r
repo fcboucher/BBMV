@@ -85,7 +85,7 @@ plot(fit4$root,type='l') # be careful with the y-scale of the plot: this might a
 # The function returns confidence interval that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate
 fit4$par # the MLEs of parameters
 # You can specify the scope of the uncertainty search for each parameter so that they include your MLEs (fit4$par)
-Uncertainty_FPK(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,10),scope_b=c(-5,5),scope_c=c(-2,2))
+Uncertainty_FPK(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,20),scope_b=c(-15,5),scope_c=c(-5,5))
 
 # We can fit the OU and BM models using the package geiger to see if likelihoods match with those calculated using BBMV
 OU=fitContinuous(phy=tree,dat=TRAIT,model="OU")
