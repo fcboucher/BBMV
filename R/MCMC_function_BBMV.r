@@ -127,19 +127,19 @@ for (i in 1:Nsteps){
 	}
 	if (plot==T){
 par(mfrow=c(3,3))
-plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),2],type='l',main='sigsq',log='y',ylab=NULL,xlab=NULL)
-plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),6],type='l',main='root',ylab=NULL,xlab=NULL)
+plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),2],type='l',main='sigsq',log='y',ylab='',xlab='')
+plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),6],type='l',main='root',ylab='',xlab='')
 abline(h=min(trait)+(max(trait)-min(trait))/2,col=2)
-plot(1,1,ylab=NULL,xlab=NULL)
-plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),3],type='l',main='a (x^4 term)',ylab=NULL,xlab=NULL)
+plot(1,1,ylab='',xlab='')
+plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),3],type='l',main='a (x^4 term)',ylab='',xlab='')
 abline(h=0,col=2)
-plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),4],type='l',main='b (x^2 term)',ylab=NULL,xlab=NULL)
+plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),4],type='l',main='b (x^2 term)',ylab='',xlab='')
 abline(h=0,col=2)
-plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),5],type='l',main='c (x term)',ylab=NULL,xlab=NULL)
+plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),5],type='l',main='c (x term)',ylab='',xlab='')
 abline(h=0,col=2)
-plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),7],type='l',main='lnprior',ylab=NULL,xlab=NULL)
-plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),8],type='l',main='lnlik',ylab=NULL,xlab=NULL)
-plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),9],type='l',main='quasi-lnpost',ylab=NULL,xlab=NULL)
+plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),7],type='l',main='lnprior',ylab='',xlab='')
+plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),8],type='l',main='lnlik',ylab='',xlab='')
+plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),9],type='l',main='quasi-lnpost',ylab='',xlab='')
 	}
 	}
 	if (i%%save_every==0){
