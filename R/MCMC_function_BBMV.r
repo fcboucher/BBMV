@@ -77,6 +77,12 @@ MH_MCMC_FPK=function(tree,trait,bounds,Nsteps=500000,record_every=100,plot_every
 # prior.only to sample from prior only (check that MCMC algorithm mixes well). Default to F for actual posterior exploration	
 # burnin.plot gives the proportion burnin for plots only (the whole chain is actually saved)  
 # we update parameters separately: prob_update gives the probability that each param is updated
+  if (is.numeric(trait)){
+    if ((min(trait)<bounds[1])|(max(trait)>bounds[2])){stop('Some values in the trait vector exceed the bounds.')} 
+  }
+  if (class(trait)=='list') {
+    if ((min(unlist(trait))<bounds[1])|(max(unlist(trait))>bounds[2])){stop('Some values in the trait data exceed the bounds.')}
+  }
 SEQ=seq(from=-1.5,to=1.5,length.out= Npts) # the potential V is modelled as a quadratic function over [-1.5,1.5], but in real data space, this corresponds to [bounds[1],bounds[2]]
 V_init= pars_init[2]*SEQ^4+pars_init[3]*SEQ^2+pars_init[4]*SEQ
 temp= pars_init
