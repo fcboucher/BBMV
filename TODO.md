@@ -1,8 +1,9 @@
 **To do, really**
 
-Check that auxiliary functions like plot, ACE, charac_time are compatible with the new version when measurement error is included.
+Check that auxiliary functions like plot, ACE, charac_time are compatible with the new version when measurement error is included:
+- ACE seems to work
 
-Further test functions for joint inference of model on multiple independent trees and incorporate measurement error in it, then push to Github.
+Further test functions for joint inference of model on multiple independent trees with measurement error incorporated in it, then push to Github.
 
 Develop uncertainty function for the parameters of the multiclade fit
 
