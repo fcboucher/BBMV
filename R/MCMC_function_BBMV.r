@@ -88,15 +88,15 @@ if (prior.only==T){lnlik=1}
 else {
 lnlik= LogLik_bounds_est_root(tree, trait,dCoeff=temp[1],x0_pos=temp[5],V= V_init,bounds=bounds)
 }
-lnprior= log_prior_5pars_root_bounds(type=type_priors,shape=shape_priors,pars=temp,Npts=Npts,bounds=bounds,trait=trait)
+lnprior= log_prior_5pars_root_bounds(type=type_priors,shape=shape_priors,pars=temp)
 lnpost=lnlik+ lnprior
 if ((is.na(lnpost))|(lnpost==(-Inf))){stop('Likelihood cannot be estimated at initial parameters. Please change them')}
 for (i in 1:Nsteps){
 	par_to_update=sample(1:length(pars_init),size=1,prob=prob_update) # sample which parameter will be updated in this step
 	sensitivity_temp=rep(0,length(pars_init)) # set all sensitivities to 0 so that parameters are not updated...
 	sensitivity_temp[par_to_update]= proposal_sensitivity[par_to_update] #... except the one chosen
-	prop= proposal_5pars_root_bounds(type='Uniform',sensitivity= sensitivity_temp,pars=temp,trait)
-	lnprior_proposed= log_prior_5pars_root_bounds(type=type_priors,shape=shape_priors,pars=prop,Npts=Npts,bounds=bounds,trait)
+	prop= proposal_5pars_root_bounds(type='Uniform',sensitivity= sensitivity_temp,pars=temp)
+	lnprior_proposed= log_prior_5pars_root_bounds(type=type_priors,shape=shape_priors,pars=prop)
 	if (lnprior_proposed ==(-Inf)){lnpost_proposed=-Inf} # no lnl calculation when prior is null
 	else {
 	if (prior.only==T){lnlik_proposed=1}
