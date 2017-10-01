@@ -88,7 +88,7 @@ if (prior.only==T){lnlik=1}
 else {
 lnlik= LogLik_bounds_est_root(tree, trait,dCoeff=temp[1],x0_pos=temp[5],V= V_init,bounds=bounds)
 }
-lnprior= log_prior_5pars_root_bounds(type=type_priors,shape=shape_priors,pars=temp)
+lnprior= log_prior_5pars_root_bounds(type=type_priors,shape=shape_priors,pars=temp,Npts=Npts)
 lnpost=lnlik+ lnprior
 if ((is.na(lnpost))|(lnpost==(-Inf))){stop('Likelihood cannot be estimated at initial parameters. Please change them')}
 for (i in 1:Nsteps){
