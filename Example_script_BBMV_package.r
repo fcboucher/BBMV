@@ -212,8 +212,10 @@ hist(MCMC[-c(1:50),3],breaks=20,main='a (x^4 term)',ylab=NULL)
 hist(MCMC[-c(1:50),4],breaks=20,main='b (x^2 term)',ylab=NULL)
 hist(MCMC[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 
-# we can plot the 90% CI of macroevolutionary landscapes estimated in the MCMC run
-get.landscape.FPK.MCMC(chain=MCMC,bounds=fit4$par_fixed$bounds,Npts=100,burnin=0.1,probs.CI=c(0.05,0.95),COLOR_MEDIAN='red',COLOR_FILL='red',transparency=0.3,main='Macroevolutionary landscapes MCMC',ylab='N.exp(-V)',xlab='Trait',xlim=NULL,ylim=NULL)
+# We can plot the 90% CI of macroevolutionary landscapes estimated in the MCMC run
+# The function plots the median value of the macroevolutionary landscape across the posterior in a solid lines and draws a polygon that streches between two quantiles, defined by probs.CI
+# Here we set a burnin fraction of 50% since the MCMC run was extremely short
+get.landscape.FPK.MCMC(chain=MCMC,bounds=fit4$par_fixed$bounds,Npts=100,burnin=0.5,probs.CI=c(0.05,0.95),COLOR_MEDIAN='red',COLOR_FILL='red',transparency=0.3,main='Macroevolutionary landscapes MCMC',ylab='N.exp(-V)',xlab='Trait',xlim=NULL,ylim=NULL)
 
 # Finally, we can force the potential to be quadratic (i.e. fit an OU model). This is done by fixing the intial values of a to 0 and setting its probability of update to zero 
 MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
