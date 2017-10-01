@@ -25,7 +25,7 @@ return(log(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]][x0_pos])+logFactor) #
 ######## PRIORS AND PROPOSALS FUNCTIONS #######
 ###############################################
 # log prior on all 5 params including root position: seems to work
-log_prior_5pars_root_bounds=function(type=c(rep('Normal',4),'Uniform'),shape=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),pars,Npts,trait,bounds){
+log_prior_5pars_root_bounds=function(type=c(rep('Normal',4),'Uniform'),shape=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),pars){
 	# pars: the actual parameters for which to calculate the prior (dCoeff,a,b,c,x0).
 	# type: either uniform of normal prior for each param, only uniform (discrete) for root position
 	# the prior is on log(sigsq/2)=dCoeff, not sigsq
@@ -48,7 +48,7 @@ log_prior_5pars_root_bounds=function(type=c(rep('Normal',4),'Uniform'),shape=lis
 }
 
 # proposal function: to move from one value of the parameters to the next SHOULD BE OK
-proposal_5pars_root_bounds=function(type='Uniform',sensitivity,pars,trait){ 
+proposal_5pars_root_bounds=function(type='Uniform',sensitivity,pars){ 
 	# same 5 params: (dCoeff,a,b,c,x0)
 	# for the root we draw a point on the grid nearby from root-sensitivity, to root+sensitivity, excluding root (i.e. we HAVE to move). Probably better to move one step at the time, i.e. sensitivity[5]=1. Same for the bounds
 	if (type=='Uniform'){
