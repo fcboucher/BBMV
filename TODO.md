@@ -1,6 +1,6 @@
 **To do, really**
 
-Remove unnecessary paramaters in MCMC help functions: 'trait,bounds' not used in 'log_prior_5pars_root_bounds', 'trait' not used in 'proposal_5pars_root_bounds'
+Remove unnecessary paramaters in MCMC help functions: 'Npts,trait,bounds' not used in 'log_prior_5pars_root_bounds', 'trait' not used in 'proposal_5pars_root_bounds'
 
 Update Tutorial to show usage of functions with measurement error
 
