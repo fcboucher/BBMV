@@ -1,5 +1,7 @@
 **To do, really**
 
+Remove unnecessary paramaters in MCMC help functions: 'trait,bounds' not used in 'log_prior_5pars_root_bounds', 'trait' not used in 'proposal_5pars_root_bounds'
+
 Update Tutorial to show usage of functions with measurement error
 
 Further test functions for joint inference of model on multiple independent trees with measurement error incorporated in it, then push to Github.
