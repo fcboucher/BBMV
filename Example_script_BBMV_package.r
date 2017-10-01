@@ -95,6 +95,7 @@ BM$opt$lnL
 
 # Ancestral character estimations for internal nodes of the tree can be obtained as follows:
 ACE_nodes=ACE_FPK(fit4,specific.point=NULL)
+par(mfrow=c(1,1))
 plot(ACE_nodes[[90]],type='l') # plot the probability density of the trait at node '90'
 
 # We can also ask for an ACE at any point in the tree. Here we ask for an ACE in the middle of the first branch (as ordered in the 'phylo' object), this is down by specifying (i) the parent node, (ii) the child node, and (iii) the time from the begining of the branch in the 'specific.point' argument:
