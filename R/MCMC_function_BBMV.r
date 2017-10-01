@@ -25,7 +25,7 @@ return(log(tree_formatted2$Pos[[tree_formatted2$tab[i,1]]][x0_pos])+logFactor) #
 ######## PRIORS AND PROPOSALS FUNCTIONS #######
 ###############################################
 # log prior on all 5 params including root position: seems to work
-log_prior_5pars_root_bounds=function(type=c(rep('Normal',4),'Uniform'),shape=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),pars){
+log_prior_5pars_root_bounds=function(type=c(rep('Normal',4),'Uniform'),shape=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),pars,Npts){
 	# pars: the actual parameters for which to calculate the prior (dCoeff,a,b,c,x0).
 	# type: either uniform of normal prior for each param, only uniform (discrete) for root position
 	# the prior is on log(sigsq/2)=dCoeff, not sigsq
@@ -96,7 +96,7 @@ for (i in 1:Nsteps){
 	sensitivity_temp=rep(0,length(pars_init)) # set all sensitivities to 0 so that parameters are not updated...
 	sensitivity_temp[par_to_update]= proposal_sensitivity[par_to_update] #... except the one chosen
 	prop= proposal_5pars_root_bounds(type='Uniform',sensitivity= sensitivity_temp,pars=temp)
-	lnprior_proposed= log_prior_5pars_root_bounds(type=type_priors,shape=shape_priors,pars=prop)
+	lnprior_proposed= log_prior_5pars_root_bounds(type=type_priors,shape=shape_priors,pars=prop,Npts=Npts)
 	if (lnprior_proposed ==(-Inf)){lnpost_proposed=-Inf} # no lnl calculation when prior is null
 	else {
 	if (prior.only==T){lnlik_proposed=1}
