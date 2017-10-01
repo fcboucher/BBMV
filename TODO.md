@@ -2,9 +2,7 @@
 
 Remove unnecessary paramaters in MCMC help functions: 'Npts,trait,bounds' not used in 'log_prior_5pars_root_bounds', 'trait' not used in 'proposal_5pars_root_bounds'
 
-Write function to plot confidence in V for MCMC fit, as in paper
-
-Update Tutorial to show usage of functions with measurement error
+Update Tutorial to show usage of functions with measurement error, and MCMC plot of posterior landscapes
 
 Further test functions for joint inference of model on multiple independent trees, including MCMC algo and measurement error incorporated in it, then push to Github.
 
