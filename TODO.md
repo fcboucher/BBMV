@@ -1,6 +1,6 @@
 **To do, really**
 
-Submit new package version to CRAN
+All good so far...
 
 **Less pressure...**
 
