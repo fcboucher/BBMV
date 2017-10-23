@@ -323,11 +323,11 @@ Then we create a potential that we will use to simulate trait evolution: it has 
 
 ```r
 x=seq(from=-1.5,to=1.5,length.out=100)
-bounds=c(min(x),max(x)) # the bounds we use for simulating
+bounds=c(min(x),max(x))
 a=8 ; b=-4 ; c=1
 V6=a*x^4+b*(x^2)+c*x
 step_size=(max(bounds)-min(bounds))/(100-1)
-V6_norm=exp(-V6)/sum(exp(-V6)*step_size) # the step size on the grid
+V6_norm=exp(-V6)/sum(exp(-V6)*step_size)
 par(mfrow=c(1,1))
 plot(V6_norm,type='l')
 ```
@@ -335,17 +335,17 @@ plot(V6_norm,type='l')
 Now we simulate a tree and a continuous trait for 3 independent clades. The trait evolves in the same macroevolutionary landscape for the 3 clades, but with different evolutionary rates (parameter *sigma* in the *Sim_FPK* function).
 
 ```r
-tree=sim.bdtree(stop='taxa',n=25) # tree with few tips for quick tests
-tree$edge.length=100*tree$edge.length/max(branching.times(tree)) # rescale the tree to a depth of 100
+tree=sim.bdtree(stop='taxa',n=25)
+tree$edge.length=100*tree$edge.length/max(branching.times(tree))
 TRAIT= Sim_FPK(tree,x0=0.5,V=V6,sigma=1,bounds=bounds)
 tree1=tree ; TRAIT1=TRAIT
 
-tree=sim.bdtree(stop='taxa',n=25) # tree with few tips for quick tests
+tree=sim.bdtree(stop='taxa',n=25)
 tree$edge.length=100*tree$edge.length/max(branching.times(tree))
 TRAIT= Sim_FPK(tree,x0=0.5,V=V6,sigma=0.5,bounds=bounds) 
 tree2=tree ; TRAIT2=TRAIT
 
-tree=sim.bdtree(stop='taxa',n=25) # tree with few tips for quick tests
+tree=sim.bdtree(stop='taxa',n=25)
 tree$edge.length=100*tree$edge.length/max(branching.times(tree))
 TRAIT= Sim_FPK(tree,x0=0.5,V=V6,sigma=0.1,bounds=bounds) 
 tree3=tree ; TRAIT3=TRAIT
