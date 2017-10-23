@@ -1,16 +1,9 @@
 rm(list=ls())
 #Below is an example of the use of the BBMV package with simulated data:
-# The BBMV package only depends on the package 'ape', which we need to load
-library(ape)
 
-# You first need to source all the functions of the package that we will need
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/get.landscape.BBMV_no_bounds.r',chdir=F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/ACE_FPK.r',chdir=F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/ML_functions.r',chdir=F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/utils_BBMV.r',chdir=F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/Simulate\ BBM+V.r',chdir = F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/charac_time.r',chdir=F)
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/Uncertainty_BBMV.r',chdir=F)
+# You can install the BBMV package directly from CRAN as follows:
+install.packages('BBMV')
+library(BBMV)
 
 # Simulate data: tree + continuous trait
 library(geiger) # we will use geiger for simulating the tree
@@ -199,7 +192,6 @@ Uncertainty_FPK(fit=fit4_with_ME,tree,trait=TRAIT2,Npts=25,effort_uncertainty= 1
 # proposal_type: the type of proposal function, only uniform is available
 # proposal_sensitivity: the width of the uniform proposal. The entire value for x0 gives how many steps at a time can be travelled on the trait grid (better to keep it to 1)
 
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/MCMC_function_BBMV.r',chdir=F)
 MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 
 # Estimate effective sample sizes in our MCMC run using the R package 'coda':
@@ -238,9 +230,6 @@ MCMC_ME=MH_MCMC_FPK(tree,trait=TRAIT2,bounds=fit4_with_ME$par_fixed$bounds,Nstep
 ################################################
 ##### Fit model on multiple clades at once #####
 ################################################
-
-# We first need to load the new mutliclade functions
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/Functions_multiclades.r',chdir=F)
 
 # We first create a potential that we will use to simulate trait evolution: it has two peaks of very unequal heights
 x=seq(from=-1.5,to=1.5,length.out=100)
