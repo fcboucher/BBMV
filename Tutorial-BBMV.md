@@ -408,7 +408,7 @@ In order to do an ACE, calculate the characteristic time of the FPK process or e
 fits=reformat_multiclade_results(fitbFPK4)
 ```
 
-And now we can do various things on clade 1.
+And now we can do various things on clade #1.
 
 ```r
 ace_tree1=ACE_FPK(fits$fit_clade_1)
