@@ -370,14 +370,14 @@ hist(TRAITS[[3]],breaks=20)
 
  Now we will fit three different scenarios of the FPK model with the most complex form of the potential, V(x)=a.x^4+b.x^2+c.x.
 
- 1) In all clades both the macroevolutionary landscape and the evolutionary rate are the same:
+ 1) All clades share the same macroevolutionary landscape and evolutionary rate :
 
 ```r 
 testFPK4=lnl_FPK_multiclades_same_V_same_sig2(trees=TREES,traits=TRAITS,a=NULL,b=NULL,c=NULL,Npts=50)
 fitFPK4=find.mle_FPK_multiple_clades_same_V_same_sig2(model=testFPK4,method='Nelder-Mead',init.optim=NULL)
 ```
 
-2) In all clades the macroevolutionary landscape is the same but they have different evolutionary rates:
+2) All clades share the same macroevolutionary landscape but they have different evolutionary rates:
 
 ```r
 testbFPK4=lnl_FPK_multiclades_same_V_different_sig2(trees=TREES,traits=TRAITS,a=NULL,b=NULL,c=NULL,Npts=50)
