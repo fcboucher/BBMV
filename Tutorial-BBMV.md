@@ -6,7 +6,7 @@ Under the *FPK* model, a continuous trait evolves according to random diffusion 
 
 The *BBMV* model is a special case of *FPK* in which the trait is subject to an 'evolutionary potential' but also evolves between two reflective bounds.
 
-This parametrization is rather flexible since it allows for no force, directional trends, attraction towards a trait value within the interval, attraction towards the two bounds, or attraction towards several distinct trait values within the interval. In this tutorial we will see how to estimate the model parameters using maximum-likelihood and MCMC integration.
+This parametrization is rather flexible since it allows for no force, directional trends, attraction towards a trait value within the interval, attraction towards the two bounds, or attraction towards several distinct trait values within the interval. In this tutorial we will see how to estimate the model parameters using maximum-likelihood and MCMC.
 
 We first need to load the only R package on which **BBMV** depends: **ape**
 ```r
