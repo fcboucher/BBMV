@@ -232,3 +232,82 @@ hist(MCMC_OU[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 
 # The MCMC function can also be run with measurement error
 MCMC_ME=MH_MCMC_FPK(tree,trait=TRAIT2,bounds=fit4_with_ME$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+
+
+
+################################################
+##### Fit model on multiple clades at once #####
+################################################
+
+# We first need to load the new mutliclade functions
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/Functions_multiclades.r',chdir=F)
+
+# We first create a potential that we will use to simulate trait evolution: it has two peaks of very unequal heights
+x=seq(from=-1.5,to=1.5,length.out=100)
+bounds=c(min(x),max(x)) # the bounds we use for simulating
+a=8 ; b=-4 ; c=1
+V6=a*x^4+b*(x^2)+c*x
+step_size=(max(bounds)-min(bounds))/(100-1)
+V6_norm=exp(-V6)/sum(exp(-V6)*step_size) # the step size on the grid
+par(mfrow=c(1,1))
+plot(V6_norm,type='l')
+
+# Now we simulate a tree and a continuous trait for 3 independent clades. The trait evolves in the same macroevolutionary landscape for the 3 clades, but with different evolutionary rates.
+tree=sim.bdtree(stop='taxa',n=25) # tree with few tips for quick tests
+tree$edge.length=100*tree$edge.length/max(branching.times(tree)) # rescale the tree to a depth of 100
+TRAIT= Sim_FPK(tree,x0=0.5,V=V6,sigma=1,bounds=bounds)
+tree1=tree ; TRAIT1=TRAIT
+
+tree=sim.bdtree(stop='taxa',n=25) # tree with few tips for quick tests
+tree$edge.length=100*tree$edge.length/max(branching.times(tree))
+TRAIT= Sim_FPK(tree,x0=0.5,V=V6,sigma=0.5,bounds=bounds) 
+tree2=tree ; TRAIT2=TRAIT
+
+tree=sim.bdtree(stop='taxa',n=25) # tree with few tips for quick tests
+tree$edge.length=100*tree$edge.length/max(branching.times(tree))
+TRAIT= Sim_FPK(tree,x0=0.5,V=V6,sigma=0.1,bounds=bounds) 
+tree3=tree ; TRAIT3=TRAIT
+rm(tree) ; rm(TRAIT)
+
+# The phylogenies and trait vectors for each clade are put in a list. This is the format required for the multiclade functions.
+TREES=list(tree1,tree2,tree3)
+TRAITS=list(TRAIT1,TRAIT2,TRAIT3)
+
+# We can have a look at the trait distribution in each clade: from left to right the evolutionary rate decreases and the macroevolutionary landscape is less well explored
+par(mfrow=c(1,3))
+hist(TRAITS[[1]],breaks=20)
+hist(TRAITS[[2]],breaks=20)
+hist(TRAITS[[3]],breaks=20)
+
+# Now we will fit three different scenarios of the FPK model with the most complex form of the potential, V(x)=a.x^4+b.x^2+c.x.
+
+# 1) In all clades both the macroevolutionary landscape and the evolutionary rate are the same:
+testFPK4=lnl_FPK_multiclades_same_V_same_sig2(trees=TREES,traits=TRAITS,a=NULL,b=NULL,c=NULL,Npts=50)
+fitFPK4=find.mle_FPK_multiple_clades_same_V_same_sig2(model=testFPK4,method='Nelder-Mead',init.optim=NULL)
+
+# 2) In all clades the macroevolutionary landscape is the same but they have different evolutionary rates:
+testbFPK4=lnl_FPK_multiclades_same_V_different_sig2(trees=TREES,traits=TRAITS,a=NULL,b=NULL,c=NULL,Npts=50)
+fitbFPK4=find.mle_FPK_multiple_clades_same_V_different_sig2(model=testbFPK4,method='Nelder-Mead',init.optim=NULL)
+
+# 3) All clades have their own dynamics, both the macroevolutionary landscape and the evolutionary rate vary:
+fitmFPK4=fit_FPK_multiple_clades_different_V_different_sig2(trees=TREES,traits=TRAITS,a=NULL,b=NULL,c=NULL,Npts=50)
+
+# We can compare the fits of these three scenarios using aic.
+fitFPK4$aic
+fitbFPK4$aic
+fitmFPK4$aic
+
+# The second model should have the lowest AIC (this is the one we simulated under). We can have a look at parameter estimates:
+fitbFPK4$par
+
+# In order to do an ACE, calculate the characteristic time of the FPK process or even plot the macroevolutionary landscape, we first need to separate results for each clade. The function 'reformat_multiclade_results' separates the results for each clade and returns a list with results for each clade, as done by 'find.mle_FPK'. 
+fits=reformat_multiclade_results(fitbFPK4)
+
+# We can do various things on clade 1 now
+ace_tree1=ACE_FPK(fits$fit_clade_1)
+par(mfrow=c(1,1))
+plot(ace_tree1[[length(fits$fit_clade_1$tree$tip.label)+1]],type='l') # root ACE (root node number is ntips+1)
+charac_time(fit=fits$fit_clade_1)
+
+get.landscape.FPK(fit=fits$fit_clade_1)
+lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
