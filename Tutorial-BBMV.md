@@ -312,6 +312,7 @@ hist(MCMC_OU[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 MCMC estimation of the FPK model can also be done while incorporating measurement error in tip data. This is provided exactly as for ML estimation.
 
 ## Fit the *FPK* model on multiple clades at once
+It is also possible to fit the *FPK* model on multiple clades together in order to statistically test whether they share a similar macroevolutionary landscape. This is an alternative to existing methods that infer heterogeneity in macroevolutionary dynamics across large phylogenies (e.g. packages **l1ou** or **bayou** for OU models). The advantage of this procedure is that it does not require a backbone tree connecting the different clades one wants to compare. Drawbacks are that clades are considered independent and that only *these* clades can be compared (*i.e.*, the algorithm does not explore the possibility that any subsclade has different dynamics). This method could also help in cases where one has data at hand for multiple small clades in which traits are believed to have evolved under similar dynamics: pooling clades together might improve estimation of the macroevolutionary landscape.
 
 We first need to load the mutliclade functions:
 ```r
