@@ -205,9 +205,9 @@ fit0b$aic
 ```
 *fit1b* this should have the lowest AIC since it is the model we simulated... at least if we would have had a large enough tree. More complex models (fit4b and fit2b) will also do good job since they can accommodate this trend, but they have more parameters.
 
-# Measurement error in trait data
+### Measurement error in trait data
 
-The FPK and BBMV models can be fitted while accounting for measurement error in the value of the trait at the tips of the tree? This error is not given as a standard-deviation or variance, but rather a vector of multiple measurements of the trait value is given for each tip. The trait object passed as argument to either *lnL_FPK* or *lnL_BBMV* thus becomes a list instead of a vector.
+The FPK and BBMV models can be fitted while accounting for measurement error in the value of the trait at the tips of the tree. This error is not given as a standard-deviation or variance, but rather a vector of multiple measurements of the trait value is given for each tip. The trait object passed as argument to either *lnL_FPK* or *lnL_BBMV* thus becomes a list instead of a vector.
 
 If you only have an estimate of the standard-error and the mean trait value, then you can provide random draws of the trait for each species, as done below. Here we introduce random measurement error in the values of the TRAIT simulated earlier under the FPK model.
 
