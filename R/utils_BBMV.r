@@ -97,7 +97,6 @@ ConvProp_bounds=function(X,t,prep_mat){
 # format tree and trait --> the tree is ordered from tips to root, with edge.length binded to the topology
 # A list is also initiated, filled with the position (probabilistic) of each tip and 1 for internal nodes.
 FormatTree_bounds=function(tree,trait,V,bounds){
-  require(ape)	
   tree=reorder.phylo(tree,'postorder')
   ntips=length(tree$tip.label)
   tab=cbind(tree$edge,tree$edge.length) ; colnames(tab)=c('parent','children','brlen')
