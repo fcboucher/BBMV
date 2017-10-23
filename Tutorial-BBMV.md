@@ -205,7 +205,32 @@ fit0b$aic
 ```
 *fit1b* this should have the lowest AIC since it is the model we simulated... at least if we would have had a large enough tree. More complex models (fit4b and fit2b) will also do good job since they can accommodate this trend, but they have more parameters.
 
+# Measurement error in trait data
 
+The FPK and BBMV models can be fitted while accounting for measurement error in the value of the trait at the tips of the tree? This error is not given as a standard-deviation or variance, but rather a vector of multiple measurements of the trait value is given for each tip. The trait object passed as argument to either *lnL_FPK* or *lnL_BBMV* thus becomes a list instead of a vector.
+
+If you only have an estimate of the standard-error and the mean trait value, then you can provide random draws of the trait for each species, as done below. Here we introduce random measurement error in the values of the TRAIT simulated earlier under the FPK model
+TRAIT2=list()
+for (i in 1:length(TRAIT)){
+  TRAIT2[[i]]=rnorm(n=runif(n=1,min=2,max=10),mean=TRAIT[i],sd=runif(n=1,min=0,max=0.03))
+}
+names(TRAIT2)=names(TRAIT)
+TRAIT2[c(1:4)] # trait measurements for the first for tips: different tips have different number of measures and different levels of error
+
+# Then we can use the same functions as before to fit the model to this dataset. Here we only demonstrate the inclusion of measurement error when fitting the FPK model, but the same works for the BBMV model.
+ll_FPK4_with_ME=lnL_FPK(tree,TRAIT2,Npts=25,a=NULL,b=NULL,c=NULL) # the full model
+fit4_with_ME=find.mle_FPK(model=ll_FPK4_with_ME)
+
+# Now we can also compare the macroevolutionary landscapes estimated using both methods: they should be rather similar unless measurement error is large relative to the spread of the trait
+par(mfrow=c(1,2))
+get.landscape.FPK(fit=fit4)
+lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
+get.landscape.FPK(fit=fit4_with_ME)
+lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
+
+# Estimate uncertainty in parameters when fitting the model with measurement error
+fit4_with_ME$par
+Uncertainty_FPK(fit=fit4_with_ME,tree,trait=TRAIT2,Npts=25,effort_uncertainty= 100,scope_a=c(0,100),scope_b=c(-15,5),scope_c=c(-5,5))
 
 
 ## Markov Chain Monte Carlo estimation
