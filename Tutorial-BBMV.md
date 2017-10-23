@@ -209,29 +209,44 @@ fit0b$aic
 
 The FPK and BBMV models can be fitted while accounting for measurement error in the value of the trait at the tips of the tree? This error is not given as a standard-deviation or variance, but rather a vector of multiple measurements of the trait value is given for each tip. The trait object passed as argument to either *lnL_FPK* or *lnL_BBMV* thus becomes a list instead of a vector.
 
-If you only have an estimate of the standard-error and the mean trait value, then you can provide random draws of the trait for each species, as done below. Here we introduce random measurement error in the values of the TRAIT simulated earlier under the FPK model
+If you only have an estimate of the standard-error and the mean trait value, then you can provide random draws of the trait for each species, as done below. Here we introduce random measurement error in the values of the TRAIT simulated earlier under the FPK model.
+
+```r
 TRAIT2=list()
 for (i in 1:length(TRAIT)){
   TRAIT2[[i]]=rnorm(n=runif(n=1,min=2,max=10),mean=TRAIT[i],sd=runif(n=1,min=0,max=0.03))
 }
 names(TRAIT2)=names(TRAIT)
-TRAIT2[c(1:4)] # trait measurements for the first for tips: different tips have different number of measures and different levels of error
+```
 
-# Then we can use the same functions as before to fit the model to this dataset. Here we only demonstrate the inclusion of measurement error when fitting the FPK model, but the same works for the BBMV model.
+We can have a look at how trait measurments look for the first 4 species: different tips have different number of measures and different levels of error.
+
+```r
+TRAIT2[c(1:4)] 
+```
+
+Then we can use the same functions as before to fit the model to this dataset. Here we only demonstrate the inclusion of measurement error when fitting the FPK model, but the same works for the BBMV model.
+
+```r
 ll_FPK4_with_ME=lnL_FPK(tree,TRAIT2,Npts=25,a=NULL,b=NULL,c=NULL) # the full model
 fit4_with_ME=find.mle_FPK(model=ll_FPK4_with_ME)
+```
 
-# Now we can also compare the macroevolutionary landscapes estimated using both methods: they should be rather similar unless measurement error is large relative to the spread of the trait
+Now we can compare the macroevolutionary landscapes estimated using both methods: they should be rather similar unless measurement error is large relative to the spread of the trait.
+
+```r
 par(mfrow=c(1,2))
 get.landscape.FPK(fit=fit4)
 lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 get.landscape.FPK(fit=fit4_with_ME)
 lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
+```
+Uncertainty in parameters can also be estimated when fitting the model with measurement error:
 
-# Estimate uncertainty in parameters when fitting the model with measurement error
+```r
 fit4_with_ME$par
 Uncertainty_FPK(fit=fit4_with_ME,tree,trait=TRAIT2,Npts=25,effort_uncertainty= 100,scope_a=c(0,100),scope_b=c(-15,5),scope_c=c(-5,5))
-
+```
 
 ## Markov Chain Monte Carlo estimation
 We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler using the function *MH_MCMC_FPK*. Here we will do only a few generations so that computation time is not too long but for analysing real datasets you should monitor convergence of the MCMC chain (see below).
