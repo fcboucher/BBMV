@@ -359,7 +359,7 @@ TREES=list(tree1,tree2,tree3)
 TRAITS=list(TRAIT1,TRAIT2,TRAIT3)
 ```
 
-We can have a look at the trait distribution in each clade: from left to right the evolutionary rate decreases and the macroevolutionary landscape is less well explored
+We can have a look at the trait distribution in each clade: from left to right the evolutionary rate decreases and thus the macroevolutionary landscape is less well explored
 
 ```r
 par(mfrow=c(1,3))
