@@ -14,8 +14,10 @@ The paper describing the model has been accepted in *Systematic Biology* and is 
 
 Help files for all functions can be found in this [pdf](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf) and there is also a troubleshooting section at the end of the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md).
 
-### Recent additions
+### Latest additions
 
-As of September 29th, 2017 all functions (ML and MCMC) can take measurement error in trait data at the tips of the tree into account. The format required for the trait data in this case is explained in the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) and the [example R script](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r). Be cautious when fitting the model with measurement error since the behaviour of the model has not been extensively tested yet.
+- 2017.10.23: it is now possible to fit the *FPK* model on multiple clades together in order to statistically test whether they share a similar macroevolutionary landscape.Examples of use of these new functions are given in the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) and the [example R script](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r).
+
+- 2017.09.29: all functions (ML and MCMC) can now take measurement error in trait data at the tips of the tree into account. The format required for the trait data in this case is explained in the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) and the [example R script](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r). Be cautious when fitting the model with measurement error since the behaviour of the model has not been extensively tested yet.
 
 A former version of the **BBMV** package can be found on [CRAN](https://CRAN.R-project.org/package=BBMV) and the package should be updated there soon. 
