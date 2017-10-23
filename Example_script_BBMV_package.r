@@ -153,7 +153,7 @@ fit0b$aic
 # If you only have an estimate of the standard-error and the mean trait value, then you can provide random draws of the trait for each species, as done below. Here we introduce random measurement error in the values of the TRAIT simulated earlier under the FPK model
 TRAIT2=list()
 for (i in 1:length(TRAIT)){
-  TRAIT2[[i]]=rnorm(n=runif(n=1,min=2,max=10),mean=TRAIT[i],sd=runif(n=1,min=0,max=0.02))
+  TRAIT2[[i]]=rnorm(n=runif(n=1,min=2,max=10),mean=TRAIT[i],sd=runif(n=1,min=0,max=0.03))
 }
 names(TRAIT2)=names(TRAIT)
 TRAIT2[c(1:4)] # trait measurements for the first for tips: different tips have different number of measures and different levels of error
