@@ -7,7 +7,7 @@ Functions of the **BBMV** package only depend on the **ape** package in R and li
 
 Functions were written by [Florian Boucher](https://sites.google.com/site/floriaboucher/) based on equations from [Vincent Démery](https://www.pct.espci.fr/~vdemery/).
 
-The [R folder](https://github.com/fcboucher/BBMV/tree/master/R) contains functions to simulate traits evolving under the *FPK* (or *BBM+V*) model, plot macroevolutionary landscapes, and fit the model to empirical data using either maximum-likelihood or MCMC estimation. 
+The [R folder](https://github.com/fcboucher/BBMV/tree/master/R) contains functions to simulate traits evolving under the *FPK* (or *BBMV*) model, plot macroevolutionary landscapes, and fit the model to empirical data using either maximum-likelihood or MCMC estimation. 
 The [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) shows basic examples of use of the functions to simulate and infer under *FPK*. In case you need it there is also a full [R script of the tutorial](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r). 
 
 The paper describing the model has been accepted in *Systematic Biology* and is currently in press, but you can find a preprint of the latest version [here](https://github.com/fcboucher/BBMV/blob/master/Manuscript/). 
@@ -16,7 +16,7 @@ Help files for all functions can be found in this [pdf](https://github.com/fcbou
 
 ### Latest additions
 
-- 2017.10.23: it is now possible to fit the *FPK* model on multiple clades together in order to statistically test whether they share a similar macroevolutionary landscape.Examples of use of these new functions are given in the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) and the [example R script](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r).
+- 2017.10.23: it is now possible to fit the *FPK* model on multiple clades together in order to statistically test whether they share a similar macroevolutionary landscape. This is an alternative to existing methods that infer heterogeneity in macroevolutionary dynamics across large phylogenies (e.g. packages **l1ou** or **bayou** for OU models). The advantage of this procedure is that it does not require a backbone tree connecting the different clades one wants to compare. Drawbacks are that clades are considered independent and that only *these* clades can be compared (*i.e.*, the algorithm does not explore the possibility that any subsclade has different dynamics). This method could also help in cases where one has data at hand for multiple small clades in which traits are believed to have evolved under similar dynamics: pooling clades together might improve estimation of the macroevolutionary landscape. Examples of use of these new functions are given in the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) and the [example R script](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r).
 
 - 2017.09.29: all functions (ML and MCMC) can now take measurement error in trait data at the tips of the tree into account. The format required for the trait data in this case is explained in the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) and the [example R script](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r). Be cautious when fitting the model with measurement error since the behaviour of the model has not been extensively tested yet.
 
