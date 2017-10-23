@@ -1,10 +1,10 @@
 # Tutorial for the R package *BBMV*
 
-The purpose of the **BBMV** package is to fit highly flexible models for continuous traits evolving on phylogenies. The package implements two main models: the *FPK* model and the *BBM+V* model.
+The purpose of the **BBMV** package is to fit highly flexible models for continuous traits evolving on phylogenies. The package implements two main models: the *FPK* model and the *BBMV* model.
 
 Under the *FPK* model, a continuous trait evolves according to random diffusion (Brownian motion) and is also subject to an 'evolutionary potential' that creates a force that pulls the trait towards specific regions of the trait interval. In theory, this force can be of any conceivable shape but for the present implementation we have chosen a parametric shape for the potential of the shape: *V(x)=ax<sup>4</sup>+bx<sup>2</sup>+cx*. 
 
-The *BBM+V* model is a special case of *FPK* in which the trait is subject to an 'evolutionary potential' but also evolves between two reflective bounds.
+The *BBMV* model is a special case of *FPK* in which the trait is subject to an 'evolutionary potential' but also evolves between two reflective bounds.
 
 This parametrization is rather flexible since it allows for no force, directional trends, attraction towards a trait value within the interval, attraction towards the two bounds, or attraction towards several distinct trait values within the interval. In this tutorial we will see how to estimate the model parameters using maximum-likelihood and MCMC integration.
 
@@ -23,7 +23,7 @@ source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Uncertainty_BBMV.r',chdir=F)
 ```
 
 ## Simulation function
-For this tutorial we will simulate data and then infer parameters of the BBM+V model on this simulated dataset. We need the R package **geiger** to simulate phylogenetic trees.
+For this tutorial we will simulate data and then infer parameters of the *BBMV* model on this simulated dataset. We need the R package **geiger** to simulate phylogenetic trees.
 ```r
 library(geiger)
 tree=sim.bdtree(stop='taxa',n=50)
@@ -158,9 +158,9 @@ ACE_1st_branch=ACE_FPK(fit4,specific.point=c(fit4$tree$edge[1,1],fit4$tree$edge[
 plot(ACE_1st_branch,type='l')
 ```
 
-### BBM+V model
+### BBMV model
 
-In the **BBMV** package we can also fit a special case of the FPK model in which there are actual (reflective) bounds on the trait interval: the *BBM+V* model. Here we will use a simulated dataset on which there is a trend towards one of the bounds of the trait interval:
+In the **BBMV** package we can also fit a special case of the FPK model in which there are actual (reflective) bounds on the trait interval: the *BBMV* model. Here we will use a simulated dataset on which there is a trend towards one of the bounds of the trait interval:
 ```r
 par(mfrow=c(1,1))
 Vb=3*x
