@@ -276,7 +276,7 @@ source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/MCMC_function_BBMV.r',chdir=F)
 MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 ```
 
-Now we can measure the effective sample size of the chain using the package *coda*. This value should be above, say, 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of model parameters. We remove the 50 first samples as burnin just for the example, but we should probably be running the chain for much longer and discard way more samples:
+Now we can measure the effective sample size of the chain using the package **coda**. This value should be above, say, 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of model parameters. We remove the 50 first samples as burnin just for the example, but we should probably be running the chain for much longer and discard way more samples:
 ```r
 library(coda)
 apply(MCMC[-c(1:50),2:9],2,effectiveSize)
