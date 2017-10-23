@@ -183,6 +183,7 @@ Uncertainty_FPK(fit=fit4_with_ME,tree,trait=TRAIT2,Npts=25,effort_uncertainty= 1
 
 # Parameters of the MCMC functions are the following:
 # tree and TRAIT: the phylogenetic tree and data vector
+# bounds: the bounds on the trait interval (set them far away from observed trait to fit the FPK model)
 # Nsteps: the number of generations in the MCMC chain
 # record_every: the interval used for sampling the MCMC chain
 # plot_every: the interval at which the chain is plotted (if plot=TRUE).
