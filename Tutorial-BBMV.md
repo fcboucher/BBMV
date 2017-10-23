@@ -253,6 +253,7 @@ We can also estimate parameters of the full model using an MCMC chain with the M
 
 Parameters of the MCMC functions are the following:
 - tree and TRAIT: the phylogenetic tree and data vector
+- bounds: the bounds on the trait interval
 - Nsteps: the number of generations in the MCMC chain
 - record_every: the interval used for sampling the MCMC chain
 - plot_every: the interval at which the chain is plotted (if plot=TRUE).
@@ -268,11 +269,11 @@ Parameters of the MCMC functions are the following:
 - proposal_type: the type of proposal function, only uniform is available
 - proposal_sensitivity: the width of the uniform proposal. The entire value for x0 gives how many steps at a time can be travelled on the trait grid (better to keep it to 1)
 
-Let's load and use the MCMC function on the simulated dataset with two peaks:
+Let's load and use the MCMC function on the simulated dataset with two peaks (FPK model). Here we fix the bounds of the trait interval to be the same as when we fitted the FPK model: they are far away from the observed trait interval and thus do not influence the process, we are thus fitting the FPK model. If we would like to fit the BBMV model we could place them closer to the observed trait, e.g. bounds=c(min(TRAIT),max(TRAIT)).
 
 ```r
 source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/MCMC_function_BBMV.r',chdir=F)
-MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=c(-1.5,1.5),Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 ```
 
 Now we can measure the effective sample size of the chain using the package *coda*. This value should be above, say, 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of model parameters. We remove the 50 first samples as burnin just for the example, but we should probably be running the chain for much longer and discard way more samples:
@@ -296,7 +297,7 @@ get.landscape.FPK.MCMC(chain=MCMC,bounds=fit4$par_fixed$bounds,Npts=100,burnin=0
 
 Finally, we can also estimate a simpler version of the model using MCMC. Here we will run a chain with the potential forced to be quadratic (i.e. an OU model). We do this by fixing the intial values of *a* to 0 and setting its probability of update to zero:
 ```r
-MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=c(-1.5,1.5),Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 
 apply(MCMC_OU[-c(1:50),2:9],2,effectiveSize)
 par(mfrow=c(2,3))
