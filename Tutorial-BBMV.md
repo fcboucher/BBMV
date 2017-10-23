@@ -8,18 +8,10 @@ The *BBMV* model is a special case of *FPK* in which the trait is subject to an 
 
 This parametrization is rather flexible since it allows for no force, directional trends, attraction towards a trait value within the interval, attraction towards the two bounds, or attraction towards several distinct trait values within the interval. In this tutorial we will see how to estimate the model parameters using maximum-likelihood and MCMC.
 
-We first need to load the only R package on which **BBMV** depends: **ape**
+The **BBMV** package can be installed from CRAN:
 ```r
-library(ape)
-```
-Then we need to source all functions in the **BBMV** package, which can be done via:
-```r
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/get.landscape.BBMV_no_bounds.r',chdir=F)
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/ML_functions.r',chdir=F)
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/utils_BBMV.r',chdir=F)
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Simulate\ BBM+V.r',chdir = F)
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/charac_time.r',chdir=F)
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/Uncertainty_BBMV.r',chdir=F)
+install.packages('BBMV')
+library(BBMV)
 ```
 
 ## Simulation function
@@ -272,7 +264,6 @@ Parameters of the MCMC functions are the following:
 Let's load and use the MCMC function on the simulated dataset with two peaks (FPK model). Here we fix the bounds of the trait interval to be the same as when we fitted the FPK model: they are far away from the observed trait interval and thus do not influence the process, we are thus fitting the FPK model. If we would like to fit the BBMV model we could place them closer to the observed trait, e.g. bounds=c(min(TRAIT),max(TRAIT)).
 
 ```r
-source('SET_PATH_TO_THIS_FILE_ON_YOUR_COMPUTER/MCMC_function_BBMV.r',chdir=F)
 MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 ```
 
@@ -314,12 +305,7 @@ MCMC estimation of the FPK model can also be done while incorporating measuremen
 ## Fit the *FPK* model on multiple clades at once
 It is also possible to fit the *FPK* model on multiple clades together in order to statistically test whether they share a similar macroevolutionary landscape. This is an alternative to existing methods that infer heterogeneity in macroevolutionary dynamics across large phylogenies (e.g. packages **l1ou** or **bayou** for OU models). The advantage of this procedure is that it does not require a backbone tree connecting the different clades one wants to compare. Drawbacks are that clades are considered independent and that only *these* clades can be compared (*i.e.*, the algorithm does not explore the possibility that any subsclade has different dynamics). This method could also help in cases where one has data at hand for multiple small clades in which traits are believed to have evolved under similar dynamics: pooling clades together might improve estimation of the macroevolutionary landscape.
 
-We first need to load the mutliclade functions:
-```r
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/Functions_multiclades.r',chdir=F)
-```
-
-Then we create a potential that we will use to simulate trait evolution: it has two peaks of very unequal heights.
+We first create a potential that we will use to simulate trait evolution: it has two peaks of very unequal heights.
 
 ```r
 x=seq(from=-1.5,to=1.5,length.out=100)
