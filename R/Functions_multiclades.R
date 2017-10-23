@@ -472,7 +472,7 @@ MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=
   for (clade in 1:n_clades){eval(parse(text=paste("colnames(chain)[",clade,"+1]='sigsq_clade_",clade,"'",sep='')))}
   if (prior.only==T){lnlik=1}
   else {
-    NEG_LNL_func=lnl_BBMV_multiclades_same_V_different_sig2(trees=trees,traits=traits,bound=bounds,a=NULL,b=NULL,c=NULL,Npts=50)$fun
+    NEG_LNL_func=lnl_BBMV_multiclades_same_V_different_sig2(trees=trees,traits=traits,bounds=bounds,a=NULL,b=NULL,c=NULL,Npts=50)$fun
     LNL_func=function(X){return(-NEG_LNL_func(X))}
     lnlik= LNL_func(X=temp)
   }
