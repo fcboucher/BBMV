@@ -1,6 +1,6 @@
 **To do, really**
 
-All good so far...
+Function to plot prior vs. posterior for MCMC runs
 
 **Less pressure...**
 
