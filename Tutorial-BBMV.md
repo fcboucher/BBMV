@@ -406,7 +406,8 @@ lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 ```
 
 
-## Troubleshooting ML estimation
+## Troubleshooting 
+### ML estimation
 Numerical errors can occur when trying to fit the *FPK* model to empirical data. Here are a few suggestions that can help solving some issues:
 - changing the optimization method used in the *find.mle_FPK* function (e.g. from *Nelder-Mead* to *L-BFGS-B*)
 - changing *Npts* to an odd number, or reducing it
@@ -421,5 +422,8 @@ fit4b=find.mle_FPK(model=ll_FPK4,safe=TRUE)
 
 In cases where you see an error which looks like *error in solve.default ... reciprocal condition number =*, you can try decreasing the tolerance used when calling the *solve* function, which we use for inverting the diffusion matrix. This can be done by manually editing the *prep_mat_exp* function in the *utils_BBMV.r* script.
 
-
 Finally, when you are comparing models with different shapes of the evolutionary potential, remember to check that complex models should always have a higher likelihood than simpler models (which are nested within the complex ones). Optimization of the model is difficult, and this kind of situations unfortunately happen...
+
+### MCMC estimation
+
+In order to ensure that the Gibbs sampler mixes well you need to fine-tune the proposal function (the function that determines how you can move to one parameter value to another in the next step of the MCMC chain). This is done by specifying a vector of values as the *proposal_sensitivity* argument and can be quite tricky. One solution to get an idea of the values this parameter should take is to make an test MCMC run while sampling the prior only. This is rather quick since the likelihood needs not be calculated (which takes the most computing time) and can be done by setting *prior.only=F*. At least by doing that you would be able to rule out values of the proposal sensitvity that are too small for the prior to be fully explored in a reasonable number of steps of the MCMC algorithm.
