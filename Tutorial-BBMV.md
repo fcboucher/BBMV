@@ -413,7 +413,7 @@ The bounded Brownian motion model (Boucher & Démery 2016 Syst. Biol.) is a spec
 ```r
 ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=0,c=0)
 ```
-However, this implies that you know the bounds that act on trait values. Estimating them is possible using functions of the *BBM* repository LINK HERE, but the optimization procedure used is less reliable than that of the *BBMV* package. Although we lack an analytical proof of it, it seems that the minimum and maximum of observed trait values at the tips of the phylogeny are the ML estimators of the bounds of the trait interval (see Boucher & Démery 2016 Syst. Biol. for details). If you don't have an a priori of which bounds to expect, you could thus use the *BBMV* package to fit the bounded Brownian motion model as follows:
+However, this implies that you know the bounds that act on trait values. Estimating them is possible using functions of the [*BBM* repository](https://github.com/fcboucher/BBM), but the optimization procedure used is less reliable than that of the *BBMV* package. Although we lack an analytical proof of it, it seems that the minimum and maximum of observed trait values at the tips of the phylogeny are the ML estimators of the bounds of the trait interval (see Boucher & Démery 2016 Syst. Biol. for details). If you don't have an a priori of which bounds to expect, you could thus use the *BBMV* package to fit the bounded Brownian motion model as follows:
 ```r
 ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=25,bounds=c(min(TRAITb),max(TRAITb)),a=0,b=0,c=0)
 ```
