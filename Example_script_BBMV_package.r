@@ -210,6 +210,15 @@ hist(MCMC[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 # Here we set a burnin fraction of 50% since the MCMC run was extremely short
 get.landscape.FPK.MCMC(chain=MCMC,bounds=fit4$par_fixed$bounds,Npts=100,burnin=0.5,probs.CI=c(0.025,0.975),COLOR_MEDIAN='red',COLOR_FILL='red',transparency=0.3,main='Macroevolutionary landscapes MCMC',ylab='N.exp(-V)',xlab='Trait',xlim=NULL,ylim=NULL)
 
+# We can compare priors and posteriors
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/posterior_vs_prior.r') # function not incuded in R package yet
+
+par(mfrow=c(2,2))
+posterior_vs_prior(chain=MCMC,param='a',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
+posterior_vs_prior(chain=MCMC,param='b',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
+posterior_vs_prior(chain=MCMC,param='c',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
+posterior_vs_prior(chain=MCMC,param='sigsq',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
+
 # Finally, we can force the potential to be quadratic (i.e. fit an OU model). This is done by fixing the intial values of a to 0 and setting its probability of update to zero 
 MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 
