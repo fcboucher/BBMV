@@ -286,6 +286,20 @@ In order to visualize the posterior of our MCMC analysis we can plot credible in
 get.landscape.FPK.MCMC(chain=MCMC,bounds=fit4$par_fixed$bounds,Npts=100,burnin=0.5,probs.CI=c(0.025,0.975),COLOR_MEDIAN='red',COLOR_FILL='red',transparency=0.3,main='Macroevolutionary landscapes MCMC',ylab='N.exp(-V)',xlab='Trait',xlim=NULL,ylim=NULL)
 ```
 
+We can plot the distribution of the prior vs. posterior for each parameter of the model to see how much information came from the data. To do so we need to source one function from the Github repository (change the path below to match your local one) which is not yet in the package.
+```r
+source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/posterior_vs_prior.r') # function not incuded in R package yet
+```
+
+Now we will plot priors and posteriors. Even though the chain is far from having converged we might still get strong information from the likelihood (i.e., the data)... or we might still be strongly influenced by the initial point of the MCMC chain.
+```r
+par(mfrow=c(2,2))
+posterior_vs_prior(chain=MCMC,param='a',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
+posterior_vs_prior(chain=MCMC,param='b',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
+posterior_vs_prior(chain=MCMC,param='c',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
+posterior_vs_prior(chain=MCMC,param='sigsq',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
+```
+
 Finally, we can also estimate a simpler version of the model using MCMC. Here we will run a chain with the potential forced to be quadratic (i.e. an OU model). We do this by fixing the intial values of *a* to 0 and setting its probability of update to zero:
 ```r
 MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
