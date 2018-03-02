@@ -16,6 +16,6 @@ Function that enables users to DRAW any kind of potential?
 
 Logo?
 
-**For next package release **
+**For next package release**
 
 Add function 'posterior_vs_prior.r'
