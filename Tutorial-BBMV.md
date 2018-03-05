@@ -280,7 +280,7 @@ hist(MCMC[-c(1:50),4],breaks=20,main='b (x^2 term)',ylab=NULL)
 hist(MCMC[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 ```
 
-In order to visualize the posterior of our MCMC analysis we can plot credible intervals (CI) of macroevolutionary landscapes estimated in the MCMC run. The function *get.landscape.FPK.MCMC* plots the median value of the macroevolutionary landscape across the posterior in a solid lines and draws a polygon that streches between two quantiles, defined by probs.CI. Here we set a burnin fraction of 50% since the MCMC run was extremely short and we look at the 95% CI. 
+In order to visualize the posterior of our MCMC analysis we can plot credible intervals (CI) of macroevolutionary landscapes estimated in the MCMC run. The function *get.landscape.FPK.MCMC* plots the median value of the macroevolutionary landscape across the posterior in a solid lines and draws a polygon that stretches between two quantiles, defined by probs.CI. Here we set a burnin fraction of 50% since the MCMC run was extremely short and we look at the 95% CI. 
 
 ```r
 get.landscape.FPK.MCMC(chain=MCMC,bounds=fit4$par_fixed$bounds,Npts=100,burnin=0.5,probs.CI=c(0.025,0.975),COLOR_MEDIAN='red',COLOR_FILL='red',transparency=0.3,main='Macroevolutionary landscapes MCMC',ylab='N.exp(-V)',xlab='Trait',xlim=NULL,ylim=NULL)
