@@ -54,7 +54,7 @@ Maximum-likelihood (ML) estimation of the parameters of the *FPK* model is done 
 
 The likelihood function is created using the function *lnL_FPK*, which takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: our implementation of the *FPK* process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 25 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes by fixing unnecessary parameters to 0.
 
-We'll start with the most general shape of the potential, which can accomodate up to two peaks in the macroevolutionary landscape: 
+We'll start with the most general shape of the potential, which can accommodate up to two peaks in the macroevolutionary landscape: 
 
 ```r
 ll_FPK4=lnL_FPK(tree,TRAIT,Npts=25,a=NULL,b=NULL,c=NULL) # the full model
@@ -91,7 +91,7 @@ fit4$aic
 fit2$aic
 fit0$aic
 ```
-*fit4* should be the best model by far since no other form of the FPK model can accomodate two peaks.
+*fit4* should be the best model by far since no other form of the FPK model can accommodate two peaks.
 
 We can measure the time it takes to reach stationarity in the FPK model using the function *charac_time*:
 ```r
