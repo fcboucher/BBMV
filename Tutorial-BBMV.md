@@ -144,7 +144,7 @@ ACE_nodes=ACE_FPK(fit4,specific.point=NULL)
 plot(ACE_nodes[[90]],type='l')
 ```
 
-The function *ACE_FPK* returns a list with one element per internal node in the tree. Each element is a table giving trait values on the trait grid in the first column and their associated density in the second colum. Here we have plotted the probability density of the trait at node '90' but we can also ask for an ACE at any point in the tree. Below we will ask for an ACE in the middle of the first branch (as ordered in the 'phylo' object), this is down by passing a vector with (i) the parent node, (ii) the child node, and (iii) the time from the begining of the branch to the 'specific.point' argument:
+The function *ACE_FPK* returns a list with one element per internal node in the tree. Each element is a table giving trait values on the trait grid in the first column and their associated density in the second column. Here we have plotted the probability density of the trait at node '90' but we can also ask for an ACE at any point in the tree. Below we will ask for an ACE in the middle of the first branch (as ordered in the 'phylo' object), this is down by passing a vector with (i) the parent node, (ii) the child node, and (iii) the time from the begining of the branch to the 'specific.point' argument:
 ```r
 ACE_1st_branch=ACE_FPK(fit4,specific.point=c(fit4$tree$edge[1,1],fit4$tree$edge[1,2],fit4$tree$edge.length[1]/2))
 plot(ACE_1st_branch,type='l')
