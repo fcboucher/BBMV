@@ -17,6 +17,7 @@ The paper describing the model has been published and can be found [here](https:
 Help files for all functions can be found in this [pdf](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf) and there is also a troubleshooting section at the end of the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md).
 
 ### Latest additions
+- 2018.04.23: one can now visualize the MCMC and ML estimations on the same plot using the function add.ML.landscape.FPK 
 
 - 2018.03.02: in the MCMC analysis priors and posteriors can be graphically compared. Examples of use of this new function are given in the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) and the [example R script](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r).
 
