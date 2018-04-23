@@ -78,7 +78,7 @@ plot(fit4$root,type='l') # be careful with the y-scale of the plot: this might a
 # The function returns confidence interval that contain the 95% highest probability density around parameter estimates while fixing other parameters to their maximum likelihood estimate
 fit4$par # the MLEs of parameters
 # You can specify the scope of the uncertainty search for each parameter so that they include your MLEs (fit4$par)
-Uncertainty_FPK(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,20),scope_b=c(-15,5),scope_c=c(-5,5))
+Uncertainty_FPK(fit=fit4,tree,trait=TRAIT,Npts=50,effort_uncertainty= 100,scope_a=c(-1,20),scope_b=c(-15,5),scope_c=c(-5,5))
 
 # We can fit the OU and BM models using the package geiger to see if likelihoods match with those calculated using BBMV
 OU=fitContinuous(phy=tree,dat=TRAIT,model="OU")
@@ -192,7 +192,7 @@ Uncertainty_FPK(fit=fit4_with_ME,tree,trait=TRAIT2,Npts=50,effort_uncertainty= 1
 # proposal_type: the type of proposal function, only uniform is available
 # proposal_sensitivity: the width of the uniform proposal. The entire value for x0 gives how many steps at a time can be travelled on the trait grid (better to keep it to 1)
 
-MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=50,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 
 # Estimate effective sample sizes in our MCMC run using the R package 'coda':
 library(coda)
@@ -210,8 +210,12 @@ hist(MCMC[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 # Here we set a burnin fraction of 50% since the MCMC run was extremely short
 get.landscape.FPK.MCMC(chain=MCMC,bounds=fit4$par_fixed$bounds,Npts=100,burnin=0.5,probs.CI=c(0.025,0.975),COLOR_MEDIAN='red',COLOR_FILL='red',transparency=0.3,main='Macroevolutionary landscapes MCMC',ylab='N.exp(-V)',xlab='Trait',xlim=NULL,ylim=NULL)
 
+# We can also add the ML fit on top of this plot
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/MCMC_function_BBMV.r') # function not incuded in R package yet
+add.ML.landscape.FPK(fit=fit4,Npts=100,COLOR=1,LTY='dashed')
+
 # We can compare priors and posteriors
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/posterior_vs_prior.r') # function not incuded in R package yet
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/posterior_vs_prior.r') # function not incuded in R package yet
 
 par(mfrow=c(2,2))
 posterior_vs_prior(chain=MCMC,param='a',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
@@ -220,7 +224,7 @@ posterior_vs_prior(chain=MCMC,param='c',Npts=100,burnin=0.2,type_prior='Normal',
 posterior_vs_prior(chain=MCMC,param='sigsq',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
 
 # Finally, we can force the potential to be quadratic (i.e. fit an OU model). This is done by fixing the intial values of a to 0 and setting its probability of update to zero 
-MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=50,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 
 apply(MCMC_OU[-c(1:50),2:9],2,effectiveSize)
 par(mfrow=c(2,3))
@@ -232,7 +236,7 @@ hist(MCMC_OU[-c(1:50),4],breaks=20,main='b (x^2 term)',ylab=NULL)
 hist(MCMC_OU[-c(1:50),5],breaks=20,main='c (x term)',ylab=NULL)
 
 # The MCMC function can also be run with measurement error
-MCMC_ME=MH_MCMC_FPK(tree,trait=TRAIT2,bounds=fit4_with_ME$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+MCMC_ME=MH_MCMC_FPK(tree,trait=TRAIT2,bounds=fit4_with_ME$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=50,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 
 
 
