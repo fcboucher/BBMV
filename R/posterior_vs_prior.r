@@ -1,5 +1,5 @@
 # still problem with the transformation in sigsq
-posterior_vs_prior=function(chain,param='a',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10)){
+posterior_vs_prior=function(chain,param='a',burnin=0.2,type_prior='Normal',shape_prior=c(0,10)){
   if (type_prior=='Normal'){
   empirical_density=rnorm(n=10000,mean=shape_prior[1],sd=shape_prior[2])
   }
