@@ -175,3 +175,20 @@ get.landscape.FPK.MCMC=function(chain,bounds,Npts=100,burnin=0.1,probs.CI=c(0.05
   plot(apply(all_V,2,function(x){quantile(x,probs=c(0.5))})~seq(from=bounds[1],to=bounds[2],length.out=Npts),col=COLOR_MEDIAN,lwd=3,type='l',main=main,ylab=ylab,xlab=xlab,xlim=xlim,ylim=ylim)
   polygon(x=c(seq(from=bounds[1],to=bounds[2],length.out=100),seq(from=bounds[2],to=bounds[1],length.out=100)),y=c(apply(all_V,2,function(x){quantile(x,probs=probs.CI[1])}),rev(apply(all_V,2,function(x){quantile(x,probs=probs.CI[2])}))),col=adjustcolor(col=COLOR_FILL,alpha.f=transparency))
 }
+
+
+# Add the ML fit to a MCMC plot
+add.ML.landscape.FPK=function(fit,Npts=100,COLOR=1,LTY='dashed'){
+  if ('a'%in%names(fit$par)){a=fit$par$a}
+  else {a=fit$par_fixed$a}
+  if ('b'%in%names(fit$par)){b=fit$par$b}
+  else {b=fit$par_fixed$b}
+  if ('c'%in%names(fit$par)){c=fit$par$c}
+  else {c=fit$par_fixed$c}
+  # build potential and stationary distribution of the trait
+  bounds=fit$par_fixed$bounds
+  SEQ=seq(from=-1.5,to=1.5,length.out=Npts)
+  V=a*SEQ^4+b*SEQ^2+c*SEQ #potential
+  step=(bounds[2]-bounds[1])/(Npts-1)
+  lines((exp(-V)/sum(exp(-V)*step))~seq(from=bounds[1],to=bounds[2],length.out=Npts),col=COLOR,lty=LTY,lwd=3)
+}
