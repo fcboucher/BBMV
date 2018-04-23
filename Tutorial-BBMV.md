@@ -52,21 +52,21 @@ hist(TRAIT,breaks=20)
 
 Maximum-likelihood (ML) estimation of the parameters of the *FPK* model is done in two steps: (i) creating the likelihood function and (ii) finding its maximum.
 
-The likelihood function is created using the function *lnL_FPK*, which takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: our implementation of the *FPK* process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 25 points to discretize the interval so that the test is quick, but more (at least 50) should be used when analyzing data seriously. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes by fixing unnecessary parameters to 0.
+The likelihood function is created using the function *lnL_FPK*, which takes the phylogenetic tree and the vector of trait values at the tips of the tree as main arguments. In addition, we need to specify how finely we want to discretize the trait interval: our implementation of the *FPK* process indeed works by divinding the continuous trait intervals into a regular grid of points ranging from the lower to the upper bound. The finer the discretization the better the accuracy in the calculation of the likelihood, but the longer it takes. Here we will only take 50 points to discretize the interval so that the test is quick, but more should be used if computational ressources allow it. For this example we will use the *Nelder-Mead* optimization routine, which seems to perform better than others in the tests we have made. Finally, we need to specify the shape of the potential which we want to fit. The most complex form has three parameters (see above) but we can fit simpler shapes by fixing unnecessary parameters to 0.
 
 We'll start with the most general shape of the potential, which can accommodate up to two peaks in the macroevolutionary landscape: 
 
 ```r
-ll_FPK4=lnL_FPK(tree,TRAIT,Npts=25,a=NULL,b=NULL,c=NULL) # the full model
+ll_FPK4=lnL_FPK(tree,TRAIT,Npts=50,a=NULL,b=NULL,c=NULL) # the full model
 ```
 Then we can actually fit simpler versions of the FPK model. Here is the Ornstein-Uhlenbeck model, with *V(x)=b.x^2+c.x*:
 ```r
-ll_FPK2=lnL_FPK(tree,TRAIT,Npts=25,a=0,b=NULL,c=NULL)
+ll_FPK2=lnL_FPK(tree,TRAIT,Npts=50,a=0,b=NULL,c=NULL)
 ```
 
 And here is Brownian motion, with *V(x)=0*:
 ```r
-ll_FPK0=lnL_FPK(tree,TRAIT,Npts=25,a=0,b=0,c=0)
+ll_FPK0=lnL_FPK(tree,TRAIT,Npts=50,a=0,b=0,c=0)
 ```
 
 Once these likelihood functions are created, we need to use the *find.mle_FPK* function to estimate their maxima. This function takes one single argument: a likelihood function created by *lnL_FPK*. Once each model is fitted, we can plot the macroevolutionary landscape estimated using the function *get.landscape.BBMV* and compare it with the macroevolutionary landscape that we simulated:
@@ -122,7 +122,7 @@ fit4$par
 ```
 And from that we can choose the *scope* of the uncertainty search for each parameter so that they include your MLEs:
 ```r
-Uncertainty_FPK(fit=fit4,tree,trait=TRAIT,Npts=25,effort_uncertainty= 100,scope_a=c(-1,10),scope_b=c(-5,5),scope_c=c(-2,2))
+Uncertainty_FPK(fit=fit4,tree,trait=TRAIT,Npts=50,effort_uncertainty= 100,scope_a=c(-1,10),scope_b=c(-5,5),scope_c=c(-2,2))
 ```
 One particularly interesting result from this will be to see if the confidence intervals for each parameter of the potential (*a*, *b*, and *c*) contain 0.
 
@@ -164,10 +164,10 @@ hist(TRAITb,breaks=20)
 
 Then we create four different likelihood functions using a variant of the *lnL_FPK* function, called *lnL_BBMV*. The four scenarios correspond to either 3, 2, 1 or 0 polynomial terms in the evolutionary potential, *V*: 
 ```r
-ll_BBMV4=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=NULL,b=NULL,c=NULL)
-ll_BBMV2=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=NULL,c=NULL)
-ll_BBMV1=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=0,c=NULL)
-ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=0,c=0) # this is the BBM model
+ll_BBMV4=lnL_BBMV(tree,TRAITb,Npts=50,bounds=bounds,a=NULL,b=NULL,c=NULL)
+ll_BBMV2=lnL_BBMV(tree,TRAITb,Npts=50,bounds=bounds,a=0,b=NULL,c=NULL)
+ll_BBMV1=lnL_BBMV(tree,TRAITb,Npts=50,bounds=bounds,a=0,b=0,c=NULL)
+ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=50,bounds=bounds,a=0,b=0,c=0) # this is the BBM model
 ```
 
 Next we fit these four models and plot the macroevolutionary landscapes:
@@ -220,7 +220,7 @@ TRAIT2[c(1:4)]
 Then we can use the same functions as before to fit the model to this dataset. Here we only demonstrate the inclusion of measurement error when fitting the FPK model, but the same works for the BBMV model.
 
 ```r
-ll_FPK4_with_ME=lnL_FPK(tree,TRAIT2,Npts=25,a=NULL,b=NULL,c=NULL) # the full model
+ll_FPK4_with_ME=lnL_FPK(tree,TRAIT2,Npts=50,a=NULL,b=NULL,c=NULL) # the full model
 fit4_with_ME=find.mle_FPK(model=ll_FPK4_with_ME)
 ```
 
@@ -237,7 +237,7 @@ Uncertainty in parameters can also be estimated when fitting the model with meas
 
 ```r
 fit4_with_ME$par
-Uncertainty_FPK(fit=fit4_with_ME,tree,trait=TRAIT2,Npts=25,effort_uncertainty= 100,scope_a=c(0,100),scope_b=c(-15,5),scope_c=c(-5,5))
+Uncertainty_FPK(fit=fit4_with_ME,tree,trait=TRAIT2,Npts=50,effort_uncertainty= 100,scope_a=c(0,100),scope_b=c(-15,5),scope_c=c(-5,5))
 ```
 
 ## Markov Chain Monte Carlo estimation
@@ -264,7 +264,7 @@ Parameters of the MCMC functions are the following:
 Let's load and use the MCMC function on the simulated dataset with two peaks (FPK model). Here we fix the bounds of the trait interval to be the same as when we fitted the FPK model: they are far away from the observed trait interval and thus do not influence the process, we are thus fitting the FPK model. If we would like to fit the BBMV model we could place them closer to the observed trait, e.g. bounds=c(min(TRAIT),max(TRAIT)).
 
 ```r
-MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=50,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 ```
 
 Now we can measure the effective sample size of the chain using the package **coda**. This value should be above, say, 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of model parameters. We remove the 50 first samples as burnin just for the example, but we should probably be running the chain for much longer and discard way more samples:
@@ -308,7 +308,7 @@ posterior_vs_prior(chain=MCMC,param='sigsq',Npts=100,burnin=0.2,type_prior='Norm
 
 Finally, we can also estimate a simpler version of the model using MCMC. Here we will run a chain with the potential forced to be quadratic (i.e. an OU model). We do this by fixing the intial values of *a* to 0 and setting its probability of update to zero:
 ```r
-MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=20,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=50,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 
 apply(MCMC_OU[-c(1:50),2:9],2,effectiveSize)
 par(mfrow=c(2,3))
@@ -431,11 +431,11 @@ lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 ### How do I fit the bounded Brownian motion model?
 The bounded Brownian motion model (Boucher & Démery 2016 Syst. Biol.) is a special case of the *FPK* model in which there are bounds on the trait values and the macroevolutionary landscape is flat. Its likelihood can be calculated using the *BBMV* package as follows:
 ```r
-ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=0,c=0)
+ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=50,bounds=bounds,a=0,b=0,c=0)
 ```
 However, this implies that you know the bounds that act on trait values. Estimating them is possible using functions of the [*BBM* repository](https://github.com/fcboucher/BBM), but the optimization procedure used is less reliable than that of the *BBMV* package. Although we lack an analytical proof of it, it seems that the minimum and maximum of observed trait values at the tips of the phylogeny are the ML estimators of the bounds of the trait interval (see Boucher & Démery 2016 Syst. Biol. for details). If you don't have an a priori of which bounds to expect, you could thus use the *BBMV* package to fit the bounded Brownian motion model as follows:
 ```r
-ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=25,bounds=c(min(TRAITb),max(TRAITb)),a=0,b=0,c=0)
+ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=50,bounds=c(min(TRAITb),max(TRAITb)),a=0,b=0,c=0)
 ```
 
 ### ML estimation
