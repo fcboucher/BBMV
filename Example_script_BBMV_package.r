@@ -36,12 +36,12 @@ hist(TRAIT,breaks=20) # the distribution of the trait at the tips of the tree: i
 
 # We will fit the FPK model to the data simulated using maximum-likelihood: this is done in two steps: (i) creating the likelihood function and (ii) finding its maximum
 # The evolutionary potential can have three parameters when it is of the form V(x)=a.x^4+b.x^2+c.x, which allows for two peaks on the macroevolutionary landscape, but you can fix some parameters (to zero usually) to fit simpler versions of the model
-# We use only 25 points for discretizing the trait interval to make it faster, but more points should be used on empirical datasets
+# We use only 50 points for discretizing the trait interval to make it faster, but more points should be used on empirical datasets if possible
 
 # 1) We first need to prepare likelihood functions
-ll_FPK4=lnL_FPK(tree,TRAIT,Npts=25,a=NULL,b=NULL,c=NULL) # the full model
-ll_FPK2=lnL_FPK(tree,TRAIT,Npts=25,a=0,b=NULL,c=NULL) # we fix the x^4 coefficient to 0: this is actually the OU model
-ll_FPK0=lnL_FPK(tree,TRAIT,Npts=25,a=0,b=0,c=0) # we fix all coefficients to 0:this is actually the BM model
+ll_FPK4=lnL_FPK(tree,TRAIT,Npts=50,a=NULL,b=NULL,c=NULL) # the full model
+ll_FPK2=lnL_FPK(tree,TRAIT,Npts=50,a=0,b=NULL,c=NULL) # we fix the x^4 coefficient to 0: this is actually the OU model
+ll_FPK0=lnL_FPK(tree,TRAIT,Npts=50,a=0,b=0,c=0) # we fix all coefficients to 0:this is actually the BM model
 
 # 2) fit these models and plot the landscapes
 fit4=find.mle_FPK(model=ll_FPK4)
