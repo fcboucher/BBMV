@@ -286,9 +286,15 @@ In order to visualize the posterior of our MCMC analysis we can plot credible in
 get.landscape.FPK.MCMC(chain=MCMC,bounds=fit4$par_fixed$bounds,Npts=100,burnin=0.5,probs.CI=c(0.025,0.975),COLOR_MEDIAN='red',COLOR_FILL='red',transparency=0.3,main='Macroevolutionary landscapes MCMC',ylab='N.exp(-V)',xlab='Trait',xlim=NULL,ylim=NULL)
 ```
 
+We can add the macroevolutionary landscape fitted using maximum-likelihood to this plot:
+```r
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/MCMC_function_BBMV.r') # function not incuded in R package yet
+add.ML.landscape.FPK(fit=fit4,Npts=100,COLOR=1,LTY='dashed')
+```
+
 We can plot the distribution of the prior vs. posterior for each parameter of the model to see how much information came from the data. To do so we need to source one function from the Github repository (change the path below to match your local one) which is not yet in the package.
 ```r
-source('/Users/florianboucher/Documents/Flo_BACKUPS/Travail/BBM\ plus\ potentiel/BBMV_Github/R/posterior_vs_prior.r') # function not incuded in R package yet
+source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/posterior_vs_prior.r') # function not incuded in R package yet
 ```
 
 Now we will plot priors and posteriors. Even though the chain is far from having converged we might still get strong information from the likelihood (i.e., the data)... or we might still be strongly influenced by the initial point of the MCMC chain.
