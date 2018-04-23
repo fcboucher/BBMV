@@ -110,10 +110,10 @@ TRAITb= Sim_FPK(tree,x0=0,V=Vb,sigma=2,bounds=bounds)
 hist(TRAITb,breaks=20) # the distribution of the trait at the tips of the tree: it should reflect the landscape simulated... more or less
 
 # Create four different likelihood functions
-ll_BBMV4=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=NULL,b=NULL,c=NULL)
-ll_BBMV2=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=NULL,c=NULL)
-ll_BBMV1=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=0,c=NULL)
-ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=25,bounds=bounds,a=0,b=0,c=0) # this is the BBM model
+ll_BBMV4=lnL_BBMV(tree,TRAITb,Npts=50,bounds=bounds,a=NULL,b=NULL,c=NULL)
+ll_BBMV2=lnL_BBMV(tree,TRAITb,Npts=50,bounds=bounds,a=0,b=NULL,c=NULL)
+ll_BBMV1=lnL_BBMV(tree,TRAITb,Npts=50,bounds=bounds,a=0,b=0,c=NULL)
+ll_BBMV0=lnL_BBMV(tree,TRAITb,Npts=50,bounds=bounds,a=0,b=0,c=0) # this is the BBM model
 
 # fit the four models and plot the macroevolutionary landscapes
 fit4b=find.mle_FPK(model=ll_BBMV4)
@@ -152,7 +152,7 @@ names(TRAIT2)=names(TRAIT)
 TRAIT2[c(1:4)] # trait measurements for the first four tips: different tips have different number of measures and different levels of error
 
 # Then we can use the same functions as before to fit the model to this dataset. Here we only demonstrate the inclusion of measurement error when fitting the FPK model, but the same works for the BBMV model.
-ll_FPK4_with_ME=lnL_FPK(tree,TRAIT2,Npts=25,a=NULL,b=NULL,c=NULL) # the full model
+ll_FPK4_with_ME=lnL_FPK(tree,TRAIT2,Npts=50,a=NULL,b=NULL,c=NULL) # the full model
 fit4_with_ME=find.mle_FPK(model=ll_FPK4_with_ME)
 
 # Now we can also compare the macroevolutionary landscapes estimated using both methods: they should be rather similar unless measurement error is large relative to the spread of the trait
@@ -164,7 +164,7 @@ lines(V6_norm~seq(from=min(bounds),to=max(bounds),length.out=length(V6_norm)))
 
 # Estimate uncertainty in parameters when fitting the model with measurement error
 fit4_with_ME$par
-Uncertainty_FPK(fit=fit4_with_ME,tree,trait=TRAIT2,Npts=25,effort_uncertainty= 100,scope_a=c(0,100),scope_b=c(-15,5),scope_c=c(-5,5))
+Uncertainty_FPK(fit=fit4_with_ME,tree,trait=TRAIT2,Npts=50,effort_uncertainty= 100,scope_a=c(0,100),scope_b=c(-15,5),scope_c=c(-5,5))
 
 ###############################################
 ##### Markov Chain Monte Carlo estimation #####
