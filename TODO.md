@@ -1,7 +1,6 @@
 **To do, really**
 
-Use sparseMatrix calculations
-
+Solve or at least explain the 'one-dimensional optimization by Nelder-Mead is unreliable' issue when fitting BBM model
 **Less pressure...**
 
 Develop uncertainty function for the parameters of the multiclade fit?
