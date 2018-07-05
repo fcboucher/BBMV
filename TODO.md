@@ -2,7 +2,7 @@
 
 Add a paragraph in the troubleshooting section explaing how one could evenetually try to fit other landscape shapes.
 
-Solve or at least explain the 'one-dimensional optimization by Nelder-Mead is unreliable' issue when fitting BBM model
+Add 'Brent' as a possible optimization routine: this will solve the 'one-dimensional optimization by Nelder-Mead is unreliable' issue
 
 **Less pressure...**
 
