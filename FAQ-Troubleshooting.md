@@ -53,6 +53,6 @@ This line actually serves to define the likelihood function. The potential *V(x)
 
 Wayne P. Maddison has showed us that trait evolution and diversification should be estimated jointly. Latter on Rich G. Fitzjohn has developped the R diversitree package to do it. The *FPK* model suffers from this issue exactly as other tait evolution models do. 
 
-Since we use a discretization procedure to fit the likelihood of the *FPK* model, it is possinble to use the machinery of diversitrees's *MuSSE* framework to jointly estimate trait evolution and trait-dependent diversification. This is one of my plans in the mid-term, but feel free to experiment with it! 
+Since we use a discretization procedure to fit the likelihood of the *FPK* model, it is possible to use the machinery of diversitrees's *MuSSE* framework to jointly estimate trait evolution and trait-dependent diversification. This is one of my plans in the mid-term, but feel free to experiment with it! 
 
 
