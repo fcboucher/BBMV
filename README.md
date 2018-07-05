@@ -14,7 +14,7 @@ The [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) s
 
 The paper describing the model has been published and can be found [here](https://academic.oup.com/sysbio/article-abstract/doi/10.1093/sysbio/syx075/4210009/A-General-Model-for-Estimating-Macroevolutionary?redirectedFrom=fulltext), but you can also find a (free) preprint of the latest version [here](https://github.com/fcboucher/BBMV/blob/master/Manuscript/). 
 
-Help files for all functions can be found in this [pdf](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf) and there is also a troubleshooting section at the end of the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md).
+Help files for all functions can be found in this [pdf](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf) but you might also want to have a look at the [FAQ/troubleshooting](https://github.com/fcboucher/BBMV/blob/master/FAQ-Troubleshooting.md) section.
 
 ### Latest additions
 - 2018.04.23: one can now visualize the MCMC and ML estimations on the same plot using the function add.ML.landscape.FPK 
