@@ -14,7 +14,3 @@ rj-MCMC algorithm 'à la Bayou' for multiple FPK processes in the tree.
 Function that enables users to DRAW any kind of potential?
 
 Logo?
-
-**For next package release**
-
-Add function 'posterior_vs_prior.r'
