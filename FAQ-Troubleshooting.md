@@ -25,9 +25,8 @@ fit4b=find.mle_FPK(model=ll_FPK4,safe=TRUE)
 
 In cases where you see an error which looks like *error in solve.default ... reciprocal condition number =*, you can try decreasing the tolerance used when calling the *solve* function, which we use for inverting the diffusion matrix. This can be done by manually editing the *prep_mat_exp* function in the *utils_BBMV.r* script.
 
-**Pay attention to the likelihoods of nested models**
-
-When you are comparing models with different shapes of the evolutionary potential, remember to check that complex models should always have a higher likelihood than simpler models (which are nested within the complex ones). Optimization of the model is difficult, and this kind of situations unfortunately happens...
+**Pay attention to the likelihoods of nested models:**
+when you are comparing models with different shapes of the evolutionary potential, remember to check that complex models should always have a higher likelihood than simpler models (which are nested within the complex ones). Optimization of the model is difficult, and this kind of situations unfortunately happens...
 
 ### MCMC estimation
 
