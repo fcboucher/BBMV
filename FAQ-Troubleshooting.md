@@ -50,8 +50,8 @@ This line actually serves to define the likelihood function. The potential *V(x)
 
 ### What about trait-dependent diversification?
 
-Wayne P. Maddison has showed us that trait evolution and diversification should be estimated jointly. Latter on Rich G. Fitzjohn has developped the R diversitree package to do it. The *FPK* model suffers from this issue exactly as other tait evolution models do. 
+Wayne P. Maddison and colleagues have showed us that trait evolution and diversification should be estimated jointly. Latter on Rich G. Fitzjohn has developped the R *diversitree* package to do it. The *FPK* model suffers from this issue exactly as other trait evolution models do. 
 
-Since we use a discretization procedure to fit the likelihood of the *FPK* model, it is possible to use the machinery of diversitrees's *MuSSE* framework to jointly estimate trait evolution and trait-dependent diversification. This is one of my plans in the mid-term, but feel free to experiment with it: the *DiffMat_backwards* function will help you create a matrix of transition rates between points on the trait grid given a potential *V(x)*. You will then need to rename each of the elements of this matrix in the format used by *diversitree* (*q01*, *q12*, etc.). Luckily, most of these transition rates are 0.
+Since we use a discretization procedure to fit the likelihood of the *FPK* model, it is possible to use the machinery of diversitrees's *MuSSE* framework to jointly estimate trait evolution and trait-dependent diversification. This is one of my plans in the mid-term, but feel free to experiment with it: the *DiffMat_backwards* function will help you create a matrix of transition rates between points on the trait grid given a potential *V(x)*. You will then need to rename each of the elements of this matrix in the format used by *diversitree* (*q01*, *q12*, etc.). Luckily, most of these transition rates are 0, which in *diversitree* can be set using the *constrain* function.
 
 
