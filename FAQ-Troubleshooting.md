@@ -48,7 +48,7 @@ fun=function(X){return(-LogLik_bounds(tree_formatted=tree_formatted,dCoeff=X[1],
 
 This line actually serves to define the likelihood function. The shape of the potential *V(x)* is specified in the *dMat* argument: we directly calculate the transition matrix between points on the grid from this potential. *SEQ* is a vector that is created above in the *lnL_FPK* or *lnL_BBMV* function and that defines the points on the trait grid: it is a regular sequence of *Npts* points, arbitrarily taken from -1.5 to +1.5. *X* is the vector of parameters taken by the likelihood function: it's first argument, *X[1]*, is the diffusion coefficient (log(sigma<sup>2</sup>/2)), and other arguments are parameters setting the shape of *V(x)*. 
   
-In the present form of the code, we have *V(x)* of the form *ax<sup>4</sup>+bx<sup>2</sup>+cx*. If you would like to fit a model with for example *V(x)=sin(ax)+b*cos(cx)* you should edit the  the *dMat* argument and write it as follows:
+In the present form of the code, we have *V(x)* of the form *ax<sup>4</sup>+bx<sup>2</sup>+cx*. If you would like to fit a model with for example *V(x)=sin(ax)+b*cos(cx)* you should edit the *dMat* argument and write it as follows:
 
 ```r
 dMat=DiffMat_backwards(sin(X[2]*SEQ)+X[3]*cos(X[4]*SEQ)))
