@@ -14,6 +14,8 @@ The [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) s
 
 The paper describing the model has been published and can be found [here](https://academic.oup.com/sysbio/article-abstract/doi/10.1093/sysbio/syx075/4210009/A-General-Model-for-Estimating-Macroevolutionary?redirectedFrom=fulltext), but you can also find a (free) preprint of the latest version [here](https://github.com/fcboucher/BBMV/blob/master/Manuscript/). 
 
+A paper describing the package, which describes its main functions and a typical workflow, can be found [here](https://onlinelibrary.wiley.com/doi/abs/10.1111/ecog.04045). You might want to cite it if you're using the package.
+
 Help files for all functions can be found in this [pdf](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf) but you might also want to have a look at the [FAQ/troubleshooting](https://github.com/fcboucher/BBMV/blob/master/FAQ-Troubleshooting.md) section.
 
 ### Latest additions
