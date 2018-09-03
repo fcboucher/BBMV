@@ -12,9 +12,7 @@ Functions were written by [Florian Boucher](https://sites.google.com/site/floria
 The [R folder](https://github.com/fcboucher/BBMV/tree/master/R) contains functions to simulate traits evolving under the *FPK* (or *BBMV*) model, plot macroevolutionary landscapes, and fit the model to empirical data using either maximum-likelihood or MCMC estimation. 
 The [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) shows basic examples of use of the functions to simulate and infer under *FPK*. In case you need it there is also a full [R script of the tutorial](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r). 
 
-The paper describing the model has been published and can be found [here](https://academic.oup.com/sysbio/article-abstract/doi/10.1093/sysbio/syx075/4210009/A-General-Model-for-Estimating-Macroevolutionary?redirectedFrom=fulltext), but you can also find a (free) preprint of the latest version [here](https://github.com/fcboucher/BBMV/blob/master/Manuscript/). 
-
-A paper describing the package, which describes its main functions and a typical workflow, can be found [here](https://onlinelibrary.wiley.com/doi/abs/10.1111/ecog.04045). Please be kind enough to cite it if you're using the package.
+The paper describing the model has been published and can be found [here](https://academic.oup.com/sysbio/article-abstract/doi/10.1093/sysbio/syx075/4210009/A-General-Model-for-Estimating-Macroevolutionary?redirectedFrom=fulltext), but you can also find a (free) preprint of the latest version [here](https://github.com/fcboucher/BBMV/blob/master/Manuscript/). Another paper describing the R package, which presents its main functions and a typical workflow, can be found [here](https://onlinelibrary.wiley.com/doi/abs/10.1111/ecog.04045). Please be kind enough to cite it if you're using the package.
 
 Help files for all functions can be found in this [pdf](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf) but you might also want to have a look at the [FAQ/troubleshooting](https://github.com/fcboucher/BBMV/blob/master/FAQ-Troubleshooting.md) section.
 
