@@ -1,7 +1,5 @@
 **To do, really**
 
-Implement the basic post-fit functions like 'charac_time' on the multiclade outputs
-
 Say somewhere that the models are fine for fossil data too (non-ultrametric trees)
 
 Add 'Brent' as a possible optimization routine: this will solve the 'one-dimensional optimization by Nelder-Mead is unreliable' issue
