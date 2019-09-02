@@ -1,7 +1,5 @@
 **To do, really**
 
-Say somewhere that the models are fine for fossil data too (non-ultrametric trees)
-
 Add 'Brent' as a possible optimization routine: this will solve the 'one-dimensional optimization by Nelder-Mead is unreliable' issue
 
 **Less pressure...**
