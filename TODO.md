@@ -2,6 +2,8 @@
 
 Add 'Brent' as a possible optimization routine: this will solve the 'one-dimensional optimization by Nelder-Mead is unreliable' issue
 
+Hyperprior for parameters of the multiclade fit, especially sigmasq
+
 **Less pressure...**
 
 Develop uncertainty function for the parameters of the multiclade fit?
@@ -13,5 +15,3 @@ Generate helpful message if optimization failed, suggesting to either reduce Npt
 rj-MCMC algorithm 'à la Bayou' for multiple FPK processes in the tree.
 
 Function that enables users to DRAW any kind of potential?
-
-Logo?
