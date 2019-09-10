@@ -396,6 +396,17 @@ reformat_multiclade_results=function(fit){
 # Set of functions to fit the Bounded Brownian Motion model + a potential with shape a.x^4+b.x^2+c.x in a MCMC framework, using a simple Metropolis-Hastings algorithm
 # Written by F. Boucher October 2015 - May 2016
 
+
+
+
+
+
+################################################
+##########  MCMC FIT FOR THE MULTICLADE ########
+##########   WITH DIFFERENT SIGMA2 BUT  ########
+########## SAME POTENTIAL ACROSS CLADES ########
+################################################
+
 ###############################################
 ######## PRIORS AND PROPOSALS FUNCTIONS #######
 ###############################################
