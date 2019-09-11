@@ -1,7 +1,5 @@
 **To do, really**
 
-Add 'Brent' as a possible optimization routine: this will solve the 'one-dimensional optimization by Nelder-Mead is unreliable' issue
-
 Hyperprior for parameters of the multiclade fit, especially sigmasq
 
 **Less pressure...**
