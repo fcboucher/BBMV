@@ -241,7 +241,7 @@ Uncertainty_FPK(fit=fit4_with_ME,tree,trait=TRAIT2,Npts=50,effort_uncertainty= 1
 ```
 
 ## Markov Chain Monte Carlo estimation
-We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm and a simple Gibbs sampler using the function *MH_MCMC_FPK*. Here we will do only a few generations so that computation time is not too long but for analysing real datasets you should monitor convergence of the MCMC chain (see below).
+We can also estimate parameters of the full model using an MCMC chain with the Metropolis Hastings algorithm using the function *MH_MCMC_FPK*. Here we will do only a few generations so that computation time is not too long but for analysing real datasets you should monitor convergence of the MCMC chain (see below).
 
 Parameters of the MCMC functions are the following:
 - tree and TRAIT: the phylogenetic tree and data vector
