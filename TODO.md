@@ -1,8 +1,3 @@
-**To do, really**
-
-Hyperprior for parameters of the multiclade fit, especially sigmasq
-
-**Less pressure...**
 
 Develop uncertainty function for the parameters of the multiclade fit?
 
