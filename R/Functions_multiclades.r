@@ -647,7 +647,7 @@ lnl_BBMV_multiclades_same_V_hierarchical_sig2=function(trees,traits,bounds,a=NUL
     trees_formatted[[i]]=FormatTree_bounds(trees[[i]],traits[[i]],V=rep(0,Npts),bounds=bounds)
   }
   ncoeff=(is.null(a)==T)+(is.null(b)==T)+(is.null(c)==T) # OK
-  npar=ncoeff+length(trees)
+  npar=ncoeff+length(trees)+2 # we have two parameters for the distribution of diffusion coefficients
   par_names=c() 
   for (i in 1:length(trees)){par_names=c(par_names,paste('dCoeff_tree_',i,sep=''))}
   par_names=c(par_names,'a','b','c')
