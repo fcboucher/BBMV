@@ -727,7 +727,7 @@ MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=
     }
   }  
   if (is.null(prob_update)){prob_update=rep(1/npars,npars)}
-  if (is.null(pars_init)){pars_init=c(rnorm(n=n_clades,mean=-8,sd=3),rnorm(n=3,mean=0,sd=2))}
+  if (is.null(pars_init)){pars_init=c(rnorm(n=n_clades,mean=-8,sd=3),rnorm(n=3,mean=0,sd=2),0,1)}
   if (is.null(proposal_sensitivity)){proposal_sensitivity=rep(0.1,npars)}
   ######  end new code  
   SEQ=seq(from=-1.5,to=1.5,length.out= Npts) # the potential V is modelled as a quadratic function over [-1.5,1.5], but in real data space, this corresponds to [bounds[1],bounds[2]]
@@ -737,9 +737,8 @@ MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=
   colnames(chain)[c(1,(n_clades+2):(n_clades+9))]=c('step','a','b','c','lnprior','lnlik','quasi-lnpost','Accept','Par_updated') 
   for (clade in 1:n_clades){eval(parse(text=paste("colnames(chain)[",clade,"+1]='sigsq_clade_",clade,"'",sep='')))}
   if (prior.only==T){lnlik=1}
-#### OK up to here, resume here after lnL function works
   else {
-    NEG_LNL_func=lnl_BBMV_multiclades_same_V_different_sig2(trees=trees,traits=traits,bounds=bounds,a=NULL,b=NULL,c=NULL,Npts=50)$fun
+    NEG_LNL_func=lnl_BBMV_multiclades_same_V_hierarchical_sig2(trees=trees,traits=traits,bounds=bounds,a=NULL,b=NULL,c=NULL,Npts=50)$fun
     LNL_func=function(X){return(-NEG_LNL_func(X))}
     lnlik= LNL_func(X=temp)
   }
