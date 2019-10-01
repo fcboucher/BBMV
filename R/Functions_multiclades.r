@@ -774,7 +774,7 @@ MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=
       }
       else {accept=0}
       if (i%%record_every==0){
-        chain[(i/record_every),c(1,(n_clades+2):(n_clades+9))]=c(i,temp[(n_clades+1):(n_clades+3)],lnprior,lnlik, lnpost,accept, par_to_update)
+        chain[(i/record_every),c(1,(n_clades+2):(n_clades+11))]=c(i,temp[(n_clades+1):(n_clades+5)],lnprior,lnlik, lnpost,accept, par_to_update)
         for (clade in 1:n_clades){chain[(i/record_every),(clade+1)]=2*exp(temp[clade])}
       }
       if (i%%plot_every==0){
@@ -782,7 +782,7 @@ MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=
           print(chain[(i/record_every),])
         }
         if (plot==T){
-          par(mfrow=c(ceiling(sqrt(n_clades+6)),ceiling(sqrt(n_clades+6))))
+          par(mfrow=c(ceiling(sqrt(n_clades+8)),ceiling(sqrt(n_clades+8))))
           for (clade in 1:n_clades){plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(clade+1)],type='l',main=paste('sigsq_clade_',clade,sep=''),log='y',ylab='',xlab='')}
           plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(n_clades+2)],type='l',main='a (x^4 term)',ylab='',xlab='')
           abline(h=0,col=2)
@@ -790,9 +790,12 @@ MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=
           abline(h=0,col=2)
           plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(n_clades+4)],type='l',main='c (x term)',ylab='',xlab='')
           abline(h=0,col=2)
-          plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(n_clades+5)],type='l',main='lnprior',ylab='',xlab='')
-          plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(n_clades+6)],type='l',main='lnlik',ylab='',xlab='')
-          plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(n_clades+7)],type='l',main='quasi-lnpost',ylab='',xlab='')
+          plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(n_clades+5)],type='l',main='HYPERMU',ylab='',xlab='')
+          abline(h=0,col=2)
+          plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(n_clades+6)],type='l',main='HYPERSIG',ylab='',xlab='')
+          plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(n_clades+7)],type='l',main='lnprior',ylab='',xlab='')
+          plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(n_clades+8)],type='l',main='lnlik',ylab='',xlab='')
+          plot(chain[floor((i/record_every)*burnin.plot):(i/record_every),(n_clades+9)],type='l',main='quasi-lnpost',ylab='',xlab='')
         }
       }
       if (i%%save_every==0){
