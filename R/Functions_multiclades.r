@@ -650,7 +650,7 @@ lnl_BBMV_multiclades_same_V_hierarchical_sig2=function(trees,traits,bounds,a=NUL
   npar=ncoeff+length(trees)+2 # we have two parameters for the distribution of diffusion coefficients
   par_names=c() 
   for (i in 1:length(trees)){par_names=c(par_names,paste('dCoeff_tree_',i,sep=''))}
-  par_names=c(par_names,'a','b','c')
+  par_names=c(par_names,'a','b','c','HYPERMU','HYPERSIG')
   if (is.null(a)==F){
     if (is.null(b)==F){
       # all three shape parameters fixed (e.g. flat landscape if a=b=c=0): seems to work 
