@@ -627,13 +627,13 @@ proposal_nclades_plus_3_pars_hierarchical=function(type='Uniform',sensitivity,pa
 #####################################
 # MCMC sampler for a.x^4+b.x^2+c.x
 MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=100,plot_every=500,Npts=50,pars_init=NULL,prob_update=NULL,verbose=TRUE,plot=TRUE,save_to='MCMC_FPK_test.Rdata',save_every=10000,type_priors=NULL,shape_priors=NULL,proposal_type='Normal',proposal_sensitivity=NULL,prior.only=F,burnin.plot=0.1){
-  # the oder of parameters is the same for pars_init, prob_update,type_priors,shape_priors and proposal_sensitivity. It is: (dCoeff1,dCoeff2,...,dCoeffn,a,b,c) , with dCoeff=log(sigsq/2)
+  # the oder of parameters is the same for pars_init, prob_update,type_priors,shape_priors and proposal_sensitivity. It is: (dCoeff1,dCoeff2,...,dCoeffn,a,b,c,HYPERMU,HYPERSIG) , with dCoeff=log(sigsq/2) and HYPERMU,HYPERSIG mean and sd of the Gaussian distribution of dCoeffs
   # prior.only to sample from prior only (check that MCMC algorithm mixes well). Default to F for actual posterior exploration	
   # burnin.plot gives the proportion burnin for plots only (the whole chain is actually saved)  
   # we update parameters separately: prob_update gives the probability that each param is updated
   if (length(trees)!=length(traits)){stop('The list of trees and the list of traits differ in length.')}
   if (length(trees)==1){stop('There is only one tree and trait vector: use the function lnl_BBMV instead')}
-  n_clades=length(trees) ; npars=n_clades+3
+  n_clades=length(trees) ; npars=n_clades+5
   for (i in 1:n_clades){
     if (sum(trees[[i]]$tip.label%in%names(traits[[i]]))<max(length(traits[[i]]),length(trees[[i]]$tip.label))){stop(paste('Tip names in tree ',i,' do not match names of corresponding trait vector'))}
     ###### new piece of code added for Measurment error incorporation
