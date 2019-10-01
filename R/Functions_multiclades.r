@@ -604,7 +604,7 @@ log_prior_nclades_plus_3_pars_hierarchical=function(type=NULL,shape=NULL,pars,n_
 }
 
 # proposal function to move from one value of the parameters to the next: seems to work too
-proposal_nclades_plus_3_pars=function(type='Uniform',sensitivity,pars,n_clades){ 
+proposal_nclades_plus_3_pars_hierarchical=function(type='Uniform',sensitivity,pars,n_clades){ 
   # same params: (dCoeff1,dCoeff2,...,dCoeffn,a,b,c)
   npars=n_clades+3
   if (type=='Uniform'){
