@@ -742,15 +742,15 @@ MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=
     LNL_func=function(X){return(-NEG_LNL_func(X))}
     lnlik= LNL_func(X=temp)
   }
-  lnprior= log_prior_nclades_plus_3_pars(type=type_priors,shape=shape_priors,pars=temp,n_clades=n_clades)
+  lnprior= log_prior_nclades_plus_3_pars_hierarchical(type=type_priors,shape=shape_priors,pars=temp,n_clades=n_clades)
   lnpost=lnlik+ lnprior
   if ((is.na(lnpost))|(lnpost==(-Inf))){stop('Likelihood cannot be estimated at initial parameters. Please change them')}
   for (i in 1:Nsteps){
     par_to_update=sample(1:length(pars_init),size=1,prob=prob_update) # sample which parameter will be updated in this step
     sensitivity_temp=rep(0,length(pars_init)) # set all sensitivities to 0 so that parameters are not updated...
     sensitivity_temp[par_to_update]= proposal_sensitivity[par_to_update] #... except the one chosen
-    prop= proposal_nclades_plus_3_pars(type=proposal_type,sensitivity=sensitivity_temp,pars=temp,n_clades=n_clades)
-    lnprior_proposed=log_prior_nclades_plus_3_pars(type=type_priors,shape=shape_priors,pars=prop,n_clades=n_clades) 
+    prop= proposal_nclades_plus_3_pars_hierarchical(type=proposal_type,sensitivity=sensitivity_temp,pars=temp,n_clades=n_clades)
+    lnprior_proposed=log_prior_nclades_plus_3_pars_hierarchical(type=type_priors,shape=shape_priors,pars=prop,n_clades=n_clades) 
     if (lnprior_proposed ==(-Inf)){lnpost_proposed=-Inf} # no lnl calculation when prior is null
     else {
       if (prior.only==T){lnlik_proposed=1}
