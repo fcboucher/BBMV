@@ -659,8 +659,8 @@ lnl_BBMV_multiclades_same_V_hierarchical_sig2=function(trees,traits,bounds,a=NUL
         for (i in 1:length(trees)){
           fun_text=paste(fun_text,'-LogLik_bounds(tree_formatted=trees_formatted[[',i,']],dCoeff=X[',i,'],dMat=DiffMat_backwards(a*SEQ^4+b*SEQ^2+c*SEQ),bounds=bounds)',sep='') 
         }
-        fun_text=paste(fun_text,')}',sep='') # the end parenthesis
-        fun=eval(parse(text=fun_text))
+        #fun_text=paste(fun_text,')}',sep='') # the end parenthesis
+        #fun=eval(parse(text=fun_text))
       }      
       
       # only c varies (e.g. flat landscape if a=b=0): seems to work   
@@ -669,8 +669,8 @@ lnl_BBMV_multiclades_same_V_hierarchical_sig2=function(trees,traits,bounds,a=NUL
         for (i in 1:length(trees)){
           fun_text=paste(fun_text,'-LogLik_bounds(tree_formatted=trees_formatted[[',i,']],dCoeff=X[',i,'],dMat=DiffMat_backwards(a*SEQ^4+b*SEQ^2+X[',length(trees)+1,']*SEQ),bounds=bounds)',sep='') 
         }
-        fun_text=paste(fun_text,')}',sep='') # the end parenthesis
-        fun=eval(parse(text=fun_text))
+        #fun_text=paste(fun_text,')}',sep='') # the end parenthesis
+        #fun=eval(parse(text=fun_text))
       }
     }
     # only a is fixed (e.g. quadratic landscape if a=0): seems to work 
@@ -679,8 +679,8 @@ lnl_BBMV_multiclades_same_V_hierarchical_sig2=function(trees,traits,bounds,a=NUL
       for (i in 1:length(trees)){
         fun_text=paste(fun_text,'-LogLik_bounds(tree_formatted=trees_formatted[[',i,']],dCoeff=X[',i,'],dMat=DiffMat_backwards(a*SEQ^4+X[',length(trees)+1,']*SEQ^2+X[',length(trees)+2,']*SEQ),bounds=bounds)',sep='') 
       }
-      fun_text=paste(fun_text,')}',sep='') # the end parenthesis
-      fun=eval(parse(text=fun_text))
+      #fun_text=paste(fun_text,')}',sep='') # the end parenthesis
+      #fun=eval(parse(text=fun_text))
     } 
   }
   
@@ -690,9 +690,15 @@ lnl_BBMV_multiclades_same_V_hierarchical_sig2=function(trees,traits,bounds,a=NUL
     for (i in 1:length(trees)){
       fun_text=paste(fun_text,'-LogLik_bounds(tree_formatted=trees_formatted[[',i,']],dCoeff=X[',i,'],dMat=DiffMat_backwards(X[',length(trees)+1,']*SEQ^4+X[',length(trees)+2,']*SEQ^2+X[',length(trees)+3,']*SEQ),bounds=bounds)',sep='') 
     }
-    fun_text=paste(fun_text,')}',sep='') # the end parenthesis
-    fun=eval(parse(text=fun_text))
+    #fun_text=paste(fun_text,')}',sep='') # the end parenthesis
+    #fun=eval(parse(text=fun_text))
   }
+# add the hierarchical component of the likelihood, common to all situations  
+  for (i in 1:length(trees)){
+    fun_text=paste(fun_text,'-log(1/sqrt(2*pi*(X[',length(trees)+5,'])^2))+(X[',i,']-X[',length(trees)+4,'])^2/(2*(X[',length(trees)+5,'])^2)',sep='') 
+  }
+  fun_text=paste(fun_text,')}',sep='') # the end parenthesis
+  fun=eval(parse(text=fun_text))
   return(list(fun=fun,ncoeff=ncoeff,npar=npar,par_names=par_names,par_fixed=list(a=a,b=b,c=c,bounds=bounds),trees=trees,traits=traits,Npts=Npts))
 }
 
