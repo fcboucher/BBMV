@@ -734,7 +734,7 @@ MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=
   V_init= pars_init[(n_clades+1)]*SEQ^4+pars_init[(n_clades+2)]*SEQ^2+pars_init[(n_clades+3)]*SEQ
   temp= pars_init
   chain=matrix(NA,Nsteps/record_every,(n_clades+9))
-  colnames(chain)[c(1,(n_clades+2):(n_clades+9))]=c('step','a','b','c','lnprior','lnlik','quasi-lnpost','Accept','Par_updated') 
+  colnames(chain)[c(1,(n_clades+2):(n_clades+9))]=c('step','a','b','c','HYPERMU','HYPERSIG','lnprior','lnlik','quasi-lnpost','Accept','Par_updated') 
   for (clade in 1:n_clades){eval(parse(text=paste("colnames(chain)[",clade,"+1]='sigsq_clade_",clade,"'",sep='')))}
   if (prior.only==T){lnlik=1}
   else {
