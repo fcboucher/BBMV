@@ -1,4 +1,9 @@
 
+Under progress: hierarchical model
+
+
+
+
 Develop uncertainty function for the parameters of the multiclade fit?
 
 Generate error message when stat. distrib. does not converge to 0 at the bounds in FPK --> check 99% HPD and suggest to use lnL_BBMV instead with bounds further apart.
