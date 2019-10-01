@@ -733,8 +733,8 @@ MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=
   SEQ=seq(from=-1.5,to=1.5,length.out= Npts) # the potential V is modelled as a quadratic function over [-1.5,1.5], but in real data space, this corresponds to [bounds[1],bounds[2]]
   V_init= pars_init[(n_clades+1)]*SEQ^4+pars_init[(n_clades+2)]*SEQ^2+pars_init[(n_clades+3)]*SEQ
   temp= pars_init
-  chain=matrix(NA,Nsteps/record_every,(n_clades+9))
-  colnames(chain)[c(1,(n_clades+2):(n_clades+9))]=c('step','a','b','c','HYPERMU','HYPERSIG','lnprior','lnlik','quasi-lnpost','Accept','Par_updated') 
+  chain=matrix(NA,Nsteps/record_every,(n_clades+11))
+  colnames(chain)[c(1,(n_clades+2):(n_clades+11))]=c('step','a','b','c','HYPERMU','HYPERSIG','lnprior','lnlik','quasi-lnpost','Accept','Par_updated') 
   for (clade in 1:n_clades){eval(parse(text=paste("colnames(chain)[",clade,"+1]='sigsq_clade_",clade,"'",sep='')))}
   if (prior.only==T){lnlik=1}
   else {
