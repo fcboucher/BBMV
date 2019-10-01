@@ -626,7 +626,7 @@ proposal_nclades_plus_3_pars_hierarchical=function(type='Uniform',sensitivity,pa
 ######## NEW MASTER FUNCTION: LIKELIHOOD OF THE HIERARCHICAL MODEL!!! #######
 #############################################################################
 
-lnl_BBMV_multiclades_same_V_different_sig2=function(trees,traits,bounds,a=NULL,b=NULL,c=NULL,Npts=50){
+lnl_BBMV_multiclades_same_V_hierarchical_sig2=function(trees,traits,bounds,a=NULL,b=NULL,c=NULL,Npts=50){
   if (length(trees)!=length(traits)){stop('The list of trees and the list of traits differ in length.')}
   if (length(trees)==1){stop('There is only one tree and trait vector: use the function lnl_BBMV instead')}
   for (i in 1:length(trees)){
@@ -731,6 +731,7 @@ MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=
   colnames(chain)[c(1,(n_clades+2):(n_clades+9))]=c('step','a','b','c','lnprior','lnlik','quasi-lnpost','Accept','Par_updated') 
   for (clade in 1:n_clades){eval(parse(text=paste("colnames(chain)[",clade,"+1]='sigsq_clade_",clade,"'",sep='')))}
   if (prior.only==T){lnlik=1}
+#### OK up to here, resume here after lnL function works
   else {
     NEG_LNL_func=lnl_BBMV_multiclades_same_V_different_sig2(trees=trees,traits=traits,bounds=bounds,a=NULL,b=NULL,c=NULL,Npts=50)$fun
     LNL_func=function(X){return(-NEG_LNL_func(X))}
