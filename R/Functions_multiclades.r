@@ -708,7 +708,7 @@ lnl_BBMV_multiclades_same_V_hierarchical_sig2=function(trees,traits,bounds,a=NUL
 ############ MCMC SAMPLER ###########
 #####################################
 # MCMC sampler for a.x^4+b.x^2+c.x
-MH_MCMC_FPK_multiclades=function(trees,traits,bounds,Nsteps=500000,record_every=100,plot_every=500,Npts=50,pars_init=NULL,prob_update=NULL,verbose=TRUE,plot=TRUE,save_to='MCMC_FPK_test.Rdata',save_every=10000,type_priors=NULL,shape_priors=NULL,proposal_type='Normal',proposal_sensitivity=NULL,prior.only=F,burnin.plot=0.1){
+MH_MCMC_FPK_multiclades_hierarchical=function(trees,traits,bounds,Nsteps=500000,record_every=100,plot_every=500,Npts=50,pars_init=NULL,prob_update=NULL,verbose=TRUE,plot=TRUE,save_to='MCMC_FPK_test.Rdata',save_every=10000,type_priors=NULL,shape_priors=NULL,proposal_type='Normal',proposal_sensitivity=NULL,prior.only=F,burnin.plot=0.1){
   # the oder of parameters is the same for pars_init, prob_update,type_priors,shape_priors and proposal_sensitivity. It is: (dCoeff1,dCoeff2,...,dCoeffn,a,b,c,HYPERMU,HYPERSIG) , with dCoeff=log(sigsq/2) and HYPERMU,HYPERSIG mean and sd of the Gaussian distribution of dCoeffs
   # prior.only to sample from prior only (check that MCMC algorithm mixes well). Default to F for actual posterior exploration	
   # burnin.plot gives the proportion burnin for plots only (the whole chain is actually saved)  
