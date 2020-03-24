@@ -264,7 +264,7 @@ Parameters of the MCMC functions are the following:
 Let's load and use the MCMC function on the simulated dataset with two peaks (FPK model). Here we fix the bounds of the trait interval to be the same as when we fitted the FPK model: they are far away from the observed trait interval and thus do not influence the process, we are thus fitting the FPK model. If we would like to fit the BBMV model we could place them closer to the observed trait, e.g. bounds=c(min(TRAIT),max(TRAIT)).
 
 ```r
-MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=50,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+MCMC=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=50,pars_init=c(0,-4,-4,0,1),prob_update=c(0.2,0.25,0.25,0.25,0.05),verbose=TRUE,plot=TRUE,save_to='~/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 ```
 
 Now we can measure the effective sample size of the chain using the package **coda**. This value should be above, say, 100 for a chain to have converged and in addition we should run several chains and check that they have converged to the same posterior distribution. We can also plot the posterior distribution of model parameters. We remove the 50 first samples as burnin just for the example, but we should probably be running the chain for much longer and discard way more samples:
@@ -288,16 +288,11 @@ get.landscape.FPK.MCMC(chain=MCMC,bounds=fit4$par_fixed$bounds,Npts=100,burnin=0
 
 We can add the macroevolutionary landscape fitted using maximum-likelihood to this plot:
 ```r
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/MCMC_function_BBMV.r') # function not incuded in R package yet
+source('~/MCMC_function_BBMV.r') # function not incuded in R package yet
 add.ML.landscape.FPK(fit=fit4,Npts=100,COLOR=1,LTY='dashed')
 ```
 
-We can plot the distribution of the prior vs. posterior for each parameter of the model to see how much information came from the data. To do so we need to source one function from the Github repository (change the path below to match your local one) which is not yet in the package.
-```r
-source('~/Documents/Flo_BACKUPS/Travail/BBM plus potentiel/BBMV_Github/R/posterior_vs_prior.r') # function not incuded in R package yet
-```
-
-Now we will plot priors and posteriors. Even though the chain is far from having converged we might still get strong information from the likelihood (i.e., the data)... or we might still be strongly influenced by the initial point of the MCMC chain.
+We can plot the distribution of the prior vs. posterior for each parameter of the model to see how much information came from the data. Even though the chain is far from having converged we might still get strong information from the likelihood (i.e., the data)... or we might still be strongly influenced by the initial point of the MCMC chain.
 ```r
 par(mfrow=c(2,2))
 posterior_vs_prior(chain=MCMC,param='a',Npts=100,burnin=0.2,type_prior='Normal',shape_prior=c(0,10))
@@ -308,7 +303,7 @@ posterior_vs_prior(chain=MCMC,param='sigsq',Npts=100,burnin=0.2,type_prior='Norm
 
 Finally, we can also estimate a simpler version of the model using MCMC. Here we will run a chain with the potential forced to be quadratic (i.e. an OU model). We do this by fixing the intial values of *a* to 0 and setting its probability of update to zero:
 ```r
-MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=50,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/Desktop/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
+MCMC_OU=MH_MCMC_FPK(tree,trait=TRAIT,bounds=fit4$par_fixed$bounds,Nsteps=10000,record_every=100,plot_every=100,Npts=50,pars_init=c(0,0,-4,0,1),prob_update=c(0.25,0,0.35,0.35,0.05),verbose=TRUE,plot=TRUE,save_to='~/MCMC_FPK_test.Rdata',save_every=100,type_priors=c(rep('Normal',4),'Uniform'),shape_priors=list(c(0,10),c(0,10),c(0,10),c(0,10),NA),proposal_type='Uniform',proposal_sensitivity=c(0.1,0.1,0.1,0.1,1),prior.only=F)
 
 apply(MCMC_OU[-c(1:50),2:9],2,effectiveSize)
 par(mfrow=c(2,3))
