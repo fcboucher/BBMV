@@ -288,7 +288,6 @@ get.landscape.FPK.MCMC(chain=MCMC,bounds=fit4$par_fixed$bounds,Npts=100,burnin=0
 
 We can add the macroevolutionary landscape fitted using maximum-likelihood to this plot:
 ```r
-source('~/MCMC_function_BBMV.r') # function not incuded in R package yet
 add.ML.landscape.FPK(fit=fit4,Npts=100,COLOR=1,LTY='dashed')
 ```
 
