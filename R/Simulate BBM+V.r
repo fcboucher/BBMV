@@ -4,13 +4,13 @@
 # tree: a phylogenetic tree in 'phylo' format (ape)
 # x0: the value of the trait at the root of the tree, default to 0
 # V: a vector describing the potential over the trait interval. The length of V determines the number of traits used to discretize the trait interval. All points are assumed to be equally spaced between the minimum bound (bounds[1]) and the maximum bound (bounds[2]), and V only has values for the potential in each of these points. By default we have have a flat potential, V=rep(0,100), which means BBM with 100 points used for the discretization.
-# sigma: the BM evolutionary rates
+# sigma: the BM evolutionary rate
 # the two bounds of the trait interval: x0 must be between them of course
 # The function does not simulate step by step, but uses matrix exponential to directly simulate over entire branches of the tree. It is thus very fast.
 # The value returned is a vector of trait values, with names matching those of the tips of the tree
 
 Sim_FPK=function(tree,x0=0,V=rep(0,100),sigma,bounds){
-	dCoeff=log((sigma)^2/2) # the coefficient of diffusion of the model
+	dCoeff=log((sigma)^2/2) # the diffusion coefficient of the process
 	dMat= DiffMat_forward(V) # the transition matrix describing the probablity of evolving between two sites in the trait grid in an infinitesimal time step.
 	Npts=length(V)
 	ntips=length(tree$tip.label)
