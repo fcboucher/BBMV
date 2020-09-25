@@ -1,3 +1,5 @@
+Allow for unmeasured traits at the tips by setting an equal probablity trait distribution. 
+
 Phylogenetic Monte Carlo!!!
 
 Develop uncertainty function for the parameters of the multiclade fit?
