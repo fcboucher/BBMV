@@ -1,3 +1,8 @@
+Edit Lnl_FPK so that on can fix a & c, but just let b vary (e.g. a=0 & c=0, so that we have the true OU)?
+
+Engage with these numerical issues!
+
+
 Allow for unmeasured traits at the tips by setting an equal probablity trait distribution. 
 
 Phylogenetic Monte Carlo!!!
