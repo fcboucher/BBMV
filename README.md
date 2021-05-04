@@ -15,12 +15,3 @@ The [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) s
 The paper describing the model has been published and can be found [here](https://academic.oup.com/sysbio/article-abstract/doi/10.1093/sysbio/syx075/4210009/A-General-Model-for-Estimating-Macroevolutionary?redirectedFrom=fulltext), but you can also get this (free) [preprint of the latest version](https://github.com/fcboucher/BBMV/blob/master/Manuscript/). Another paper describing the R package, which presents its main functions and a typical workflow, can be found [here](https://onlinelibrary.wiley.com/doi/abs/10.1111/ecog.04045). Please be kind enough to cite it if you're using the package.
 
 Help files for all functions can be found in this [pdf](https://github.com/fcboucher/BBMV/blob/master/BBMV-manual.pdf) but you might also want to have a look at the [FAQ/troubleshooting](https://github.com/fcboucher/BBMV/blob/master/FAQ-Troubleshooting.md) section.
-
-### Latest additions
-- 2018.04.23: one can now visualize the MCMC and ML estimations on the same plot using the function add.ML.landscape.FPK 
-
-- 2018.03.02: in the MCMC analysis priors and posteriors can be graphically compared. Examples of use of this new function are given in the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) and the [example R script](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r).
-
-- 2017.10.23: it is now possible to fit the *FPK* model on multiple clades together in order to statistically test whether they share a similar macroevolutionary landscape. Examples of use of these new functions are given in the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) and the [example R script](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r). Be careful when using these functions since optimizing the likelihood is often difficult.
-
-- 2017.09.29: all functions (ML and MCMC) can now take measurement error in trait data at the tips of the tree into account. The format required for the trait data in this case is explained in the [tutorial](https://github.com/fcboucher/BBMV/blob/master/Tutorial-BBMV.md) and the [example R script](https://github.com/fcboucher/BBMV/blob/master/Example_script_BBMV_package.r). Be cautious when fitting the model with measurement error since the behaviour of the model has not been extensively tested yet.
