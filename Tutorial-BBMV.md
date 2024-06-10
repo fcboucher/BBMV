@@ -8,11 +8,8 @@ The *BBMV* model is a special case of *FPK* in which the trait is subject to an 
 
 Our implementation of the *FPK* and *BBMV* models does **not** require that the phylogenetic tree you provide be ultrametric: you can use it with fossil data for example.
 
-The **BBMV** package can be installed from CRAN:
-```r
-install.packages('BBMV')
-library(BBMV)
-```
+The **BBMV** package is not maintained on CRAN anymore. To be able to use it you must download the R folder in this repository and then *source* all R files within it.
+
 
 ## Simulation function
 For this tutorial we will simulate data and then infer parameters of the *BBMV* model on this simulated dataset. We need the R package **geiger** to simulate phylogenetic trees.
