@@ -1,7 +1,7 @@
 # BBMV
 This repository provides a set of R functions to fit general macroevolutionary models for continuous traits evolving in macroevolutionary landscapes of any shape. As such, the model can accomodate a large variety of evolutionary scenarios, including hard constraints on trait evolution and selection of any possible kind.
 
-The latest version of the **BBMV** package can also be found on [CRAN](https://CRAN.R-project.org/package=BBMV). 
+The **BBMV** package is not available on [CRAN](https://CRAN.R-project.org/package=BBMV) anymore but all of its functions can be found in the [R folder](https://github.com/fcboucher/BBMV/tree/master/R). 
 
 This new model is based on [bounded Brownian motion](https://github.com/fcboucher/BBM) (BBM), in which a continuous trait undergoes constant-rate diffusion between two reflective bounds. In addition to this random component, the trait evolves in a potential and is thus subject to a force that pulls it towards specific values - this force can be of any shape. You can see an example of the behaviour of the model [here](https://github.com/fcboucher/BBMV/blob/master/FPK_basics_figure.pdf). We label this model *FPK* since it is based on the Fokker-Planck equation, also known as the Kolmogorov forward equation in population genetics. The *FPK* model is a generalization of other classic models for continuous trait evolution, namely Brownian Motion and the Ornstein-Uhlenbeck model.  The *FPK* model has a special case in which hard, reflective, bounds exist on the trait interval, which we label *BBMV* for BBM + potential.
 
