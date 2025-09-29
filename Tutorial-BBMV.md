@@ -208,7 +208,7 @@ for (i in 1:length(TRAIT)){
 names(TRAIT2)=names(TRAIT)
 ```
 
-We can have a look at how trait measurments look for the first 4 species: different tips have different number of measures and different levels of error.
+We can have a look at how trait measures look for the first four species: different tips have different number of measurements and different levels of error.
 
 ```r
 TRAIT2[c(1:4)] 
